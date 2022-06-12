@@ -54,6 +54,8 @@ def display_selected(choice):
 window = Tk()
 
 window.title('Aplicación para a visualización de datos de servidores NUMA')
+# window.iconbitmap('assets/citius.ico')
+window.wm_attributes('-toolwindow', 'True')
 
 window.geometry("1024x720")
 window.configure(bg="#FFFFFF")
