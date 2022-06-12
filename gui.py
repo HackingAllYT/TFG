@@ -69,7 +69,6 @@ canvas = Canvas(
 )
 
 canvas.place(x=0, y=0)
-
 canvas.create_rectangle(
     0.0,
     0.0,
@@ -97,49 +96,32 @@ canvas.create_text(
 
 canvas.create_rectangle(
     36.0,
-    238.0,
+    453.0,
     286.0,
-    313.0,
+    528.0,
     fill="#F1F5FF",
     outline="")
-
-canvas.create_rectangle(
-    36.0,
-    355.0,
-    286.0,
-    430.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_rectangle(
-    384.0,
-    355.0,
-    634.0,
-    430.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    54.0,
-    238.0,
-    anchor="nw",
-    text="CPUs:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
 
 canvas.create_text(
     57.0,
-    362.0,
+    460.0,
     anchor="nw",
     text="G-FLOPS:",
     fill="#000000",
     font=("Inter", 15 * -1)
 )
 
+canvas.create_rectangle(
+    384.0,
+    453.0,
+    634.0,
+    528.0,
+    fill="#F1F5FF",
+    outline="")
+
 canvas.create_text(
     408.0,
-    362.0,
+    460.0,
     anchor="nw",
     text="Rango inicial:",
     fill="#000000",
@@ -148,15 +130,15 @@ canvas.create_text(
 
 canvas.create_rectangle(
     737.0,
-    355.0,
+    453.0,
     987.0,
-    430.0,
+    528.0,
     fill="#F1F5FF",
     outline="")
 
 canvas.create_text(
     758.0,
-    362.0,
+    460.0,
     anchor="nw",
     text="Rango final:",
     fill="#000000",
@@ -165,15 +147,15 @@ canvas.create_text(
 
 canvas.create_rectangle(
     384.0,
-    238.0,
+    285.0,
     634.0,
-    313.0,
+    360.0,
     fill="#F1F5FF",
     outline="")
 
 canvas.create_text(
     405.0,
-    242.0,
+    289.0,
     anchor="nw",
     text="PIDs:",
     fill="#000000",
@@ -181,16 +163,33 @@ canvas.create_text(
 )
 
 canvas.create_rectangle(
+    36.0,
+    285.0,
+    286.0,
+    360.0,
+    fill="#F1F5FF",
+    outline="")
+
+canvas.create_text(
+    57.0,
+    289.0,
+    anchor="nw",
+    text="CPUs:",
+    fill="#000000",
+    font=("Inter", 15 * -1)
+)
+
+canvas.create_rectangle(
     737.0,
-    238.0,
+    285.0,
     987.0,
-    313.0,
+    360.0,
     fill="#F1F5FF",
     outline="")
 
 canvas.create_text(
     755.0,
-    242.0,
+    289.0,
     anchor="nw",
     text="TIDs:",
     fill="#000000",
@@ -231,6 +230,7 @@ canvas.create_text(
     font=("Inter", 15 * -1)
 )
 
+
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
 button_1 = Button(
@@ -241,8 +241,8 @@ button_1 = Button(
     relief="flat"
 )
 button_1.place(
-    x=761.0,
-    y=553.0,
+    x=787.0,
+    y=608.0,
     width=180.0,
     height=55.0
 )
@@ -302,7 +302,7 @@ countries = ['Bahamas', 'Canada', 'Cuba', 'United States']
 '''
 ***************************************************************************
 '''
-aux = StringVar()
+'''aux = StringVar()
 aux_cb = ttk.Combobox(window, textvariable=aux, width=28)
 
 # get first 3 letters of every month name
@@ -315,6 +315,7 @@ aux_cb['state'] = 'readonly'
 #columnas_cb.pack(fill=None, side=LEFT, padx=0, pady=110)
 aux_cb.grid(column=0, row=0, padx=0, pady=40)
 aux_cb.current()
+aux_cb.grid_forget()'''
 
 
 '''
@@ -325,14 +326,14 @@ columnas = StringVar()
 columnas_cb = ttk.Combobox(window, textvariable=columnas, width=28)
 
 # get first 3 letters of every month name
-columnas_cb['values'] = [countries[m][0:3] for m in range(4)]
+columnas_cb['values'] = [countries[m][0:1] for m in range(4)]
 
 # prevent typing a value
 columnas_cb['state'] = 'readonly'
 
 # place the widget
 #columnas_cb.pack(fill=None, side=LEFT, padx=0, pady=110)
-columnas_cb.grid(column=5, row=5, padx=53, pady=120)
+columnas_cb.grid(column=5, row=5, padx=53, pady=145)
 columnas_cb.current()
 
 
@@ -340,32 +341,138 @@ tipo_datos = StringVar()
 tipoDatos_cb = ttk.Combobox(window, textvariable=tipo_datos, width=28)
 
 # get first 3 letters of every month name
-tipoDatos_cb['values'] = [countries[m][0:4] for m in range(4)]
+tipoDatos_cb['values'] = [countries[m][0:2] for m in range(4)]
 
 # prevent typing a value
 tipoDatos_cb['state'] = 'readonly'
 
 # place the widget
-#columns_cb.pack(fill=None, side=LEFT, padx=40, pady=210)
-tipoDatos_cb.grid(column=20, row=5, padx=110, pady=120)
+tipoDatos_cb.grid(column=20, row=5, padx=110, pady=145)
 tipoDatos_cb.current()
 
 
+outliers = StringVar()
+outliers_cb = ttk.Combobox(window, textvariable=outliers, width=28)
+
+# get first 3 letters of every month name
+outliers_cb['values'] = [countries[m][0:3] for m in range(4)]
+
+# prevent typing a value
+outliers_cb['state'] = 'readonly'
+
+# place the widget
+outliers_cb.grid(column=35, row=5, padx=45, pady=150)
+outliers_cb.current()
+
+'''
+***************************************************************************
+'''
 cpu_columns = StringVar()
 cpu_cb = ttk.Combobox(window, textvariable=cpu_columns, width=28)
 
 # get first 3 letters of every month name
-cpu_cb['values'] = [countries[m][0:6] for m in range(4)]
+cpu_cb['values'] = [countries[m][0:4] for m in range(4)]
 
 # prevent typing a value
 cpu_cb['state'] = 'readonly'
 
 # place the widget
-#cpu_cb.pack(fill=None, side=LEFT, padx=50, pady=210)
 cpu_cb.grid(column=5, row=6, padx=0, pady=0)
 cpu_cb.current()
 
-aux_cb.grid_forget()
+
+pid = StringVar()
+pid_cb = ttk.Combobox(window, textvariable=pid, width=28)
+
+# get first 3 letters of every month name
+pid_cb['values'] = [countries[m][0:5] for m in range(4)]
+
+# prevent typing a value
+pid_cb['state'] = 'readonly'
+
+# place the widget
+pid_cb.grid(column=20, row=6, padx=0, pady=0)
+pid_cb.current()
+
+tid = StringVar()
+tid_cb = ttk.Combobox(window, textvariable=tid, width=28)
+
+# get first 3 letters of every month name
+tid_cb['values'] = [countries[m][0:6] for m in range(4)]
+
+# prevent typing a value
+tid_cb['state'] = 'readonly'
+
+# place the widget
+tid_cb.grid(column=35, row=6, padx=45, pady=0)
+tid_cb.current()
+
+
+'''
+***************************************************************************
+'''
+g_flops = StringVar()
+gflops_cb = ttk.Combobox(window, textvariable=g_flops, width=28)
+
+# get first 3 letters of every month name
+gflops_cb['values'] = [countries[m][0:7] for m in range(4)]
+
+# prevent typing a value
+gflops_cb['state'] = 'readonly'
+
+# place the widget
+gflops_cb.grid(column=5, row=7, padx=0, pady=150)
+gflops_cb.current()
+
+
+rang_inicial = StringVar()
+rangInicial_cb = ttk.Combobox(window, textvariable=rang_inicial, width=28)
+
+# get first 3 letters of every month name
+rangInicial_cb['values'] = [countries[m][0:8] for m in range(4)]
+
+# prevent typing a value
+rangInicial_cb['state'] = 'readonly'
+
+# place the widget
+rangInicial_cb.grid(column=20, row=7, padx=0, pady=150)
+rangInicial_cb.current()
+
+rang_final = StringVar()
+rangFinal_cb = ttk.Combobox(window, textvariable=rang_final, width=28)
+
+# get first 3 letters of every month name
+rangFinal_cb['values'] = [countries[m][0:9] for m in range(4)]
+
+# prevent typing a value
+rangFinal_cb['state'] = 'readonly'
+
+# place the widget
+rangFinal_cb.grid(column=35, row=7, padx=45, pady=150)
+rangFinal_cb.current()
+
+'''
+# Choosing selectmode as multiple
+# for selecting multiple options
+list = tk.Listbox(window, selectmode="multiple")
+
+# Widget expands horizontally and
+# vertically by assigning both to
+# fill option
+list.grid(column=21, row=7, padx=0, pady=150)
+
+# Taking a list 'x' with the items
+# as languages
+x = ["C", "C++", "Java", "Python", "R",
+     "Go", "Ruby", "JavaScript", "Swift"]
+
+for each_item in range(len(x)):
+
+    list.insert(tk.END, x[each_item])
+
+    # coloring alternative lines of listbox
+    list.itemconfig(each_item,
+                    bg="yellow" if each_item % 2 == 0 else "cyan")'''
 
 window.resizable(False, False)
 window.mainloop()
