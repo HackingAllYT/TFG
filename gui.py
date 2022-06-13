@@ -14,6 +14,9 @@ import tkinter.filedialog as fd
 from tkinter.messagebox import showinfo, askyesno
 
 
+from migplot import parse_file
+
+
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
@@ -35,10 +38,11 @@ def select_path():
         initialdir='/',
         filetypes=filetypes)
 
-    showinfo(
-        title='Selected File',
-        message=filename
-    )
+    if filename:
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
 
 
 def confirmExit():
@@ -523,6 +527,14 @@ frame2 = Frame(window, width=1024, height=720)
 frame2.pack(fill=BOTH, expand=1)
 
 
+def clear_entry():
+    frame2.destroy()
+    button_5.destroy()
+    button_6.destroy()
+    entry_1.destroy()
+    frame1.pack(fill=BOTH, expand=1)
+
+
 def select_path_2():
     filetypes = (
         ('Comma-separated values', '*.csv'),
@@ -534,16 +546,13 @@ def select_path_2():
         initialdir='/',
         filetypes=filetypes)
 
-    showinfo(
-        title='Selected File',
-        message=filename
-    )
-    entry_1.delete(0, tk.END)
-    entry_1.insert(0, filename)
-    frame2.destroy()
-    button_5.destroy()
-    entry_1.destroy()
-    frame1.pack(fill=BOTH, expand=1)
+    if filename:
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        entry_1.delete(0, tk.END)
+        entry_1.insert(0, filename)
 
 
 canvas = Canvas(
@@ -590,7 +599,7 @@ canvas.create_text(
     435.0,
     text="Output Path",
     fill="#515486",
-    font=("Inter Regular", int(13.0 * -1)),
+    font=("Inter Regular", int(13.0)),
     anchor="w")
 
 button_image_5 = PhotoImage(
@@ -607,6 +616,22 @@ button_5.place(
     y=446.0,
     width=24.0,
     height=22.0
+)
+
+button_image_6 = PhotoImage(
+    file=relative_to_assets("button_6.png"))
+button_6 = Button(
+    image=button_image_6,
+    borderwidth=0,
+    highlightthickness=0,
+    command=clear_entry,
+    relief="flat"
+)
+button_6.place(
+    x=795.0,
+    y=600.0,
+    width=180.0,
+    height=55.0
 )
 
 canvas.create_rectangle(
@@ -662,6 +687,59 @@ canvas.create_text(
     font=("Inter Regular", 24 * -1)
 )
 
+canvas.create_text(
+    591.0,
+    125.0,
+    anchor="nw",
+    text="Para comezar seleccione o",
+    fill="#000000",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    591.0,
+    165.0,
+    anchor="nw",
+    text="arquivo que quere procesar no",
+    fill="#000000",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    591.0,
+    205.0,
+    anchor="nw",
+    text="cadro que aparece a continuación",
+    fill="#000000",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    591.0,
+    245.0,
+    anchor="nw",
+    text="Este arquivo serrá procesado pola",
+    fill="#000000",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    591.0,
+    285.0,
+    anchor="nw",
+    text="aplicación e mostrará un pequeno",
+    fill="#000000",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    591.0,
+    325.0,
+    anchor="nw",
+    text="resumo do seu contido",
+    fill="#000000",
+    font=("Inter Regular", 24 * -1)
+)
 
 window.resizable(False, False)
 window.mainloop()
