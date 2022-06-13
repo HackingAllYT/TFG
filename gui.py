@@ -7,7 +7,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import OptionMenu, Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar, ttk, LEFT
+from tkinter import Frame, OptionMenu, Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar, ttk, LEFT, BOTH
 
 import tkinter as tk
 import tkinter.filedialog as fd
@@ -16,6 +16,8 @@ from tkinter.messagebox import showinfo, askyesno
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
+
+arquivos = []
 
 
 def relative_to_assets(path: str) -> Path:
@@ -51,6 +53,43 @@ def display_selected(choice):
     print(choice)
 
 
+def edit_button():
+    global arquivos
+    d = MyDialog(window, arquivos, "Probando Dialogo", "Dame valor")
+    window.wait_window(d.top)
+
+
+class MyDialog:
+    def __init__(self, parent, valor, title, labeltext=''):
+        self.valor = valor
+
+        self.top = tk.Toplevel(parent)
+        self.top.transient(parent)
+        self.top.grab_set()
+        if len(title) > 0:
+            self.top.title(title)
+        if len(labeltext) == 0:
+            labeltext = 'Valor'
+        tk.Label(self.top, text=labeltext).pack()
+        self.top.bind("<Return>", self.ok)
+        # TODO: non existe o get para os arrays, mirar como gardar os arquivos
+        self.e = Entry(self.top, text=valor.get())
+        self.e.bind("<Return>", self.ok)
+        self.e.bind("<Escape>", self.cancel)
+        self.e.pack(padx=15)
+        self.e.focus_set()
+        b = Button(self.top, text="OK", command=self.ok)
+        b.pack(pady=5)
+
+    def ok(self, event=None):
+        print("Has escrito ...", self.e.get())
+        self.valor.set(self.e.get())
+        self.top.destroy()
+
+    def cancel(self, event=None):
+        self.top.destroy()
+
+
 window = Tk()
 
 window.title('Aplicación para a visualización de datos de servidores NUMA')
@@ -60,8 +99,11 @@ window.wm_attributes('-toolwindow', 'True')
 window.geometry("1024x720")
 window.configure(bg="#FFFFFF")
 
+frame1 = Frame(window, width=1024, height=720)
+#frame1.pack(fill=BOTH, expand=1)
+
 canvas = Canvas(
-    window,
+    frame1,
     bg="#FFFFFF",
     height=720,
     width=1024,
@@ -271,7 +313,7 @@ button_3 = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=edit_button,
     relief="flat"
 )
 button_3.place(
@@ -325,7 +367,7 @@ aux_cb.grid_forget()'''
 '''
 
 columnas = StringVar()
-columnas_cb = ttk.Combobox(window, textvariable=columnas, width=28)
+columnas_cb = ttk.Combobox(frame1, textvariable=columnas, width=28)
 
 # get first 3 letters of every month name
 columnas_cb['values'] = [countries[m][0:1] for m in range(4)]
@@ -340,7 +382,7 @@ columnas_cb.current()
 
 
 tipo_datos = StringVar()
-tipoDatos_cb = ttk.Combobox(window, textvariable=tipo_datos, width=28)
+tipoDatos_cb = ttk.Combobox(frame1, textvariable=tipo_datos, width=28)
 
 # get first 3 letters of every month name
 tipoDatos_cb['values'] = [countries[m][0:2] for m in range(4)]
@@ -354,7 +396,7 @@ tipoDatos_cb.current()
 
 
 outliers = StringVar()
-outliers_cb = ttk.Combobox(window, textvariable=outliers, width=28)
+outliers_cb = ttk.Combobox(frame1, textvariable=outliers, width=28)
 
 # get first 3 letters of every month name
 outliers_cb['values'] = [countries[m][0:3] for m in range(4)]
@@ -370,7 +412,7 @@ outliers_cb.current()
 ***************************************************************************
 '''
 cpu_columns = StringVar()
-cpu_cb = ttk.Combobox(window, textvariable=cpu_columns, width=28)
+cpu_cb = ttk.Combobox(frame1, textvariable=cpu_columns, width=28)
 
 # get first 3 letters of every month name
 cpu_cb['values'] = [countries[m][0:4] for m in range(4)]
@@ -384,7 +426,7 @@ cpu_cb.current()
 
 
 pid = StringVar()
-pid_cb = ttk.Combobox(window, textvariable=pid, width=28)
+pid_cb = ttk.Combobox(frame1, textvariable=pid, width=28)
 
 # get first 3 letters of every month name
 pid_cb['values'] = [countries[m][0:5] for m in range(4)]
@@ -397,7 +439,7 @@ pid_cb.grid(column=20, row=6, padx=0, pady=0)
 pid_cb.current()
 
 tid = StringVar()
-tid_cb = ttk.Combobox(window, textvariable=tid, width=28)
+tid_cb = ttk.Combobox(frame1, textvariable=tid, width=28)
 
 # get first 3 letters of every month name
 tid_cb['values'] = [countries[m][0:6] for m in range(4)]
@@ -414,7 +456,7 @@ tid_cb.current()
 ***************************************************************************
 '''
 g_flops = StringVar()
-gflops_cb = ttk.Combobox(window, textvariable=g_flops, width=28)
+gflops_cb = ttk.Combobox(frame1, textvariable=g_flops, width=28)
 
 # get first 3 letters of every month name
 gflops_cb['values'] = [countries[m][0:7] for m in range(4)]
@@ -428,7 +470,7 @@ gflops_cb.current()
 
 
 rang_inicial = StringVar()
-rangInicial_cb = ttk.Combobox(window, textvariable=rang_inicial, width=28)
+rangInicial_cb = ttk.Combobox(frame1, textvariable=rang_inicial, width=28)
 
 # get first 3 letters of every month name
 rangInicial_cb['values'] = [countries[m][0:8] for m in range(4)]
@@ -441,7 +483,7 @@ rangInicial_cb.grid(column=20, row=7, padx=0, pady=150)
 rangInicial_cb.current()
 
 rang_final = StringVar()
-rangFinal_cb = ttk.Combobox(window, textvariable=rang_final, width=28)
+rangFinal_cb = ttk.Combobox(frame1, textvariable=rang_final, width=28)
 
 # get first 3 letters of every month name
 rangFinal_cb['values'] = [countries[m][0:9] for m in range(4)]
@@ -475,6 +517,151 @@ for each_item in range(len(x)):
     # coloring alternative lines of listbox
     list.itemconfig(each_item,
                     bg="yellow" if each_item % 2 == 0 else "cyan")'''
+
+
+frame2 = Frame(window, width=1024, height=720)
+frame2.pack(fill=BOTH, expand=1)
+
+
+def select_path_2():
+    filetypes = (
+        ('Comma-separated values', '*.csv'),
+        ('All files', '*.*')
+    )
+
+    filename = fd.askopenfilenames(
+        title='Open a file',
+        initialdir='/',
+        filetypes=filetypes)
+
+    showinfo(
+        title='Selected File',
+        message=filename
+    )
+    entry_1.delete(0, tk.END)
+    entry_1.insert(0, filename)
+    frame2.destroy()
+    button_5.destroy()
+    entry_1.destroy()
+    frame1.pack(fill=BOTH, expand=1)
+
+
+canvas = Canvas(
+    frame2,
+    bg="#3A7FF6",
+    height=720,
+    width=1024,
+    bd=0,
+    highlightthickness=0,
+    relief="ridge"
+)
+
+canvas.place(x=0, y=0)
+canvas.create_rectangle(
+    513.0,
+    0.0,
+    1025.0,
+    720.0,
+    fill="#FCFCFC",
+    outline="")
+
+entry_image_1 = PhotoImage(
+    file=relative_to_assets("entry_1.png"))
+entry_bg_1 = canvas.create_image(
+    768.5,
+    457.5,
+    image=entry_image_1
+)
+entry_1 = Entry(
+    bd=0,
+    bg="#F1F5FF",
+    highlightthickness=0
+)
+entry_1.place(
+    x=608.0,
+    y=427.0 + 19,
+    width=280.0,
+    height=40.0
+)
+
+
+canvas.create_text(
+    608.0,
+    435.0,
+    text="Output Path",
+    fill="#515486",
+    font=("Inter Regular", int(13.0 * -1)),
+    anchor="w")
+
+button_image_5 = PhotoImage(
+    file=relative_to_assets("button_5.png"))
+button_5 = Button(
+    image=button_image_5,
+    borderwidth=0,
+    highlightthickness=0,
+    command=select_path_2,
+    relief="flat"
+)
+button_5.place(
+    x=902.0,
+    y=446.0,
+    width=24.0,
+    height=22.0
+)
+
+canvas.create_rectangle(
+    40.0,
+    160.0,
+    100.0,
+    165.0,
+    fill="#FCFCFC",
+    outline="")
+
+canvas.create_text(
+    40.0,
+    127.0,
+    anchor="nw",
+    text="Benvid@ á aplicación",
+    fill="#FCFCFC",
+    font=("Roboto Bold", 24 * -1)
+)
+
+canvas.create_text(
+    40.0,
+    197.0,
+    anchor="nw",
+    text="Esta ferramenta permite crear",
+    fill="#FCFCFC",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    40.0,
+    234.0,
+    anchor="nw",
+    text="gráficas para a visualización de",
+    fill="#FCFCFC",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    40.0,
+    270.0,
+    anchor="nw",
+    text="datos obtidos dos contadores",
+    fill="#FCFCFC",
+    font=("Inter Regular", 24 * -1)
+)
+
+canvas.create_text(
+    40.0,
+    306.0,
+    anchor="nw",
+    text="hardware de servidores NUMA",
+    fill="#FCFCFC",
+    font=("Inter Regular", 24 * -1)
+)
+
 
 window.resizable(False, False)
 window.mainloop()
