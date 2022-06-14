@@ -529,6 +529,68 @@ for each_item in range(len(x)):
                     bg="yellow" if each_item % 2 == 0 else "cyan")
 '''
 
+photoFrame = Frame(window, width=1024, height=720)
+canvas = Canvas(
+    photoFrame,
+    bg="#FFFFFF",
+    height=720,
+    width=1024,
+    bd=0,
+    highlightthickness=0,
+    relief="ridge"
+)
+
+canvas.place(x=0, y=0)
+saida_image_1 = PhotoImage(
+    file=relative_to_assets("saida.png"))
+saida = canvas.create_image(
+    512.0,
+    403.0,
+    image=saida_image_1
+)
+
+canvas.create_rectangle(
+    0.0,
+    0.0,
+    1024.0,
+    55.0,
+    fill="#7CAEFF",
+    outline="")
+
+canvas.create_rectangle(
+    0.0,
+    0.0,
+    1024.0,
+    55.0,
+    fill="#7CAEFF",
+    outline="")
+
+button_image_7 = PhotoImage(
+    file=relative_to_assets("button_7.png"))
+button_7 = Button(
+    image=button_image_7,
+    borderwidth=0,
+    highlightthickness=0,
+    command=mostrarEdicion,
+    relief="flat"
+)
+button_7.place(
+    x=0.0,
+    y=2.0,
+    width=180.0,
+    height=53.0
+)
+
+canvas.create_text(
+    259.0,
+    80.0,
+    anchor="nw",
+    text="Nome do gráfico:",
+    fill="#000000",
+    font=("Inter Bold", 15 * -1)
+)
+
+#############################
 
 initialFrame = Frame(window, width=1024, height=720)
 initialFrame.pack(fill=BOTH, expand=1)
@@ -753,73 +815,6 @@ canvas.create_text(
     font=("Inter Regular", 24 * -1)
 )
 
-
-#############
-
-photoFrame = Frame(window, width=1024, height=720)
-canvas = Canvas(
-    photoFrame,
-    bg="#FFFFFF",
-    height=720,
-    width=1024,
-    bd=0,
-    highlightthickness=0,
-    relief="ridge"
-)
-
-canvas.place(x=0, y=0)
-saida_image_1 = PhotoImage(
-    file=relative_to_assets("saida.png"))
-saida = canvas.create_image(
-    512.0,
-    403.0,
-    image=saida_image_1
-)
-
-canvas.create_rectangle(
-    0.0,
-    0.0,
-    1024.0,
-    55.0,
-    fill="#7CAEFF",
-    outline="")
-
-
-###################
-
-canvas.create_rectangle(
-    0.0,
-    0.0,
-    1024.0,
-    55.0,
-    fill="#7CAEFF",
-    outline="")
-
-button_image_7 = PhotoImage(
-    file=relative_to_assets("button_7.png"))
-button_7 = Button(
-    image=button_image_7,
-    borderwidth=0,
-    highlightthickness=0,
-    command=mostrarEdicion,
-    relief="flat"
-)
-button_7.place(
-    x=0.0,
-    y=2.0,
-    width=180.0,
-    height=53.0
-)
-
-canvas.create_text(
-    259.0,
-    80.0,
-    anchor="nw",
-    text="Nome do gráfico:",
-    fill="#000000",
-    font=("Inter Bold", 15 * -1)
-)
-button_7.destroy()
 
 window.resizable(False, False)
 window.mainloop()
