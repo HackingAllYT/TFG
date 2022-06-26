@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Frame, OptionMenu, Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar, ttk, LEFT, BOTH
+from tkinter import Frame, OptionMenu, Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar, ttk, BOTH, Toplevel, Checkbutton, IntVar
 
 import tkinter as tk
 import tkinter.filedialog as fd
@@ -10,6 +13,10 @@ from tkinter.messagebox import showinfo, askyesno
 
 
 from migplot import parse_file, initial_chart
+
+from initialFrame import intitilizateInitialFrame, destroyInitialFrame
+
+from threading import *
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -65,7 +72,10 @@ def mostrar_imaxe():
 
 def mostrarEdicion():
     photoFrame.destroy()
-    button_7.destroy()
+    # button_7.destroy()
+    button_1_PhotoFrame.destroy()
+    button_2_PhotoFrame.destroy()
+    button_3_PhotoFrame.destroy()
     editFrame.pack(fill=BOTH, expand=1)
 
 
@@ -104,10 +114,15 @@ window = Tk()
 
 window.title('Aplicación para a visualización de datos de servidores NUMA')
 # window.iconbitmap('assets/citius.ico')
-window.wm_attributes('-toolwindow', 'True')
+#window.wm_attributes('-toolwindow', 'True')
 
 window.geometry("1024x720")
 window.configure(bg="#FFFFFF")
+
+'''
+**************************************************************************
+******************************* EDIT FRAME *******************************
+'''
 
 editFrame = Frame(window, width=1024, height=720)
 #editFrame.pack(fill=BOTH, expand=1)
@@ -149,108 +164,6 @@ canvas.create_text(
 )
 
 canvas.create_rectangle(
-    36.0,
-    453.0,
-    286.0,
-    528.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    57.0,
-    460.0,
-    anchor="nw",
-    text="G-FLOPS:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
-
-canvas.create_rectangle(
-    384.0,
-    453.0,
-    634.0,
-    528.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    408.0,
-    460.0,
-    anchor="nw",
-    text="Rango inicial:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
-
-canvas.create_rectangle(
-    737.0,
-    453.0,
-    987.0,
-    528.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    758.0,
-    460.0,
-    anchor="nw",
-    text="Rango final:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
-
-canvas.create_rectangle(
-    384.0,
-    285.0,
-    634.0,
-    360.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    405.0,
-    289.0,
-    anchor="nw",
-    text="PIDs:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
-
-canvas.create_rectangle(
-    36.0,
-    285.0,
-    286.0,
-    360.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    57.0,
-    289.0,
-    anchor="nw",
-    text="CPUs:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
-
-canvas.create_rectangle(
-    737.0,
-    285.0,
-    987.0,
-    360.0,
-    fill="#F1F5FF",
-    outline="")
-
-canvas.create_text(
-    755.0,
-    289.0,
-    anchor="nw",
-    text="TIDs:",
-    fill="#000000",
-    font=("Inter", 15 * -1)
-)
-
-canvas.create_rectangle(
     384.0,
     121.0,
     634.0,
@@ -262,7 +175,7 @@ canvas.create_text(
     408.0,
     124.0,
     anchor="nw",
-    text="Tipo de datos:",
+    text="Y:",
     fill="#000000",
     font=("Inter", 15 * -1)
 )
@@ -276,17 +189,33 @@ canvas.create_rectangle(
     outline="")
 
 canvas.create_text(
-    757.7142944335938,
+    758.0,
     125.0,
     anchor="nw",
-    text="Outliers:",
+    text="Z:",
     fill="#000000",
     font=("Inter", 15 * -1)
 )
 
+canvas.create_rectangle(
+    737.0,
+    216.0,
+    987.0,
+    291.0,
+    fill="#F1F5FF",
+    outline="")
+
+canvas.create_text(
+    758.0,
+    220.0,
+    anchor="nw",
+    text="Tipo dato Z:",
+    fill="#000000",
+    font=("Inter", 15 * -1)
+)
 
 button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
+    file=relative_to_assets("sair_button.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
@@ -295,58 +224,204 @@ button_1 = Button(
     relief="flat"
 )
 button_1.place(
+    x=637.0,
+    y=2.0,
+    width=180.0,
+    height=53.0
+)
+
+button_image_2 = PhotoImage(
+    file=relative_to_assets("configuration_button.png"))
+button_2 = Button(
+    image=button_image_2,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_2 clicked"),
+    relief="flat"
+)
+button_2.place(
+    x=70.0,
+    y=2.0,
+    width=180.0,
+    height=53.0
+)
+
+button_image_3 = PhotoImage(
+    file=relative_to_assets("edit_buttom.png"))
+button_3 = Button(
+    image=button_image_3,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_3 clicked"),
+    relief="flat"
+)
+button_3.place(
+    x=448.0,
+    y=2.0,
+    width=180.0,
+    height=53.0
+)
+
+button_image_4 = PhotoImage(
+    file=relative_to_assets("loadFile_button.png"))
+button_4 = Button(
+    image=button_image_4,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_4 clicked"),
+    relief="flat"
+)
+button_4.place(
+    x=259.0,
+    y=1.0,
+    width=180.0,
+    height=53.0
+)
+
+button_image_5 = PhotoImage(
+    file=relative_to_assets("xerar_button.png"))
+button_5 = Button(
+    image=button_image_5,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_5 clicked"),
+    relief="flat"
+)
+button_5.place(
     x=787.0,
     y=608.0,
     width=180.0,
     height=55.0
 )
 
-button_image_2 = PhotoImage(
-    file=relative_to_assets("button_2.png"))
-button_2 = Button(
-    image=button_image_2,
+button_image_6 = PhotoImage(
+    file=relative_to_assets("home.png"))
+button_6 = Button(
+    image=button_image_6,
     borderwidth=0,
     highlightthickness=0,
-    command=confirmExit,
+    command=lambda: print("button_6 clicked"),
     relief="flat"
 )
-button_2.place(
-    x=390.0,
-    y=1.0,
-    width=180.0,
-    height=53.0
+button_6.place(
+    x=2.0,
+    y=2.0,
+    width=51.0,
+    height=51.0
 )
 
-button_image_3 = PhotoImage(
-    file=relative_to_assets("button_3.png"))
-button_3 = Button(
-    image=button_image_3,
-    borderwidth=0,
-    highlightthickness=0,
-    command=edit_button,
-    relief="flat"
-)
-button_3.place(
-    x=200.0,
-    y=1.0,
-    width=180.0,
-    height=53.0
+canvas.create_rectangle(
+    36.0,
+    234.0,
+    706.0,
+    684.0,
+    fill="#F1F5FF",
+    outline="")
+
+canvas.create_text(
+    737.0,
+    328.0,
+    anchor="nw",
+    text="Outliers:",
+    fill="#000000",
+    font=("Inter", 15 * -1)
 )
 
-button_image_4 = PhotoImage(
-    file=relative_to_assets("button_4.png"))
-button_4 = Button(
-    image=button_image_4,
-    borderwidth=0,
-    highlightthickness=0,
-    command=select_path,
-    relief="flat"
+entry_image_1 = PhotoImage(
+    file=relative_to_assets("entry_1.png"))
+entry_bg_1 = canvas.create_image(
+    853.0,
+    337.5,
+    image=entry_image_1
 )
-button_4.place(
-    x=10.0,
-    y=1.0,
-    width=180.0,
-    height=53.0
+entry_1 = Entry(
+    bd=0,
+    bg="#F1F5FF",
+    highlightthickness=0
+)
+entry_1.place(
+    x=817.0,
+    y=320.0,
+    width=72.0,
+    height=33.0
+)
+
+entry_image_2 = PhotoImage(
+    file=relative_to_assets("entry_2.png"))
+entry_bg_2 = canvas.create_image(
+    945.0,
+    336.5,
+    image=entry_image_2
+)
+entry_2 = Entry(
+    bd=0,
+    bg="#F1F5FF",
+    highlightthickness=0
+)
+entry_2.place(
+    x=909.0,
+    y=319.0,
+    width=72.0,
+    height=33.0
+)
+
+canvas.create_rectangle(
+    893.0,
+    336.0,
+    904.0,
+    338.0,
+    fill="#000000",
+    outline="")
+
+canvas.create_text(
+    763.0,
+    397.0,
+    anchor="nw",
+    text="Eliminar Outliers:",
+    fill="#000000",
+    font=("Inter", 15 * -1)
+)
+
+canvas.create_text(
+    831.0,
+    356.0,
+    anchor="nw",
+    text="μ - 2σ",
+    fill="#000000",
+    font=("Inter", 15 * -1)
+)
+
+canvas.create_text(
+    921.0,
+    356.0,
+    anchor="nw",
+    text="μ + 2σ",
+    fill="#000000",
+    font=("Inter", 15 * -1)
+)
+
+deleteOutliers = IntVar()
+
+
+def deleteOutliers_changed():
+    print('het')
+
+
+checkButton = Checkbutton(
+    editFrame,
+    text='',
+    command=deleteOutliers_changed,
+    variable=deleteOutliers,
+    onvalue=1,
+    offvalue=0,
+    background='#FFFFFF'
+)
+
+checkButton.place(
+    x=909.0,
+    y=390.0,
+    width=72.0,
+    height=33.0
 )
 
 
@@ -418,92 +493,6 @@ outliers_cb['state'] = 'readonly'
 outliers_cb.grid(column=35, row=5, padx=45, pady=150)
 outliers_cb.current()
 
-'''
-***************************************************************************
-'''
-cpu_columns = StringVar()
-cpu_cb = ttk.Combobox(editFrame, textvariable=cpu_columns, width=28)
-
-# get first 3 letters of every month name
-cpu_cb['values'] = [countries[m][0:4] for m in range(4)]
-
-# prevent typing a value
-cpu_cb['state'] = 'readonly'
-
-# place the widget
-cpu_cb.grid(column=5, row=6, padx=0, pady=0)
-cpu_cb.current()
-
-
-pid = StringVar()
-pid_cb = ttk.Combobox(editFrame, textvariable=pid, width=28)
-
-# get first 3 letters of every month name
-pid_cb['values'] = [countries[m][0:5] for m in range(4)]
-
-# prevent typing a value
-pid_cb['state'] = 'readonly'
-
-# place the widget
-pid_cb.grid(column=20, row=6, padx=0, pady=0)
-pid_cb.current()
-
-tid = StringVar()
-tid_cb = ttk.Combobox(editFrame, textvariable=tid, width=28)
-
-# get first 3 letters of every month name
-tid_cb['values'] = [countries[m][0:6] for m in range(4)]
-
-# prevent typing a value
-tid_cb['state'] = 'readonly'
-
-# place the widget
-tid_cb.grid(column=35, row=6, padx=45, pady=0)
-tid_cb.current()
-
-
-'''
-***************************************************************************
-'''
-g_flops = StringVar()
-gflops_cb = ttk.Combobox(editFrame, textvariable=g_flops, width=28)
-
-# get first 3 letters of every month name
-gflops_cb['values'] = [countries[m][0:7] for m in range(4)]
-
-# prevent typing a value
-gflops_cb['state'] = 'readonly'
-
-# place the widget
-gflops_cb.grid(column=5, row=7, padx=0, pady=150)
-gflops_cb.current()
-
-
-rang_inicial = StringVar()
-rangInicial_cb = ttk.Combobox(editFrame, textvariable=rang_inicial, width=28)
-
-# get first 3 letters of every month name
-rangInicial_cb['values'] = [countries[m][0:8] for m in range(4)]
-
-# prevent typing a value
-rangInicial_cb['state'] = 'readonly'
-
-# place the widget
-rangInicial_cb.grid(column=20, row=7, padx=0, pady=150)
-rangInicial_cb.current()
-
-rang_final = StringVar()
-rangFinal_cb = ttk.Combobox(editFrame, textvariable=rang_final, width=28)
-
-# get first 3 letters of every month name
-rangFinal_cb['values'] = [countries[m][0:9] for m in range(4)]
-
-# prevent typing a value
-rangFinal_cb['state'] = 'readonly'
-
-# place the widget
-rangFinal_cb.grid(column=35, row=7, padx=45, pady=150)
-rangFinal_cb.current()
 
 '''
 # Choosing selectmode as multiple
@@ -529,6 +518,115 @@ for each_item in range(len(x)):
                     bg="yellow" if each_item % 2 == 0 else "cyan")
 '''
 
+'''
+**************************************************************************
+
+'''
+
+
+def destroyPop():
+    pop.destroy()
+    pop.update()
+
+
+def selectionGrafica():
+    global pop
+    pop = Toplevel(window)
+    pop.title("Selección gráfica")
+    pop.geometry("700x900")
+    pop.grab_set()
+    # pop.overrideredirect(True) # para que non teña os bordes de windows
+    modalFrame = Frame(pop, width=700, height=900)
+
+    canvas = Canvas(
+        modalFrame,
+        bg="#FFFFFF",
+        height=900,
+        width=700,
+        bd=0,
+        highlightthickness=0,
+        relief="ridge"
+    )
+
+    canvas.place(x=0, y=0)
+    canvas.create_rectangle(
+        0.0,
+        0.0,
+        700.0,
+        80.0,
+        fill="#7CAEFF",
+        outline="")
+
+    button_image_1 = PhotoImage(
+        file=relative_to_assets("cross.png"))
+    button_1 = Button(
+        pop,
+        image=button_image_1,
+        borderwidth=0,
+        highlightthickness=0,
+        command=destroyPop,
+        relief="flat"
+    )
+    button_1.place(
+        x=630.0,
+        y=9.0,
+        width=58.0,
+        height=58.0
+    )
+
+    button_image_2 = PhotoImage(
+        file=relative_to_assets("button_heatmap.png"))
+    button_2 = Button(
+        pop,
+        image=button_image_2,
+        borderwidth=0,
+        highlightthickness=0,
+        command=mostrarEdicion,
+        relief="flat"
+    )
+    button_2.place(
+        x=20.0,
+        y=123.0,
+        width=312.0,
+        height=248.0
+    )
+
+    button_image_3 = PhotoImage(
+        file=relative_to_assets("button_scatter.png"))
+    button_3 = Button(
+        pop,
+        image=button_image_3,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: print("button_3 clicked"),
+        relief="flat"
+    )
+    button_3.place(
+        x=368.0,
+        y=123.0,
+        width=312.0,
+        height=248.0
+    )
+
+    canvas.create_text(
+        220.0,
+        28.0,
+        anchor="nw",
+        text="Seleccione tipo de gráfica:",
+        fill="#000000",
+        font=("Inter Bold", 20 * -1)
+    )
+
+    modalFrame.pack(fill=BOTH, expand=1)
+    window.wait_window()  # pop.top
+
+
+'''
+**************************************************************************
+****************************** PHOTO FRAME *******************************
+'''
+
+
 photoFrame = Frame(window, width=1024, height=720)
 canvas = Canvas(
     photoFrame,
@@ -545,7 +643,7 @@ saida_image_1 = PhotoImage(
     file=relative_to_assets("saida.png"))
 saida = canvas.create_image(
     512.0,
-    403.0,
+    410.0,
     image=saida_image_1
 )
 
@@ -557,26 +655,34 @@ canvas.create_rectangle(
     fill="#7CAEFF",
     outline="")
 
-canvas.create_rectangle(
-    0.0,
-    0.0,
-    1024.0,
-    55.0,
-    fill="#7CAEFF",
-    outline="")
-
-button_image_7 = PhotoImage(
-    file=relative_to_assets("button_7.png"))
-button_7 = Button(
-    image=button_image_7,
+button_image_1_PhotoFrame = PhotoImage(
+    file=relative_to_assets("configuration.png"))
+button_1_PhotoFrame = Button(
+    image=button_image_1_PhotoFrame,
     borderwidth=0,
     highlightthickness=0,
-    command=mostrarEdicion,
+    command=lambda: print("Configuration clicked"),
     relief="flat"
 )
-button_7.place(
-    x=0.0,
-    y=2.0,
+button_1_PhotoFrame.place(
+    x=70.0,
+    y=1.0,
+    width=180.0,
+    height=53.0
+)
+
+button_image_2_PhotoFrame = PhotoImage(
+    file=relative_to_assets("select_datos.png"))
+button_2_PhotoFrame = Button(
+    image=button_image_2_PhotoFrame,
+    borderwidth=0,
+    highlightthickness=0,
+    command=selectionGrafica,
+    relief="flat"
+)
+button_2_PhotoFrame.place(
+    x=267.0,
+    y=1.0,
     width=180.0,
     height=53.0
 )
@@ -590,22 +696,58 @@ canvas.create_text(
     font=("Inter Bold", 15 * -1)
 )
 
-#############################
+button_image_3_PhotoFrame = PhotoImage(
+    file=relative_to_assets("home.png"))
+button_3_PhotoFrame = Button(
+    image=button_image_3_PhotoFrame,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_3 clicked"),
+    relief="flat"
+)
+button_3_PhotoFrame.place(
+    x=2.0,
+    y=2.0,
+    width=51.0,
+    height=51.0
+)
+
+
+'''
+**************************************************************************
+***************************** INITIAL FRAME ******************************
+'''
 
 initialFrame = Frame(window, width=1024, height=720)
+# intitilizateInitialFrame(initialFrame)
 initialFrame.pack(fill=BOTH, expand=1)
 
 
 def clear_entry():
     initialFrame.destroy()
-    button_5.destroy()
-    button_6.destroy()
+    # destroyInitialFrame()
+    button_5_initialFrame.destroy()
+    button_6_initialFrame.destroy()
+    button_7_initialFrame.destroy()
     entry_1.destroy()
-    # editFrame.pack(fill=BOTH, expand=1)
     mostrar_imaxe()
 
 
+def loadFileThread():
+    global infoData
+    infoData = []
+    showinfo(
+        title='Selected File',
+        message=filename
+    )
+    for x in filename:
+        data = parse_file(file=x)
+        infoData.append([x, data])
+        initial_chart(data=data)
+
+
 def select_path_2():
+    global filename
     filetypes = (
         ('Comma-separated values', '*.csv'),
         ('All files', '*.*')
@@ -620,13 +762,14 @@ def select_path_2():
         print(filename, type(filename))
         entry_1.delete(0, tk.END)
         entry_1.insert(0, filename)
-        for x in filename:
-            data = parse_file(file=x)
-            initial_chart(data=data)
-            showinfo(
-                title='Selected File',
-                message=filename
-            )
+        # creating a thread
+        Thread_loadFile = Thread(target=loadFileThread)
+
+        # change T to daemon
+        Thread_loadFile.setDaemon(True)
+        Thread_loadFile.start()
+        button_6_initialFrame["state"] = tk.NORMAL
+        button_7_initialFrame["state"] = tk.NORMAL
 
 
 canvas = Canvas(
@@ -651,8 +794,8 @@ canvas.create_rectangle(
 entry_image_1 = PhotoImage(
     file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(
-    768.5,
-    457.5,
+    763.5,
+    488.5,
     image=entry_image_1
 )
 entry_1 = Entry(
@@ -661,51 +804,77 @@ entry_1 = Entry(
     highlightthickness=0
 )
 entry_1.place(
-    x=608.0,
-    y=427.0 + 19,
-    width=280.0,
-    height=40.0
+    x=603.0,
+    y=475.0,
+    width=321.0,
+    height=45.0
 )
 
 
 canvas.create_text(
     608.0,
-    435.0,
+    466.0,
     text="Ruta do arquivo",
     fill="#515486",
     font=("Inter Regular", int(13.0)),
     anchor="w")
 
-button_image_5 = PhotoImage(
+button_image_5_initialFrame = PhotoImage(
     file=relative_to_assets("button_5.png"))
-button_5 = Button(
-    image=button_image_5,
+button_5_initialFrame = Button(
+    image=button_image_5_initialFrame,
     borderwidth=0,
     highlightthickness=0,
     command=select_path_2,
     relief="flat"
 )
-button_5.place(
-    x=902.0,
-    y=446.0,
+button_5_initialFrame.place(
+    x=897.0,
+    y=477.0,
     width=24.0,
     height=22.0
 )
 
-button_image_6 = PhotoImage(
-    file=relative_to_assets("button_6.png"))
-button_6 = Button(
-    image=button_image_6,
+button_image_6_initialFrame = PhotoImage(
+    file=relative_to_assets("vista_rapida.png"))
+button_6_initialFrame = Button(
+    image=button_image_6_initialFrame,
     borderwidth=0,
     highlightthickness=0,
     command=clear_entry,
-    relief="flat"
+    relief="flat",
+    disabledforeground='#3A7FF6'
 )
-button_6.place(
+button_6_initialFrame.place(
     x=795.0,
     y=600.0,
     width=180.0,
     height=55.0
+)
+
+button_image_7_initialFrame = PhotoImage(
+    file=relative_to_assets("detallar_datos.png"))
+button_7_initialFrame = Button(
+    image=button_image_7_initialFrame,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_3 clicked detallar datos"),
+    relief="flat",
+    disabledforeground='#3A7FF6'
+)
+button_7_initialFrame.place(
+    x=596.0,
+    y=600.0,
+    width=180.0,
+    height=55.0
+)
+
+image_image_1 = PhotoImage(
+    file=relative_to_assets("citius.png"))
+image_1 = canvas.create_image(
+    783.0,
+    86.0,
+    image=image_image_1
 )
 
 canvas.create_rectangle(
@@ -763,7 +932,7 @@ canvas.create_text(
 
 canvas.create_text(
     591.0,
-    125.0,
+    169.0,
     anchor="nw",
     text="Para comezar seleccione o",
     fill="#000000",
@@ -772,7 +941,7 @@ canvas.create_text(
 
 canvas.create_text(
     591.0,
-    165.0,
+    209.0,
     anchor="nw",
     text="arquivo que quere procesar no",
     fill="#000000",
@@ -781,7 +950,7 @@ canvas.create_text(
 
 canvas.create_text(
     591.0,
-    205.0,
+    249.0,
     anchor="nw",
     text="cadro que aparece a continuación",
     fill="#000000",
@@ -790,16 +959,16 @@ canvas.create_text(
 
 canvas.create_text(
     591.0,
-    245.0,
+    289.0,
     anchor="nw",
-    text="Este arquivo serrá procesado pola",
+    text="Este arquivo será procesado pola",
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
 
 canvas.create_text(
     591.0,
-    285.0,
+    329.0,
     anchor="nw",
     text="aplicación e mostrará un pequeno",
     fill="#000000",
@@ -808,12 +977,14 @@ canvas.create_text(
 
 canvas.create_text(
     591.0,
-    325.0,
+    369.0,
     anchor="nw",
     text="resumo do seu contido",
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
+button_6_initialFrame["state"] = tk.DISABLED
+button_7_initialFrame["state"] = tk.DISABLED
 
 
 window.resizable(False, False)
