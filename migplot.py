@@ -208,6 +208,79 @@ def interactive_chart(data):
     fig.show()
 
 
+def interactive_chart_plot(x_index: int, y_index: int, zName: str, data):
+    xs = np.unique(np.array(data.iloc[:, x_index]))
+    ys = np.unique(np.array(data.iloc[:, y_index]))
+
+    columns = list(data.columns)
+
+    x_name = columns[x_index]
+    y_name = columns[y_index]
+
+    print(f"Preparing plots for: {columns}")
+
+    fig = go.Figure()
+
+    buttons = []
+
+    start = time.time()
+
+    zs = compute_zs(data, x_index, y_index, xs, ys)
+
+    xs = xs.astype(str)
+    ys = ys.astype(str)
+
+    end = time.time()
+
+    print(f"Zs computed in {end - start} seconds")
+
+    for z_index, z_name in enumerate(columns):
+        if z_name == zName:
+            print(f"Column {z_name}: ")
+            try:
+                hm = numeric_heatmap(xs, ys, zs[z_index])
+                fig.add_trace(hm)
+            except:
+                print(f"\tNot numeric. Treating as qualitative.")
+                hm = qualitative_heatmap(xs, ys, zs[z_index])
+                fig.add_trace(hm)
+
+            visible = np.full(len(columns), False)
+            visible[z_index] = True
+
+            buttons.append(
+                dict(
+                    method='update',
+                    label=z_name,
+                    args=[{'visible': visible}, {'title': z_name}]
+                )
+            )
+
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="left",
+                buttons=buttons,
+                pad={"r": 10, "t": 10},
+                showactive=True,
+                x=0.11,
+                xanchor="left",
+                y=1.1,
+                yanchor="top"
+            ),
+        ]
+    )
+
+    fig.update_layout(
+        yaxis_type='category',
+        xaxis=dict(title=x_name),
+        yaxis=dict(title=y_name)
+    )
+
+    fig.show()
+
+
 if __name__ == '__main__':
     files = sys.argv[1:]
 

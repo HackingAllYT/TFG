@@ -13,7 +13,7 @@ from tkinter.messagebox import showinfo, askyesno
 import modalSelectFigure as msf
 
 
-from migplot import parse_file, initial_chart
+from migplot import parse_file, initial_chart, interactive_chart_plot
 
 from checkBoxTreeview import CheckboxTreeview, loadPids
 
@@ -117,7 +117,7 @@ def mostrarEdicion():
     yData_cb.current(1)
     zData_cb['values'] = list(infoData[0][1].columns)
     zData_cb.current(5)
-    z_tipoDatos_cb['values'] = list(infoData[0][1].columns)
+    z_tipoDatos_cb['values'] = ["Enteiros", "Flotantes", "Booleans", "String"]
     z_tipoDatos_cb.current(0)
 
     editFrame.pack(fill=BOTH, expand=1)
@@ -176,6 +176,21 @@ window.configure(bg="#FFFFFF")
 **************************************************************************
 ******************************* EDIT FRAME *******************************
 '''
+
+
+def xerarNovaGrafica():
+    print("delete outliers: ", deleteOutliers.get())
+    print("xdata: ", xData.get())
+    print("ydata: ", yData.get())
+    print("zdata: ", zData.get())
+    print("tiposDatos: ", z_tipoDatos.get())
+    interactive_chart_plot(
+        infoData[0][1].columns.get_loc(xData.get()),
+        infoData[0][1].columns.get_loc(yData.get()),
+        zData.get(),
+        infoData[0][1]
+    )
+
 
 editFrame = Frame(window, width=1024, height=720)
 #editFrame.pack(fill=BOTH, expand=1)
@@ -345,7 +360,7 @@ button_5 = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_5 clicked"),
+    command=xerarNovaGrafica,
     relief="flat"
 )
 button_5.place(
@@ -591,109 +606,6 @@ z_tipoDatos_cb.place(
 )
 z_tipoDatos_cb.current()
 
-
-'''
-**************************************************************************
-
-'''
-
-'''
-def destroyPop():
-    pop.destroy()
-    pop.update()
-
-
-def selectionGrafica():
-    global pop
-    pop = Toplevel(window)
-    pop.title("Selección gráfica")
-    pop.geometry("700x900")
-    pop.grab_set()
-    # pop.overrideredirect(True) # para que non teña os bordes de windows
-    modalFrame = Frame(pop, width=700, height=900)
-
-    canvas = Canvas(
-        modalFrame,
-        bg="#FFFFFF",
-        height=900,
-        width=700,
-        bd=0,
-        highlightthickness=0,
-        relief="ridge"
-    )
-
-    canvas.place(x=0, y=0)
-    canvas.create_rectangle(
-        0.0,
-        0.0,
-        700.0,
-        80.0,
-        fill=TEXT[config['INITIAL']['COLOR']],
-        outline="")
-
-    button_image_1 = PhotoImage(
-        file=relative_to_assets("cross.png"))
-    button_1 = Button(
-        pop,
-        image=button_image_1,
-        borderwidth=0,
-        highlightthickness=0,
-        command=destroyPop,
-        relief="flat"
-    )
-    button_1.place(
-        x=630.0,
-        y=9.0,
-        width=58.0,
-        height=58.0
-    )
-
-    button_image_2 = PhotoImage(
-        file=relative_to_assets("button_heatmap.png"))
-    button_2 = Button(
-        pop,
-        image=button_image_2,
-        borderwidth=0,
-        highlightthickness=0,
-        command=mostrarEdicion,
-        relief="flat"
-    )
-    button_2.place(
-        x=20.0,
-        y=123.0,
-        width=312.0,
-        height=248.0
-    )
-
-    button_image_3 = PhotoImage(
-        file=relative_to_assets("button_scatter.png"))
-    button_3 = Button(
-        pop,
-        image=button_image_3,
-        borderwidth=0,
-        highlightthickness=0,
-        command=lambda: print("button_3 clicked"),
-        relief="flat"
-    )
-    button_3.place(
-        x=368.0,
-        y=123.0,
-        width=312.0,
-        height=248.0
-    )
-
-    canvas.create_text(
-        220.0,
-        28.0,
-        anchor="nw",
-        text=TEXT[config['INITIAL']['IDIOMA']]["Seleccione tipo de gráfica:"],
-        fill="#000000",
-        font=("Inter Bold", 20 * -1)
-    )
-
-    modalFrame.pack(fill=BOTH, expand=1)
-    window.wait_window()  # pop.top
-'''
 
 '''
 **************************************************************************
