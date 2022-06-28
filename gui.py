@@ -179,11 +179,13 @@ window.configure(bg="#FFFFFF")
 
 
 def xerarNovaGrafica():
+    '''
     print("delete outliers: ", deleteOutliers.get())
     print("xdata: ", xData.get())
     print("ydata: ", yData.get())
     print("zdata: ", zData.get())
     print("tiposDatos: ", z_tipoDatos.get())
+    '''
     interactive_chart_plot(
         infoData[0][1].columns.get_loc(xData.get()),
         infoData[0][1].columns.get_loc(yData.get()),

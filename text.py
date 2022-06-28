@@ -18,26 +18,24 @@ info['aplicación e mostrará un pequeno'] = 'aplicación e mostrará un pequeno
 info['resumo do seu contido'] = 'resumo do seu contido'
 
 info['Saír?'] = 'Saír?'
-info['Está seguro que quere pechar?'] = 'Está seguro que quere pechar?'
+info['Está seguro que quere pechar?'] = 'Are you sure you want to close?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
-info['Nome do gráfico:'] = 'Nome do gráfico:'
+info['Nome do gráfico:'] = 'Graphic name:'
 
 info['Arquivo seleccionado:'] = 'Arquivo seleccionado:'
 
 info['Escolla un arquivo:'] = 'Escolla un arquivo:'
 
-info['Ruta do arquivo'] = 'Ruta do arquivo'
-
-info['Configuración xeral:'] = 'Configuración xeral:'
-info['Ruta do arquivo'] = 'Ruta del archivo'
-info['Idioma:'] = 'Idioma:'
+info['Configuración xeral:'] = 'General configuration:'
+info['Ruta do arquivo'] = 'File path'
+info['Idioma:'] = 'Language:'
 info['Resolución:'] = 'Resolución:'
-info['Cores:'] = 'Cores:'
+info['Cores:'] = 'Colors:'
 
 
 TEXT['en'] = info
@@ -69,8 +67,6 @@ info['Nome do gráfico:'] = 'Nome do gráfico:'
 info['Arquivo seleccionado:'] = 'Arquivo seleccionado:'
 
 info['Escolla un arquivo:'] = 'Escolla un arquivo:'
-
-info['Ruta do arquivo'] = 'Ruta do arquivo'
 
 info['Configuración xeral:'] = 'Configuración xeral:'
 info['Ruta do arquivo'] = 'Ruta do arquivo'
