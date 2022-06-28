@@ -10,13 +10,21 @@ from tkinter import Frame, OptionMenu, Tk, Canvas, Entry, Text, Button, PhotoIma
 import tkinter as tk
 import tkinter.filedialog as fd
 from tkinter.messagebox import showinfo, askyesno
+import modalSelectFigure as msf
 
 
 from migplot import parse_file, initial_chart
 
+from checkBoxTreeview import CheckboxTreeview, loadPids
+
+from modalConfiguration import configurationModal
+
 from initialFrame import intitilizateInitialFrame, destroyInitialFrame
 
 from threading import *
+import configparser
+
+from text import TEXT
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -24,9 +32,16 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 arquivos = []
 
+config = configparser.ConfigParser()
+config.read('config.ini')
+
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
+
+
+def reload():
+    window.update()
 
 
 def select_path():
@@ -42,14 +57,29 @@ def select_path():
 
     if filename:
         showinfo(
-            title='Selected File',
+            title=TEXT[config['INITIAL']['IDIOMA']]['Arquivo seleccionado:'],
             message=filename
         )
 
 
+def openConfigurationModal():
+    global conModal
+    conModal = configurationModal(window)
+    # window.wait_window(conModal.top)
+
+
+def openSelectFigureModal():
+    global figModal
+    sugges = ((0, 'Item 0'), (1, 'Item 1'))
+    figModal = msf.SuggestionPopup(window, suggestions=sugges)
+    result = figModal.show()
+    if result == 'heatmap':
+        mostrarEdicion()
+
+
 def confirmExit():
-    answer = askyesno(title='Saír?',
-                      message='Está seguro que quere pechar?')
+    answer = askyesno(title=TEXT[config['INITIAL']['IDIOMA']]['Saír?'],
+                      message=TEXT[config['INITIAL']['IDIOMA']]['Está seguro que quere pechar?'])
     if answer:
         window.destroy()
 
@@ -61,8 +91,8 @@ def display_selected(choice):
 
 def edit_button():
     global arquivos
-    d = MyDialog(window, arquivos, "Probando Dialogo", "Dame valor")
-    window.wait_window(d.top)
+    # d = MyDialog(window, arquivos, "Probando Dialogo", "Dame valor")
+    # window.wait_window(d.top)
 
 
 def mostrar_imaxe():
@@ -76,9 +106,32 @@ def mostrarEdicion():
     button_1_PhotoFrame.destroy()
     button_2_PhotoFrame.destroy()
     button_3_PhotoFrame.destroy()
+    # Destruimos o modal
+    # destroyPop()
+    # Da un fallo se xa existe o frame e se volve a pintar
+    t.insertElements(info)
+    # Insertamos os tipos de datos
+    xData_cb['values'] = list(infoData[0][1].columns)
+    xData_cb.current(0)
+    yData_cb['values'] = list(infoData[0][1].columns)
+    yData_cb.current(1)
+    zData_cb['values'] = list(infoData[0][1].columns)
+    zData_cb.current(5)
+    z_tipoDatos_cb['values'] = list(infoData[0][1].columns)
+    z_tipoDatos_cb.current(0)
+
     editFrame.pack(fill=BOTH, expand=1)
 
 
+def mostrarHomedendeEdicion():
+    ""
+
+
+def mostrarHomedendeImaxe():
+    initialFrame.pack(fill=BOTH, expand=1)
+
+
+'''
 class MyDialog:
     def __init__(self, parent, valor, title, labeltext=''):
         self.valor = valor
@@ -108,7 +161,7 @@ class MyDialog:
 
     def cancel(self, event=None):
         self.top.destroy()
-
+'''
 
 window = Tk()
 
@@ -127,6 +180,14 @@ window.configure(bg="#FFFFFF")
 editFrame = Frame(window, width=1024, height=720)
 #editFrame.pack(fill=BOTH, expand=1)
 
+t = CheckboxTreeview(window, show="tree")
+t.place(
+    x=42.0,
+    y=240.0,
+    width=660.0,
+    height=440.0
+)
+
 canvas = Canvas(
     editFrame,
     bg="#FFFFFF",
@@ -143,7 +204,7 @@ canvas.create_rectangle(
     0.0,
     1024.0,
     55.0,
-    fill="#7CAEFF",
+    fill=TEXT[config['INITIAL']['COLOR']],
     outline="")
 
 canvas.create_rectangle(
@@ -158,7 +219,7 @@ canvas.create_text(
     57.0,
     125.0,
     anchor="nw",
-    text="Columnas:",
+    text="X:",
     fill="#000000",
     font=("Inter", 15 * -1)
 )
@@ -209,7 +270,7 @@ canvas.create_text(
     758.0,
     220.0,
     anchor="nw",
-    text="Tipo dato Z:",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Tipo dato Z:"],
     fill="#000000",
     font=("Inter", 15 * -1)
 )
@@ -220,7 +281,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=confirmExit,
     relief="flat"
 )
 button_1.place(
@@ -236,7 +297,7 @@ button_2 = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    command=openConfigurationModal,
     relief="flat"
 )
 button_2.place(
@@ -273,7 +334,7 @@ button_4 = Button(
 )
 button_4.place(
     x=259.0,
-    y=1.0,
+    y=2.0,
     width=180.0,
     height=53.0
 )
@@ -377,7 +438,7 @@ canvas.create_text(
     763.0,
     397.0,
     anchor="nw",
-    text="Eliminar Outliers:",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Eliminar Outliers:"],
     fill="#000000",
     font=("Inter", 15 * -1)
 )
@@ -425,9 +486,6 @@ checkButton.place(
 )
 
 
-countries = ['Bahamas', 'Canada', 'Cuba', 'United States']
-
-
 '''
 ***************************************************************************
 '''
@@ -451,79 +509,95 @@ aux_cb.grid_forget()'''
 ***************************************************************************
 '''
 
-columnas = StringVar()
-columnas_cb = ttk.Combobox(editFrame, textvariable=columnas, width=28)
-
-# get first 3 letters of every month name
-columnas_cb['values'] = [countries[m][0:1] for m in range(4)]
+xData = StringVar()
+xData_cb = ttk.Combobox(
+    editFrame,
+    textvariable=xData,
+    width=28
+)
 
 # prevent typing a value
-columnas_cb['state'] = 'readonly'
+xData_cb['state'] = 'readonly'
 
 # place the widget
 #columnas_cb.pack(fill=None, side=LEFT, padx=0, pady=110)
-columnas_cb.grid(column=5, row=5, padx=53, pady=145)
-columnas_cb.current()
+xData_cb.place(
+    x=50.0,
+    y=165.0,
+    width=170.0,
+    height=20.0
+)
 
+yData = StringVar()
+yData_cb = ttk.Combobox(
+    editFrame,
+    textvariable=yData,
+    width=28
+)
 
-tipo_datos = StringVar()
-tipoDatos_cb = ttk.Combobox(editFrame, textvariable=tipo_datos, width=28)
-
-# get first 3 letters of every month name
-tipoDatos_cb['values'] = [countries[m][0:2] for m in range(4)]
 
 # prevent typing a value
-tipoDatos_cb['state'] = 'readonly'
+yData_cb['state'] = 'readonly'
 
 # place the widget
-tipoDatos_cb.grid(column=20, row=5, padx=110, pady=145)
-tipoDatos_cb.current()
+yData_cb.place(
+    x=400.0,
+    y=165.0,
+    width=170.0,
+    height=20.0
+)
 
-
-outliers = StringVar()
-outliers_cb = ttk.Combobox(editFrame, textvariable=outliers, width=28)
+zData = StringVar()
+zData_cb = ttk.Combobox(
+    editFrame,
+    textvariable=zData,
+    width=28
+)
 
 # get first 3 letters of every month name
-outliers_cb['values'] = [countries[m][0:3] for m in range(4)]
+# zData_cb['values'] = [countries[m][0:4] for m in range(4)]
 
 # prevent typing a value
-outliers_cb['state'] = 'readonly'
+zData_cb['state'] = 'readonly'
 
 # place the widget
-outliers_cb.grid(column=35, row=5, padx=45, pady=150)
-outliers_cb.current()
+zData_cb.place(
+    x=750.0,
+    y=165.0,
+    width=170.0,
+    height=20.0
+)
+# zData_cb.current()
 
+z_tipoDatos = StringVar()
+z_tipoDatos_cb = ttk.Combobox(
+    editFrame,
+    textvariable=z_tipoDatos,
+    width=28
+)
 
-'''
-# Choosing selectmode as multiple
-# for selecting multiple options
-list = tk.Listbox(window, selectmode="multiple")
+# get first 3 letters of every month name
+# z_tipoDatos_cb['values'] = [countries[m][0:3] for m in range(4)]
 
-# Widget expands horizontally and
-# vertically by assigning both to
-# fill option
-list.grid(column=21, row=7, padx=0, pady=150)
+# prevent typing a value
+z_tipoDatos_cb['state'] = 'readonly'
 
-# Taking a list 'x' with the items
-# as languages
-x = ["C", "C++", "Java", "Python", "R",
-     "Go", "Ruby", "JavaScript", "Swift"]
+# place the widget
+z_tipoDatos_cb.place(
+    x=750.0,
+    y=265.0,
+    width=170.0,
+    height=20.0
+)
+z_tipoDatos_cb.current()
 
-for each_item in range(len(x)):
-
-    list.insert(tk.END, x[each_item])
-
-    # coloring alternative lines of listbox
-    list.itemconfig(each_item,
-                    bg="yellow" if each_item % 2 == 0 else "cyan")
-'''
 
 '''
 **************************************************************************
 
 '''
 
-
+'''
 def destroyPop():
     pop.destroy()
     pop.update()
@@ -554,7 +628,7 @@ def selectionGrafica():
         0.0,
         700.0,
         80.0,
-        fill="#7CAEFF",
+        fill=TEXT[config['INITIAL']['COLOR']],
         outline="")
 
     button_image_1 = PhotoImage(
@@ -612,14 +686,14 @@ def selectionGrafica():
         220.0,
         28.0,
         anchor="nw",
-        text="Seleccione tipo de gráfica:",
+        text=TEXT[config['INITIAL']['IDIOMA']]["Seleccione tipo de gráfica:"],
         fill="#000000",
         font=("Inter Bold", 20 * -1)
     )
 
     modalFrame.pack(fill=BOTH, expand=1)
     window.wait_window()  # pop.top
-
+'''
 
 '''
 **************************************************************************
@@ -652,7 +726,7 @@ canvas.create_rectangle(
     0.0,
     1024.0,
     55.0,
-    fill="#7CAEFF",
+    fill=TEXT[config['INITIAL']['COLOR']],
     outline="")
 
 button_image_1_PhotoFrame = PhotoImage(
@@ -661,7 +735,7 @@ button_1_PhotoFrame = Button(
     image=button_image_1_PhotoFrame,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("Configuration clicked"),
+    command=openConfigurationModal,
     relief="flat"
 )
 button_1_PhotoFrame.place(
@@ -677,7 +751,7 @@ button_2_PhotoFrame = Button(
     image=button_image_2_PhotoFrame,
     borderwidth=0,
     highlightthickness=0,
-    command=selectionGrafica,
+    command=openSelectFigureModal,
     relief="flat"
 )
 button_2_PhotoFrame.place(
@@ -691,7 +765,7 @@ canvas.create_text(
     259.0,
     80.0,
     anchor="nw",
-    text="Nome do gráfico:",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Nome do gráfico:"],
     fill="#000000",
     font=("Inter Bold", 15 * -1)
 )
@@ -702,7 +776,7 @@ button_3_PhotoFrame = Button(
     image=button_image_3_PhotoFrame,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=mostrarHomedendeImaxe,
     relief="flat"
 )
 button_3_PhotoFrame.place(
@@ -734,16 +808,23 @@ def clear_entry():
 
 
 def loadFileThread():
-    global infoData
+    global infoData, info
     infoData = []
     showinfo(
-        title='Selected File',
+        title=TEXT[config['INITIAL']['IDIOMA']]['Arquivo seleccionado:'],
         message=filename
     )
-    for x in filename:
-        data = parse_file(file=x)
-        infoData.append([x, data])
+    if type(filename) == str:
+        data = parse_file(file=filename)
+        info = loadPids(data=data)
+        infoData.append([filename, data])
         initial_chart(data=data)
+    else:
+        for x in filename:
+            data = parse_file(file=x)
+            info = loadPids(data=data)
+            infoData.append([x, data])
+            initial_chart(data=data)
 
 
 def select_path_2():
@@ -753,8 +834,10 @@ def select_path_2():
         ('All files', '*.*')
     )
 
-    filename = fd.askopenfilenames(
-        title='Open a file',
+    # Se queremos obter máis dun arquivo temos que modificar a función e
+    # chamar a: fd.askopenfilenames
+    filename = fd.askopenfilename(
+        title=TEXT[config['INITIAL']['IDIOMA']]['Escolla un arquivo:'],
         initialdir='/',
         filetypes=filetypes)
 
@@ -766,7 +849,7 @@ def select_path_2():
         Thread_loadFile = Thread(target=loadFileThread)
 
         # change T to daemon
-        Thread_loadFile.setDaemon(True)
+        Thread_loadFile.daemon = True
         Thread_loadFile.start()
         button_6_initialFrame["state"] = tk.NORMAL
         button_7_initialFrame["state"] = tk.NORMAL
@@ -774,7 +857,7 @@ def select_path_2():
 
 canvas = Canvas(
     initialFrame,
-    bg="#3A7FF6",
+    bg="#3A7FF6",  # 3A7FF6
     height=720,
     width=1024,
     bd=0,
@@ -814,13 +897,13 @@ entry_1.place(
 canvas.create_text(
     608.0,
     466.0,
-    text="Ruta do arquivo",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Ruta do arquivo"],
     fill="#515486",
     font=("Inter Regular", int(13.0)),
     anchor="w")
 
 button_image_5_initialFrame = PhotoImage(
-    file=relative_to_assets("button_5.png"))
+    file=relative_to_assets("folder.png"))
 button_5_initialFrame = Button(
     image=button_image_5_initialFrame,
     borderwidth=0,
@@ -889,7 +972,7 @@ canvas.create_text(
     40.0,
     127.0,
     anchor="nw",
-    text="Benvid@ á aplicación",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Benvid@ á aplicación"],
     fill="#FCFCFC",
     font=("Roboto Bold", 24 * -1)
 )
@@ -898,7 +981,7 @@ canvas.create_text(
     40.0,
     197.0,
     anchor="nw",
-    text="Esta ferramenta permite crear",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Esta ferramenta permite crear"],
     fill="#FCFCFC",
     font=("Inter Regular", 24 * -1)
 )
@@ -907,7 +990,7 @@ canvas.create_text(
     40.0,
     234.0,
     anchor="nw",
-    text="gráficas para a visualización de",
+    text=TEXT[config['INITIAL']['IDIOMA']]["gráficas para a visualización de"],
     fill="#FCFCFC",
     font=("Inter Regular", 24 * -1)
 )
@@ -916,7 +999,7 @@ canvas.create_text(
     40.0,
     270.0,
     anchor="nw",
-    text="datos obtidos dos contadores",
+    text=TEXT[config['INITIAL']['IDIOMA']]["datos obtidos dos contadores"],
     fill="#FCFCFC",
     font=("Inter Regular", 24 * -1)
 )
@@ -925,7 +1008,7 @@ canvas.create_text(
     40.0,
     306.0,
     anchor="nw",
-    text="hardware de servidores NUMA",
+    text=TEXT[config['INITIAL']['IDIOMA']]["hardware de servidores NUMA"],
     fill="#FCFCFC",
     font=("Inter Regular", 24 * -1)
 )
@@ -934,7 +1017,7 @@ canvas.create_text(
     591.0,
     169.0,
     anchor="nw",
-    text="Para comezar seleccione o",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Para comezar seleccione o"],
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
@@ -943,7 +1026,7 @@ canvas.create_text(
     591.0,
     209.0,
     anchor="nw",
-    text="arquivo que quere procesar no",
+    text=TEXT[config['INITIAL']['IDIOMA']]["arquivo que quere procesar no"],
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
@@ -952,7 +1035,7 @@ canvas.create_text(
     591.0,
     249.0,
     anchor="nw",
-    text="cadro que aparece a continuación",
+    text=TEXT[config['INITIAL']['IDIOMA']]["cadro que aparece a continuación"],
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
@@ -961,7 +1044,7 @@ canvas.create_text(
     591.0,
     289.0,
     anchor="nw",
-    text="Este arquivo será procesado pola",
+    text=TEXT[config['INITIAL']['IDIOMA']]["Este arquivo será procesado pola"],
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
@@ -970,7 +1053,7 @@ canvas.create_text(
     591.0,
     329.0,
     anchor="nw",
-    text="aplicación e mostrará un pequeno",
+    text=TEXT[config['INITIAL']['IDIOMA']]["aplicación e mostrará un pequeno"],
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )
@@ -979,7 +1062,7 @@ canvas.create_text(
     591.0,
     369.0,
     anchor="nw",
-    text="resumo do seu contido",
+    text=TEXT[config['INITIAL']['IDIOMA']]["resumo do seu contido"],
     fill="#000000",
     font=("Inter Regular", 24 * -1)
 )

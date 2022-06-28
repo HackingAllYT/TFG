@@ -125,7 +125,12 @@ def initial_chart(data):
                 hm = qualitative_heatmap(xs, ys, zs[z_index])
                 fig.add_trace(hm)
 
-    fig.write_image("assets/saida.png")
+    fig.write_image(
+        file="assets/saida.png",
+        format='png',
+        width=1024.0,
+        height=600.0
+    )
 
 
 def interactive_chart(data):
