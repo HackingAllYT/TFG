@@ -21,7 +21,9 @@ info['Saír?'] = 'Saír?'
 info['Está seguro que quere pechar?'] = 'Are you sure you want to close?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
+info['Nome da gráfica:'] = 'Nome da gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
+info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -58,7 +60,9 @@ info['Saír?'] = 'Saír?'
 info['Está seguro que quere pechar?'] = 'Está seguro que quere pechar?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
+info['Nome da gráfica:'] = 'Nome da gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
+info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -96,7 +100,9 @@ info['Saír?'] = '¿Salir?'
 info['Está seguro que quere pechar?'] = '¿Está seguro que queire cerrar?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
+info['Nome da gráfica:'] = 'Nombre de la gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
+info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs y TIDs a utilizar:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -124,5 +130,10 @@ FFA351FF -> Orange
 '''
 
 TEXT['green'] = '#66BB6A'
+TEXT['green-bg'] = '#EEFEED'
 TEXT['orange'] = '#FFA351'
-TEXT['blue'] = '#7CAEFF'
+TEXT['orange-bg'] = '#FFEACE'
+TEXT['blue'] = '#3A7FF6'
+TEXT['blue-bg'] = '#7CAEFF'
+TEXT['light-blue'] = '#'
+TEXT['light-blue-bg'] = '#'

@@ -22,22 +22,20 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 
-class configurationModal:
+class configurationModal(tk.Toplevel):
     def __init__(self, parent):
+        super().__init__(parent)
 
-        self.top = Toplevel(parent)
-        # self.top.transient(parent)
-        self.top.title("Configuración")
-        self.top.geometry("700x900")
-        self.top.resizable(False, False)
-        # self.top.overrideredirect(True) # para que non teña os bordes de windows
-        self.frame = Frame(self.top, width=700, height=900)
+        self.parent = parent
+        self.title("Configuración")
+        self.geometry("700x900")
+        self.resizable(False, False)
 
         self.idioma = config['INITIAL']['IDIOMA']
         self.color = config['INITIAL']['COLOR']
 
-        canvas = Canvas(
-            self.frame,
+        self.canvas = Canvas(
+            self,
             bg="#FFFFFF",
             height=900,
             width=700,
@@ -46,33 +44,33 @@ class configurationModal:
             relief="ridge"
         )
 
-        canvas.place(x=0, y=0)
-        canvas.create_rectangle(
+        self.canvas.place(x=0, y=0)
+        self.canvas.create_rectangle(
             0.0,
             0.0,
             700.0,
             80.0,
-            fill=TEXT[self.color],
+            fill=TEXT[config['INITIAL']['COLOR-BG']],
             outline="")
 
-        button_image_1 = PhotoImage(
+        self.button_image_1 = PhotoImage(
             file=relative_to_assets("cross.png"))
-        button_1 = Button(
-            self.top,
-            image=button_image_1,
+        self.button_1 = Button(
+            self,
+            image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
             command=self.ok,
             relief="flat"
         )
-        button_1.place(
+        self.button_1.place(
             x=630.0,
             y=9.0,
             width=58.0,
             height=58.0
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             251.0,
             28.0,
             anchor="nw",
@@ -81,7 +79,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             64.0,
             177.0,
             anchor="nw",
@@ -90,7 +88,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             64.0,
             312.0,
             anchor="nw",
@@ -99,7 +97,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             64.0,
             447.0,
             anchor="nw",
@@ -108,7 +106,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_rectangle(
+        self.canvas.create_rectangle(
             483.0,
             153.0,
             554.1099853515625,
@@ -116,7 +114,7 @@ class configurationModal:
             fill="#D9D9D9",
             outline="")
 
-        canvas.create_rectangle(
+        self.canvas.create_rectangle(
             376.0,
             153.0,
             448.0,
@@ -124,7 +122,7 @@ class configurationModal:
             fill="#D9D9D9",
             outline="")
 
-        canvas.create_rectangle(
+        self.canvas.create_rectangle(
             260.0,
             153.0,
             339.0,
@@ -132,58 +130,58 @@ class configurationModal:
             fill="#D9D9D9",
             outline="")
 
-        button_image_2 = PhotoImage(
+        self.button_image_2 = PhotoImage(
             file=relative_to_assets("galicia.png"))
-        button_2 = Button(
-            self.top,
-            image=button_image_2,
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
             command=self.idiomaGalego,
             relief="flat"
         )
-        button_2.place(
+        self.button_2.place(
             x=261.0,
             y=154.0,
             width=77.0,
             height=70.75677490234375
         )
 
-        button_image_3 = PhotoImage(
+        self.button_image_3 = PhotoImage(
             file=relative_to_assets("spain.png"))
-        button_3 = Button(
-            self.top,
-            image=button_image_3,
+        self.button_3 = Button(
+            self,
+            image=self.button_image_3,
             borderwidth=0,
             highlightthickness=0,
             command=self.idiomaEspanol,
             relief="flat"
         )
-        button_3.place(
+        self.button_3.place(
             x=377.0,
             y=154.0,
             width=70.0,
             height=70.0
         )
 
-        button_image_4 = PhotoImage(
+        self.button_image_4 = PhotoImage(
             file=relative_to_assets("uk.png"))
-        button_4 = Button(
-            self.top,
-            image=button_image_4,
+        self.button_4 = Button(
+            self,
+            image=self.button_image_4,
             borderwidth=0,
             highlightthickness=0,
             command=self.idiomaEnglish,
             relief="flat"
         )
-        button_4.place(
+        self.button_4.place(
             x=484.0,
             y=154.0,
             width=69.1064453125,
             height=70.0
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             260.0,
             312.0,
             anchor="nw",
@@ -192,7 +190,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             351.0,
             312.0,
             anchor="nw",
@@ -201,7 +199,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             476.0,
             312.0,
             anchor="nw",
@@ -210,7 +208,7 @@ class configurationModal:
             font=("Inter Bold", 20 * -1)
         )
 
-        canvas.create_text(
+        self.canvas.create_text(
             564.0,
             312.0,
             anchor="nw",
@@ -221,7 +219,7 @@ class configurationModal:
 
         # Tkinter string variable
         # able to store any string value
-        self.resolution = StringVar(self.frame, "1")
+        self.screenResolution = StringVar(self, "1")
 
         # Dictionary to create multiple buttons
         values = {
@@ -243,9 +241,9 @@ class configurationModal:
         aux = 0
         for (text, value) in values.items():
             ttk.Radiobutton(
-                self.frame,
+                self,
                 text="",
-                variable=self.resolution,
+                variable=self.screenResolution,
                 value=value,
                 style='Wild.TRadiobutton'
             ).place(
@@ -255,102 +253,145 @@ class configurationModal:
                 height=30
             )
             aux += 100
-        button_image_5 = PhotoImage(
+        self.button_image_5 = PhotoImage(
             file=relative_to_assets("aplicar.png"))
-        button_5 = Button(
-            self.top,
-            image=button_image_5,
+        self.button_5 = Button(
+            self,
+            image=self.button_image_5,
             borderwidth=0,
             highlightthickness=0,
             command=self.aplicar,
             relief="flat"
         )
-        button_5.place(
+        self.button_5.place(
             x=508.0,
             y=836.0,
             width=180.0,
             height=55.0
         )
 
-        button_image_6 = PhotoImage(
+        self.button_image_6 = PhotoImage(
             file=relative_to_assets("cores/blue_gui.png"))
-        button_6 = Button(
-            self.top,
-            image=button_image_6,
+        self.button_6 = Button(
+            self,
+            image=self.button_image_6,
             borderwidth=0,
             highlightthickness=0,
             command=self.colorBlue,
             relief="flat"
         )
-        button_6.place(
+        self.button_6.place(
             x=160.0,
             y=443.0,
             width=212.0,
             height=163.0
         )
 
-        button_image_7 = PhotoImage(
+        self.button_image_7 = PhotoImage(
             file=relative_to_assets("cores/orange_gui.png"))
-        button_7 = Button(
-            self.top,
-            image=button_image_7,
+        self.button_7 = Button(
+            self,
+            image=self.button_image_7,
             borderwidth=0,
             highlightthickness=0,
             command=self.colorOrange,
             relief="flat"
         )
-        button_7.place(
+        self.button_7.place(
             x=415.0,
             y=443.0,
             width=212.0,
             height=163.0
         )
 
-        button_image_8 = PhotoImage(
+        self.button_image_8 = PhotoImage(
             file=relative_to_assets("cores/green_gui.png"))
-        button_8 = Button(
-            self.top,
-            image=button_image_8,
+        self.button_8 = Button(
+            self,
+            image=self.button_image_8,
             borderwidth=0,
             highlightthickness=0,
             command=self.colorGreen,
             relief="flat"
         )
-        button_8.place(
+        self.button_8.place(
             x=160.0,
             y=633.0,
             width=212.0,
             height=163.0
         )
+        self.button_1.bind('<Enter>', self.button_1_enter)
+        self.button_1.bind('<Leave>', self.button_1_leave)
 
-        self.frame.pack(fill=BOTH, expand=1)
-        self.top.grab_set()
-        parent.wait_window()
+        self.button_2.bind('<Enter>', self.button_2_enter)
+        self.button_2.bind('<Leave>', self.button_2_leave)
+
+        self.button_3.bind('<Enter>', self.button_3_enter)
+        self.button_3.bind('<Leave>', self.button_3_leave)
+
+        self.button_4.bind('<Enter>', self.button_4_enter)
+        self.button_4.bind('<Leave>', self.button_4_leave)
+
+        self.button_5.bind('<Enter>', self.button_5_enter)
+        self.button_5.bind('<Leave>', self.button_5_leave)
+
+        self.button_6.bind('<Enter>', self.button_6_enter)
+        self.button_6.bind('<Leave>', self.button_6_leave)
+
+        self.button_7.bind('<Enter>', self.button_7_enter)
+        self.button_7.bind('<Leave>', self.button_7_leave)
+
+        self.button_8.bind('<Enter>', self.button_8_enter)
+        self.button_8.bind('<Leave>', self.button_8_leave)
+
+        self.changes = False
+
+    def select(self):
+        selection = self.listbox.curselection()
+        if selection:
+            self.selection = self.listbox.get(selection[0])
+        self.destroy()
+
+    def show(self):
+        self.deiconify()
+        self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
+        self.parent.eval(f'tk::PlaceWindow {str(self)} center')
+        self.wait_window(self)
+        return self.changes
+
+    def destroyPop(self, event=None):
+        self.destroy()
 
     def ok(self, event=None):
         # self.valor.set(self.e.get())
-        self.top.destroy()
+        self.destroy()
 
     def cancel(self, event=None):
-        self.top.destroy()
+        self.destroy()
 
     def idiomaGalego(self, event=None):
         self.idioma = 'gal'
+        self.changes = True
 
     def idiomaEspanol(self, event=None):
         self.idioma = 'es'
+        self.changes = True
 
     def idiomaEnglish(self, event=None):
         self.idioma = 'en'
+        self.changes = True
 
     def colorOrange(self, event=None):
         self.color = 'orange'
+        self.changes = True
 
     def colorGreen(self, event=None):
         self.color = 'green'
+        self.changes = True
 
     def colorBlue(self, event=None):
         self.color = 'blue'
+        self.changes = True
 
     def aplicar(self, event=None):
         config.set('INITIAL', 'IDIOMA', self.idioma)
@@ -359,3 +400,55 @@ class configurationModal:
         # save to a file
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
+
+    def button_1_enter(self, e):
+        aux = PhotoImage(
+            file=relative_to_assets("cross_62x62.png")
+        )
+        self.button_1["image"] = aux
+        self.button_1.image = aux
+
+    def button_1_leave(self, e):
+        self.button_1["image"] = self.button_image_1
+
+    def button_2_enter(self, e):
+        ""
+
+    def button_2_leave(self, e):
+        ""
+
+    def button_3_enter(self, e):
+        ""
+
+    def button_3_leave(self, e):
+        ""
+
+    def button_4_enter(self, e):
+        ""
+
+    def button_4_leave(self, e):
+        ""
+
+    def button_5_enter(self, e):
+        ""
+
+    def button_5_leave(self, e):
+        ""
+
+    def button_6_enter(self, e):
+        ""
+
+    def button_6_leave(self, e):
+        ""
+
+    def button_7_enter(self, e):
+        ""
+
+    def button_7_leave(self, e):
+        ""
+
+    def button_8_enter(self, e):
+        ""
+
+    def button_8_leave(self, e):
+        ""

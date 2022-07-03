@@ -1,7 +1,6 @@
 import tkinter.ttk as ttk
 import tkinter as tk
 from tkinter import ttk
-import pandas as pd
 from pathlib import Path
 
 
@@ -11,10 +10,6 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
-
-
-def parse_file(file):
-    return pd.read_csv(file, sep=';')
 
 
 def loadPids(data):
@@ -154,7 +149,13 @@ class CheckboxTreeview(ttk.Treeview):
             self.insert(aux, "end", pid, text=pid)
             aux = pid
             tids = info[pid]
-            self.insert(pid, "end", str(pid)+"Todos", text="Todos")
+            self.insert(pid, "end", str(pid) + "Todos", text="Todos")
             for tid in tids:
                 self.insert(pid, "end", str(pid)+str(tid), text=tid)
             aux = "Todos"
+
+    def on_tree_select(self, event):
+        print("selected items:")
+        for item in self.selection():
+            item_text = self.item(item, "text")
+            print(item_text)

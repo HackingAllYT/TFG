@@ -1,5 +1,6 @@
 import sys
 import time
+from matplotlib.pyplot import title
 import numpy as np
 
 # Visualization
@@ -208,7 +209,7 @@ def interactive_chart(data):
     fig.show()
 
 
-def interactive_chart_plot(x_index: int, y_index: int, zName: str, data):
+def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str, data):
     xs = np.unique(np.array(data.iloc[:, x_index]))
     ys = np.unique(np.array(data.iloc[:, y_index]))
 
@@ -248,13 +249,13 @@ def interactive_chart_plot(x_index: int, y_index: int, zName: str, data):
             visible = np.full(len(columns), False)
             visible[z_index] = True
 
-            buttons.append(
+            '''buttons.append(
                 dict(
                     method='update',
                     label=z_name,
                     args=[{'visible': visible}, {'title': z_name}]
                 )
-            )
+            )'''
 
     fig.update_layout(
         updatemenus=[
@@ -275,7 +276,8 @@ def interactive_chart_plot(x_index: int, y_index: int, zName: str, data):
     fig.update_layout(
         yaxis_type='category',
         xaxis=dict(title=x_name),
-        yaxis=dict(title=y_name)
+        yaxis=dict(title=y_name),
+        title=plotName
     )
 
     fig.show()

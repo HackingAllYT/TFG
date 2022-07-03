@@ -21,6 +21,7 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
+'''
 class selectFigureModal:
     def __init__(self, parent):
 
@@ -133,12 +134,14 @@ class selectFigureModal:
         self.destroy()
         # g.mostrarEdicion()
         # self.parent.mostrarEdicion()
+'''
 
 
-class SuggestionPopup(tk.Toplevel):
+class selectFigureModal(tk.Toplevel):
     def __init__(self, parent, suggestions):
         super().__init__(parent)
 
+        self.parent = parent
         self.title("Configuración")
         self.geometry("700x900")
         self.resizable(False, False)
@@ -171,7 +174,7 @@ class SuggestionPopup(tk.Toplevel):
             0.0,
             700.0,
             80.0,
-            fill=TEXT[config['INITIAL']['COLOR']],
+            fill=TEXT[config['INITIAL']['COLOR-BG']],
             outline="")
 
         self.button_image_1 = PhotoImage(
@@ -190,6 +193,8 @@ class SuggestionPopup(tk.Toplevel):
             width=58.0,
             height=58.0
         )
+        self.button_1.bind('<Enter>', self.button_1_enter)
+        self.button_1.bind('<Leave>', self.button_1_leave)
 
         self.button_image_2 = PhotoImage(
             file=relative_to_assets("button_heatmap.png"))
@@ -207,6 +212,8 @@ class SuggestionPopup(tk.Toplevel):
             width=312.0,
             height=248.0
         )
+        self.button_2.bind('<Enter>', self.button_2_enter)
+        self.button_2.bind('<Leave>', self.button_2_leave)
 
         self.button_image_3 = PhotoImage(
             file=relative_to_assets("button_scatter.png"))
@@ -224,6 +231,8 @@ class SuggestionPopup(tk.Toplevel):
             width=312.0,
             height=248.0
         )
+        self.button_3.bind('<Enter>', self.button_3_enter)
+        self.button_3.bind('<Leave>', self.button_3_leave)
 
         self.canvas.create_text(
             220.0,
@@ -248,6 +257,7 @@ class SuggestionPopup(tk.Toplevel):
     def show(self):
         self.deiconify()
         self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
+        self.parent.eval(f'tk::PlaceWindow {str(self)} center')
         self.wait_window(self)
         return self.selection
 
@@ -257,3 +267,39 @@ class SuggestionPopup(tk.Toplevel):
     def mostrarEdicion(self, evente=None):
         self.selection = "heatmap"
         self.destroy()
+
+    def button_1_enter(self, e):
+        aux = PhotoImage(
+            file=relative_to_assets("cross_62x62.png")
+        )
+        self.button_1["image"] = aux
+        self.button_1.image = aux
+        '''self.button_1.place_forget()
+        self.button_1.place(
+            x=628.0,
+            y=7.0,
+            width=62.0,
+            height=62.0
+        )'''
+
+    def button_1_leave(self, e):
+        self.button_1["image"] = self.button_image_1
+        '''self.button_1.place_forget()
+        self.button_1.place(
+            x=630.0,
+            y=9.0,
+            width=58.0,
+            height=58.0
+        )'''
+
+    def button_2_enter(self, e):
+        ""
+
+    def button_2_leave(self, e):
+        ""
+
+    def button_3_enter(self, e):
+        ""
+
+    def button_3_leave(self, e):
+        ""
