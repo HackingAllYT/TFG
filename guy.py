@@ -3,18 +3,21 @@ import tkinter as tk
 
 from pathlib import Path
 import configparser
-from text import TEXT
+from text import TEXT, RESOLU
 from StartPage import StartPage
 from PageOne import PageOne
 from PageTwo import PageTwo
 from threading import *
 import tkinter.filedialog as fd
 from tkinter.messagebox import showinfo, askyesno
-from migplot import parse_file, initial_chart, interactive_chart_plot
+from migplot import parse_file, initial_chart, interactive_chart_plot, interactive_scatter
 from checkBoxTreeview import loadPids
 import modalConfiguration as cm
 import modalSelectFigure as msf
 from EditHeatMap import HeatMapPane
+from EditScatterPane import ScatterPane
+from EditRooflineModel import RooflineModelPane
+import modalGardarImaxe as sim
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -37,14 +40,21 @@ class SeaofBTCapp(tk.Tk):
 
         tk.Tk.__init__(self, *args, **kwargs)
 
-        self.geometry('1024x720')
+        self.geometry(RESOLU[config['INITIAL']['RESOLU']])
         self.resizable(False, False)
+        self.center()
+        self.title('Aplicación para a visualización de datos de servidores NUMA')
+        #self.eval(f'tk::PlaceWindow {str(self)} center')
         self.container = tk.Frame(self)
 
         self.container.pack(side="top", fill="both", expand=True)
 
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
+
+        self.numHeatmap = 0
+        self.numScatter = 0
+        self.numRoofMod = 0
 
         self.frames = {}
 
@@ -57,11 +67,26 @@ class SeaofBTCapp(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame(StartPage)
-        self.eval('tk::PlaceWindow . center')
 
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+    def center(self):
+        """
+        centers a tkinter window
+        """
+        self.update_idletasks()
+        width = self.winfo_width()
+        frm_width = self.winfo_rootx() - self.winfo_x()
+        win_width = width + 2 * frm_width
+        height = self.winfo_height()
+        titlebar_height = self.winfo_rooty() - self.winfo_y()
+        win_height = height + titlebar_height + frm_width
+        x = self.winfo_screenwidth() // 2 - win_width // 2
+        y = self.winfo_screenheight() // 2 - win_height // 2
+        self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+        self.deiconify()
 
     '''
     *******************************************************************************
@@ -147,11 +172,20 @@ class SeaofBTCapp(tk.Tk):
         figModal = msf.selectFigureModal(self, suggestions=sugges)
         result = figModal.show()
         if result == 'heatmap':
-            print("Pasamos por qui")
-            self.frames[PageTwo].addFrame(HeatMapPane, 'HeatMap')
+            self.frames[PageTwo].addFrame(
+                HeatMapPane, 'HeatMap - ' + str(self.numHeatmap))
             self.show_frame(PageTwo)
+            self.numHeatmap += 1
         elif result == 'scatter':
-            ""
+            self.frames[PageTwo].addFrame(
+                ScatterPane, 'Scatter - ' + str(self.numScatter))
+            self.show_frame(PageTwo)
+            self.numScatter += 1
+        elif result == 'roofline':
+            self.frames[PageTwo].addFrame(
+                RooflineModelPane, 'Roofline - ' + str(self.numRoofMod))
+            self.show_frame(PageTwo)
+            self.numRoofMod += 1
 
     def mostrarHomedendeImaxe(self):
         self.show_frame(StartPage)
@@ -168,14 +202,52 @@ class SeaofBTCapp(tk.Tk):
         if answer:
             self.destroy()
 
-    def xerarNovaGrafica(self, info):
+    def xerarNovoHeatmap(self, info):
         interactive_chart_plot(
             x_index=infoData[0][1].columns.get_loc(info['xRow']),
             y_index=infoData[0][1].columns.get_loc(info['yRow']),
             zName=info['zRow'],
             plotName=info['name'],
-            data=infoData[0][1]
+            data=infoData[0][1],
+            save=None
         )
+
+    def xerarNovoScatter(self, info):
+        interactive_scatter(
+            x_index=infoData[0][1].columns.get_loc(info['xRow']),
+            y_index=infoData[0][1].columns.get_loc(info['yRow']),
+            zName=info['zRow'],
+            plotName=info['name'],
+            data=infoData[0][1],
+            save=None
+        )
+
+    def xerarNovoRooflineModel(self, info):
+        ""
+
+    def gardarNovoHeatMap(self, info):
+        self.openSaveAsDialog(info=info, graphType='heatmap')
+
+    def gardarNovoScatter(self, info):
+        self.openSaveAsDialog(info=info, graphType='scatter')
+
+    def gardarNovoRooflineModel(self, info):
+        self.openSaveAsDialog(info=info, graphType='roofline')
+
+    def openSaveAsDialog(self, info, graphType):
+        saveImaxeDialog = sim.gardarImaxeModal(self, graphType)
+        result = saveImaxeDialog.show()
+        if result['do']:
+            result['name'] = info['name']
+            if result['type'] == 'heatmap':
+                interactive_chart_plot(
+                    x_index=infoData[0][1].columns.get_loc(info['xRow']),
+                    y_index=infoData[0][1].columns.get_loc(info['yRow']),
+                    zName=info['zRow'],
+                    plotName=info['name'],
+                    data=infoData[0][1],
+                    save=result
+                )
 
     '''
     *******************************************************************************
@@ -195,5 +267,5 @@ class SeaofBTCapp(tk.Tk):
 
 if __name__ == '__main__':
     app = SeaofBTCapp()
-    app.eval('tk::PlaceWindow . center')
+    #app.eval(f'tk::PlaceWindow {str(app)} center')
     app.mainloop()

@@ -355,7 +355,8 @@ class configurationModal(tk.Toplevel):
     def show(self):
         self.deiconify()
         self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
-        self.parent.eval(f'tk::PlaceWindow {str(self)} center')
+        #self.parent.eval(f'tk::PlaceWindow {str(self)} center')
+        self.center()
         self.wait_window(self)
         return self.changes
 
@@ -368,6 +369,23 @@ class configurationModal(tk.Toplevel):
 
     def cancel(self, event=None):
         self.destroy()
+
+    def center(self):
+        """
+        centers a tkinter window
+        :param win: the main window or Toplevel window to center
+        """
+        self.update_idletasks()
+        width = self.winfo_width()
+        frm_width = self.winfo_rootx() - self.winfo_x()
+        win_width = width + 2 * frm_width
+        height = self.winfo_height()
+        titlebar_height = self.winfo_rooty() - self.winfo_y()
+        win_height = height + titlebar_height + frm_width
+        x = self.winfo_screenwidth() // 2 - win_width // 2
+        y = self.winfo_screenheight() // 2 - win_height // 2
+        self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+        self.deiconify()
 
     def idiomaGalego(self, event=None):
         self.idioma = 'gal'

@@ -8,6 +8,10 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
+# Save Image
+import platform
+import os
+
 
 def parse_file(file):
     return pd.read_csv(file, sep=';')
@@ -209,7 +213,7 @@ def interactive_chart(data):
     fig.show()
 
 
-def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str, data):
+def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str, data, save: dict):
     xs = np.unique(np.array(data.iloc[:, x_index]))
     ys = np.unique(np.array(data.iloc[:, y_index]))
 
@@ -280,7 +284,100 @@ def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str
         title=plotName
     )
 
-    fig.show()
+    if not save:
+        fig.show()
+    else:
+        '''
+        mySO = platform.system()
+        if save['dir'] == '/':
+
+            if mySO == 'Windows':
+                save['dir'] = "C:" + \
+                    os.path.join(os.environ["HOMEPATH"], "Desktop")
+            elif mySO == 'Linux':
+                save['dir'] = os.path.join(os.path.join(
+                    os.path.expanduser('~')), 'Desktop')
+            elif mySO == 'Darwin':
+                save['dir'] = os.path.expanduser("~/Desktop")
+            else:
+                ""
+        route = "" + save['dir'] + "/" + save['name'] + "." + save['format']
+        route = route.replace(" ", "")
+        print(route, save["format"], save['w'], save["h"])
+        print(type(route), type(save["format"]),
+              type(save['w']), type(save["h"]))
+        '''
+        name = save['name'] + "." + save['format']
+        name = name.replace(' ', '').replace(':', '_')
+        fig.write_image(
+            file=name,
+            format=save['format'],
+            width=float(save['w']),
+            height=float(save['h'])
+        )
+
+
+def numeric_scatter(xs, ys, zs):
+    z_values = zs.astype(float)
+    z_values = z_values[np.isfinite(z_values)]
+
+    zmin = np.min(z_values)
+    zmax = np.max(z_values)
+
+    av = np.mean(z_values)
+    median = np.median(z_values)
+    stdev = np.std(z_values)
+
+    print(f"\tAv.: {av}, Median: {median}, Std: {stdev}")
+
+    # If zs are of float type
+    if (z_values != z_values.astype(int)).any():
+        # Use percentiles for computing zmin and zmax
+        zs_no_outliers = remove_outliers(z_values, 0.15, 0.85)
+
+        zmin = np.min(zs_no_outliers)
+        zmax = np.max(zs_no_outliers)
+
+        av = np.mean(zs_no_outliers)
+        median = np.median(zs_no_outliers)
+        stdev = np.std(zs_no_outliers)
+
+        print(f"\tWithout outliers: Av.: {av}, Median: {median}, Std: {stdev}")
+
+    print(f"\tColor range: ({zmin}, {zmax})")
+
+    return px.scatter(z=zs, x=xs, y=ys, zmin=zmin, zmax=zmax)
+
+
+def qualitative_scatter(xs, ys, zs, data):
+    return px.scatter(data_frame=data, x=xs, y=ys, text=zs)
+
+
+def interactive_scatter(x_index: int, y_index: int, zName: str, plotName: str, data, save: dict):
+    xs = np.unique(np.array(data.iloc[:, x_index]))
+    ys = np.unique(np.array(data.iloc[:, y_index]))
+
+    columns = list(data.columns)
+
+    x_name = columns[x_index]
+    y_name = columns[y_index]
+
+    print(f"Preparing plots for: {columns}")
+
+    fig = go.Figure()
+
+    # data = data.query("CPU == 20")
+    fig = px.line(data, x=x_name, y=y_name, color=zName, markers=True)
+
+    fig.update_layout(
+        yaxis_type='category',
+        xaxis=dict(title=x_name),
+        yaxis=dict(title=y_name),
+        title=plotName
+    )
+
+    if not save:
+        fig.show()
 
 
 if __name__ == '__main__':

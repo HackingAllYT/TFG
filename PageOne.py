@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import Canvas, Button, PhotoImage, Entry
 from pathlib import Path
 import configparser
-from text import TEXT
+from text import TEXT, RESOLU
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -33,6 +33,10 @@ class PageOne(tk.Frame):
                             command=lambda: controller.show_frame(PageTwo))
         button2.pack()
         '''
+        if config["INITIAL"]['RESOLU'] == 'HD':
+            self.__init_HD__(controller)
+
+    def __init_HD__(self, controller):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",

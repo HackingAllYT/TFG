@@ -17,22 +17,11 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-class HeatMapPane(tk.Frame):
+class ScatterPane(tk.Frame):
 
     def __init__(self, parent, controller, classParent):
         tk.Frame.__init__(self, parent)
-        '''
-        label = tk.Label(self, text="Page Two!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
 
-        button1 = tk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.pack()
-
-        button2 = tk.Button(self, text="Page One",
-                            command=lambda: controller.show_frame(PageOne))
-        button2.pack()
-        '''
         self.controller = controller
         self.parent = parent
         self.classParent = classParent
@@ -157,7 +146,7 @@ class HeatMapPane(tk.Frame):
             image=self.button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: controller.xerarNovoHeatmap(
+            command=lambda: controller.xerarNovoScatter(
                 self.getDataCollected()),
             relief="flat"
         )
@@ -277,8 +266,7 @@ class HeatMapPane(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: controller.gardarNovoHeatMap(
-                self.getDataCollected()),
+            command=lambda: print("button_2 clicked"),
             relief="flat"
         )
         self.button_2.place(
@@ -371,6 +359,9 @@ class HeatMapPane(tk.Frame):
             width=28
         )
 
+        # get first 3 letters of every month name
+        # zData_cb['values'] = [countries[m][0:4] for m in range(4)]
+
         # prevent typing a value
         self.zData_cb['state'] = 'readonly'
 
@@ -381,6 +372,7 @@ class HeatMapPane(tk.Frame):
             width=170.0,
             height=20.0
         )
+        # zData_cb.current()
 
         self.z_tipoDatos = StringVar()
         self.z_tipoDatos_cb = ttk.Combobox(
@@ -388,6 +380,9 @@ class HeatMapPane(tk.Frame):
             textvariable=self.z_tipoDatos,
             width=28
         )
+
+        # get first 3 letters of every month name
+        # z_tipoDatos_cb['values'] = [countries[m][0:3] for m in range(4)]
 
         # prevent typing a value
         self.z_tipoDatos_cb['state'] = 'readonly'
@@ -408,6 +403,9 @@ class HeatMapPane(tk.Frame):
             width=28
         )
 
+        # get first 3 letters of every month name
+        # zData_cb['values'] = [countries[m][0:4] for m in range(4)]
+
         # prevent typing a value
         self.colors_cb['state'] = 'readonly'
 
@@ -418,6 +416,12 @@ class HeatMapPane(tk.Frame):
             width=170.0,
             height=20.0
         )
+
+        '''countries = ['Bahamas', 'Canada', 'Cuba', 'United States']
+        self.xData_cb['values'] = [countries[m][0:4] for m in range(4)]
+        self.yData_cb['values'] = [countries[m][0:4] for m in range(4)]
+        self.zData_cb['values'] = [countries[m][0:4] for m in range(4)]
+        self.z_tipoDatos_cb['values'] = [countries[m][0:4] for m in range(4)]'''
 
         self.treeFrame = Frame(
             self,
@@ -439,6 +443,12 @@ class HeatMapPane(tk.Frame):
             width=660.0,
             height=440.0
         )
+
+        '''self.t.insert("", "end", "1", text="1")
+        self.t.insert("1", "end", "11", text="11")
+        self.t.insert("1", "end", "12",  text="12")
+        self.t.insert("11", "end", "111", text="111")
+        self.t.insert("", "end", "2", text="2")'''
 
         self.loadDataItems()
 
@@ -463,13 +473,16 @@ class HeatMapPane(tk.Frame):
         ""
 
     def getDataCollected(self):
+        ""
         info = {}
         info['name'] = self.entry_3.get()
         info['xRow'] = self.xData.get()
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
+
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
         else:
-            info['name'] = 'Heatmap: ' + self.zData.get()
+            info['name'] = 'Scatter: ' + self.zData.get()
+        # self.t.on_tree_select(None)
         return info

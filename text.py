@@ -39,6 +39,9 @@ info['Idioma:'] = 'Language:'
 info['Resolución:'] = 'Resolución:'
 info['Cores:'] = 'Colors:'
 
+info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de arquivo de saída'
+info['Escolla o formato:'] = 'Escolla o formato:'
+info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
 
 TEXT['en'] = info
 
@@ -78,6 +81,9 @@ info['Idioma:'] = 'Idioma:'
 info['Resolución:'] = 'Resolución:'
 info['Cores:'] = 'Cores:'
 
+info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de arquivo de saída'
+info['Escolla o formato:'] = 'Escolla o formato:'
+info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
 
 TEXT['gal'] = info
 
@@ -118,6 +124,10 @@ info['Idioma:'] = 'Idioma:'
 info['Resolución:'] = 'Resolución:'
 info['Cores:'] = 'Colores:'
 
+info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de archivo de salida'
+info['Escolla o formato:'] = 'Escoja el formato:'
+info['Escolla a carpeta destino:'] = 'Escoja la carpeta destino:'
+
 
 TEXT['es'] = info
 
@@ -137,3 +147,9 @@ TEXT['blue'] = '#3A7FF6'
 TEXT['blue-bg'] = '#7CAEFF'
 TEXT['light-blue'] = '#'
 TEXT['light-blue-bg'] = '#'
+
+RESOLU = {}
+RESOLU['HD'] = '1024x720'
+RESOLU['FullHD'] = '1920x1000'
+RESOLU['2K'] = '1024x720'
+RESOLU['4K'] = '1024x720'

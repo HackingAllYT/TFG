@@ -17,7 +17,7 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-class HeatMapPane(tk.Frame):
+class RooflineModelPane(tk.Frame):
 
     def __init__(self, parent, controller, classParent):
         tk.Frame.__init__(self, parent)
@@ -34,7 +34,6 @@ class HeatMapPane(tk.Frame):
         button2.pack()
         '''
         self.controller = controller
-        self.parent = parent
         self.classParent = classParent
 
         self.canvas = Canvas(
@@ -157,7 +156,7 @@ class HeatMapPane(tk.Frame):
             image=self.button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: controller.xerarNovoHeatmap(
+            command=lambda: controller.xerarNovoRooflineModel(
                 self.getDataCollected()),
             relief="flat"
         )
@@ -277,7 +276,7 @@ class HeatMapPane(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: controller.gardarNovoHeatMap(
+            command=lambda: controller.gardarNovoRooflineModel(
                 self.getDataCollected()),
             relief="flat"
         )
@@ -371,6 +370,9 @@ class HeatMapPane(tk.Frame):
             width=28
         )
 
+        # get first 3 letters of every month name
+        # zData_cb['values'] = [countries[m][0:4] for m in range(4)]
+
         # prevent typing a value
         self.zData_cb['state'] = 'readonly'
 
@@ -381,6 +383,7 @@ class HeatMapPane(tk.Frame):
             width=170.0,
             height=20.0
         )
+        # zData_cb.current()
 
         self.z_tipoDatos = StringVar()
         self.z_tipoDatos_cb = ttk.Combobox(
@@ -388,6 +391,9 @@ class HeatMapPane(tk.Frame):
             textvariable=self.z_tipoDatos,
             width=28
         )
+
+        # get first 3 letters of every month name
+        # z_tipoDatos_cb['values'] = [countries[m][0:3] for m in range(4)]
 
         # prevent typing a value
         self.z_tipoDatos_cb['state'] = 'readonly'
@@ -408,6 +414,9 @@ class HeatMapPane(tk.Frame):
             width=28
         )
 
+        # get first 3 letters of every month name
+        # zData_cb['values'] = [countries[m][0:4] for m in range(4)]
+
         # prevent typing a value
         self.colors_cb['state'] = 'readonly'
 
@@ -418,6 +427,12 @@ class HeatMapPane(tk.Frame):
             width=170.0,
             height=20.0
         )
+
+        '''countries = ['Bahamas', 'Canada', 'Cuba', 'United States']
+        self.xData_cb['values'] = [countries[m][0:4] for m in range(4)]
+        self.yData_cb['values'] = [countries[m][0:4] for m in range(4)]
+        self.zData_cb['values'] = [countries[m][0:4] for m in range(4)]
+        self.z_tipoDatos_cb['values'] = [countries[m][0:4] for m in range(4)]'''
 
         self.treeFrame = Frame(
             self,
@@ -463,13 +478,15 @@ class HeatMapPane(tk.Frame):
         ""
 
     def getDataCollected(self):
+        ""
         info = {}
         info['name'] = self.entry_3.get()
         info['xRow'] = self.xData.get()
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
+        # self.t.on_tree_select(None)
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
         else:
-            info['name'] = 'Heatmap: ' + self.zData.get()
+            info['name'] = 'Roofline Model: ' + self.zData.get()
         return info

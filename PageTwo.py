@@ -4,6 +4,8 @@ import tkinter as tk
 from tkinter import ttk, Button, Canvas, PhotoImage
 from pathlib import Path
 import configparser
+
+from matplotlib.pyplot import text
 from StartPage import StartPage
 from text import TEXT
 
@@ -242,7 +244,7 @@ class PageTwo(tk.Frame):
         ])
 
     def addFrame(self, frameType, name: str):
-        self.aux = frameType(self.notebook, self.controller)
+        self.aux = frameType(self.notebook, self.controller, self)
         self.pageTwoFrames.append(self.aux)
         self.notebook.add(self.aux, text=name, padding=5)
         self.notebook.place(
@@ -292,3 +294,6 @@ class PageTwo(tk.Frame):
 
     def go_home(self):
         self.controller.show_frame(StartPage)
+
+    def changeName(self, name):
+        self.notebook.tab("current", text=name)
