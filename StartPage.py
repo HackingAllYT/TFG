@@ -110,7 +110,7 @@ class StartPage(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=controller.clear_entry,
+            command=controller.showPaxResumoArquivo,
             relief="flat",
             disabledforeground='#3A7FF6'
         )
@@ -448,7 +448,7 @@ class StartPage(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=controller.clear_entry,
+            command=controller.showPaxResumoArquivo,
             relief="flat"
         )
         self.button_2.place(

@@ -119,12 +119,8 @@ class SeaofBTCapp(tk.Tk):
             Thread_loadFile.start()
             self.frames[StartPage].setButtonsEnabled()
 
-    def clear_entry(self):
+    def showPaxResumoArquivo(self):
         self.show_frame(PageOne)
-
-    def showSelection(self):
-        self.frames[PageTwo].addFrame(HeatMapPane, 'HeatMap')
-        self.show_frame(PageTwo)
 
     '''
     *******************************************************************************

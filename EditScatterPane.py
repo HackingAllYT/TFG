@@ -118,22 +118,6 @@ class ScatterPane(tk.Frame):
             746.0,
             99.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Tipo dato Z:"],
-            fill="#000000",
-            font=("Inter", 15 * -1)
-        )
-        self.canvas.create_rectangle(
-            726.0,
-            412.0,
-            976.0,
-            487.0,
-            fill="#F1F5FF",
-            outline="")
-
-        self.canvas.create_text(
-            747.0,
-            416.0,
-            anchor="nw",
             text=TEXT[config['INITIAL']['IDIOMA']]["Cores:"],
             fill="#000000",
             font=("Inter", 15 * -1)
@@ -174,6 +158,8 @@ class ScatterPane(tk.Frame):
             font=("Inter", 15 * -1)
         )
 
+        self.minOutlier_entry = IntVar()
+
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
         self.entry_bg_1 = self.canvas.create_image(
@@ -185,14 +171,17 @@ class ScatterPane(tk.Frame):
             self,
             bd=0,
             bg="#F1F5FF",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable=self.minOutlier_entry
         )
         self.entry_1.place(
-            x=805.0,
-            y=199.0,
-            width=72.0,
+            x=805.0 + 5.0,
+            y=199.0 + 1.0,
+            width=72.0 - 7.0,
             height=33.0
         )
+
+        self.maxOutlier_entry = IntVar()
 
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
@@ -205,12 +194,13 @@ class ScatterPane(tk.Frame):
             self,
             bd=0,
             bg="#F1F5FF",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable=self.maxOutlier_entry
         )
         self.entry_2.place(
-            x=902.0,
-            y=199.0,
-            width=72.0,
+            x=902.0 + 5.0,
+            y=199.0 + 1.0,
+            width=72.0 - 7.0,
             height=33.0
         )
 
@@ -326,7 +316,6 @@ class ScatterPane(tk.Frame):
         self.xData_cb['state'] = 'readonly'
 
         # place the widget
-        # columnas_cb.pack(fill=None, side=LEFT, padx=0, pady=110)
         self.xData_cb.place(
             x=45.0,
             y=165.0 - 120.0,
@@ -359,9 +348,6 @@ class ScatterPane(tk.Frame):
             width=28
         )
 
-        # get first 3 letters of every month name
-        # zData_cb['values'] = [countries[m][0:4] for m in range(4)]
-
         # prevent typing a value
         self.zData_cb['state'] = 'readonly'
 
@@ -372,29 +358,6 @@ class ScatterPane(tk.Frame):
             width=170.0,
             height=20.0
         )
-        # zData_cb.current()
-
-        self.z_tipoDatos = StringVar()
-        self.z_tipoDatos_cb = ttk.Combobox(
-            self,
-            textvariable=self.z_tipoDatos,
-            width=28
-        )
-
-        # get first 3 letters of every month name
-        # z_tipoDatos_cb['values'] = [countries[m][0:3] for m in range(4)]
-
-        # prevent typing a value
-        self.z_tipoDatos_cb['state'] = 'readonly'
-
-        # place the widget
-        self.z_tipoDatos_cb.place(
-            x=745.0,
-            y=265.0 - 120.0,
-            width=170.0,
-            height=20.0
-        )
-        self.z_tipoDatos_cb.current()
 
         self.colors = StringVar()
         self.colors_cb = ttk.Combobox(
@@ -403,32 +366,23 @@ class ScatterPane(tk.Frame):
             width=28
         )
 
-        # get first 3 letters of every month name
-        # zData_cb['values'] = [countries[m][0:4] for m in range(4)]
-
         # prevent typing a value
         self.colors_cb['state'] = 'readonly'
 
         # place the widget
         self.colors_cb.place(
             x=745.0,
-            y=455.0,
+            y=265.0 - 120.0,
             width=170.0,
             height=20.0
         )
-
-        '''countries = ['Bahamas', 'Canada', 'Cuba', 'United States']
-        self.xData_cb['values'] = [countries[m][0:4] for m in range(4)]
-        self.yData_cb['values'] = [countries[m][0:4] for m in range(4)]
-        self.zData_cb['values'] = [countries[m][0:4] for m in range(4)]
-        self.z_tipoDatos_cb['values'] = [countries[m][0:4] for m in range(4)]'''
 
         self.treeFrame = Frame(
             self,
             width=660.0,
             height=440.0
         )
-        # self.treeFrame.pack(fill=BOTH, expand=1)
+
         self.treeFrame.place(
             x=30.0,
             y=118.0,
@@ -444,12 +398,6 @@ class ScatterPane(tk.Frame):
             height=440.0
         )
 
-        '''self.t.insert("", "end", "1", text="1")
-        self.t.insert("1", "end", "11", text="11")
-        self.t.insert("1", "end", "12",  text="12")
-        self.t.insert("11", "end", "111", text="111")
-        self.t.insert("", "end", "2", text="2")'''
-
         self.loadDataItems()
 
     def loadDataItems(self):
@@ -460,20 +408,13 @@ class ScatterPane(tk.Frame):
         self.yData_cb.current(1)
         self.zData_cb['values'] = list(columns)
         self.zData_cb.current(5)
-        self.z_tipoDatos_cb['values'] = [
-            "Enteiros", "Flotantes", "Booleans", "String"]
-        self.z_tipoDatos_cb.current(0)
         info = self.controller.getPidsTids()
         self.t.insertElements(info)
 
     def deleteOutliers_changed(self):
         print('het')
 
-    def loadDataTreeview(self):
-        ""
-
     def getDataCollected(self):
-        ""
         info = {}
         info['name'] = self.entry_3.get()
         info['xRow'] = self.xData.get()

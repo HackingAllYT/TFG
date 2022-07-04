@@ -2,7 +2,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, BOTH, Button, PhotoImage, ttk, Toplevel, Frame, Radiobutton, StringVar
+from tkinter import Canvas, Button, PhotoImage, ttk, StringVar
 
 import tkinter as tk
 import configparser
@@ -33,6 +33,7 @@ class configurationModal(tk.Toplevel):
 
         self.idioma = config['INITIAL']['IDIOMA']
         self.color = config['INITIAL']['COLOR']
+        self.colorBg = config['INITIAL']['COLOR-BG']
 
         self.canvas = Canvas(
             self,
@@ -401,19 +402,23 @@ class configurationModal(tk.Toplevel):
 
     def colorOrange(self, event=None):
         self.color = 'orange'
+        self.colorBg = 'orange-bg'
         self.changes = True
 
     def colorGreen(self, event=None):
         self.color = 'green'
+        self.colorBg = 'green-bg'
         self.changes = True
 
     def colorBlue(self, event=None):
         self.color = 'blue'
+        self.colorBg = 'blue-bg'
         self.changes = True
 
     def aplicar(self, event=None):
         config.set('INITIAL', 'IDIOMA', self.idioma)
         config.set('INITIAL', 'COLOR', self.color)
+        config.set('INITIAL', 'COLOR-BG', self.colorBg)
 
         # save to a file
         with open('config.ini', 'w') as configfile:

@@ -24,6 +24,7 @@ info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nome da gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
+info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -66,6 +67,7 @@ info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nome da gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
+info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -109,6 +111,7 @@ info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nombre de la gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs y TIDs a utilizar:'
+info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 

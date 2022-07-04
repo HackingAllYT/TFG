@@ -125,7 +125,7 @@ class selectFigureModal(tk.Toplevel):
             image=self.button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_4 clicked"),
+            command=self.addRoofline,
             relief="flat"
         )
         self.button_4.place(
@@ -145,8 +145,6 @@ class selectFigureModal(tk.Toplevel):
             font=("Inter Bold", 20 * -1)
         )
 
-        #self.frame.pack(fill=BOTH, expand=1)
-
         self.selection = None
 
     def select(self):
@@ -158,7 +156,6 @@ class selectFigureModal(tk.Toplevel):
     def show(self):
         self.deiconify()
         self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
-        #self.parent.eval(f'tk::PlaceWindow {str(self)} center')
         self.center()
         self.wait_window(self)
         return self.selection
@@ -183,6 +180,12 @@ class selectFigureModal(tk.Toplevel):
         self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         self.deiconify()
 
+    '''
+    *******************************************************************************
+    ******************** Funcións para engadir novas gráficas *********************
+    *******************************************************************************
+    '''
+
     def addHeatmap(self, evente=None):
         self.selection = "heatmap"
         self.destroy()
@@ -190,6 +193,16 @@ class selectFigureModal(tk.Toplevel):
     def addScatter(self, evente=None):
         self.selection = "scatter"
         self.destroy()
+
+    def addRoofline(self, event=None):
+        self.selection = "roofline"
+        self.destroy()
+
+    '''
+    *******************************************************************************
+    ******************* Funcións para facer efectos nos botóns  *******************
+    *******************************************************************************
+    '''
 
     def button_1_enter(self, e):
         aux = PhotoImage(

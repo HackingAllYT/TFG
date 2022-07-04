@@ -185,6 +185,8 @@ class HeatMapPane(tk.Frame):
             font=("Inter", 15 * -1)
         )
 
+        self.minOutlier_entry = IntVar()
+
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
         self.entry_bg_1 = self.canvas.create_image(
@@ -196,14 +198,17 @@ class HeatMapPane(tk.Frame):
             self,
             bd=0,
             bg="#F1F5FF",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable=self.minOutlier_entry
         )
         self.entry_1.place(
-            x=805.0,
-            y=199.0,
-            width=72.0,
+            x=805.0 + 5.0,
+            y=199.0 + 1.0,
+            width=72.0 - 7.0,
             height=33.0
         )
+
+        self.maxOutlier_entry = IntVar()
 
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
@@ -216,12 +221,13 @@ class HeatMapPane(tk.Frame):
             self,
             bd=0,
             bg="#F1F5FF",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable=self.maxOutlier_entry
         )
         self.entry_2.place(
-            x=902.0,
-            y=199.0,
-            width=72.0,
+            x=902.0 + 5.0,
+            y=199.0 + 1.0,
+            width=72.0 - 7.0,
             height=33.0
         )
 
@@ -458,9 +464,6 @@ class HeatMapPane(tk.Frame):
 
     def deleteOutliers_changed(self):
         print('het')
-
-    def loadDataTreeview(self):
-        ""
 
     def getDataCollected(self):
         info = {}
