@@ -29,7 +29,7 @@ class ScatterPane(tk.Frame):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",
-            height=625,
+            height=650,
             width=1024,
             bd=0,
             highlightthickness=0,
@@ -39,16 +39,16 @@ class ScatterPane(tk.Frame):
         self.canvas.place(x=0, y=0)
 
         self.canvas.create_rectangle(
-            30.0,
-            0.0,
-            274.0,
-            75.0,
+            36.0,
+            19.0,
+            286.0,
+            94.0,
             fill="#F1F5FF",
             outline="")
 
         self.canvas.create_text(
-            45.0,
-            4.0,
+            57.0,
+            23.0,
             anchor="nw",
             text="X:",
             fill="#000000",
@@ -56,17 +56,17 @@ class ScatterPane(tk.Frame):
         )
 
         self.canvas.create_rectangle(
-            372.0,
-            0.0,
-            622.0,
-            75.0,
+            387.0,
+            19.0,
+            637.0,
+            94.0,
             fill="#F1F5FF",
             outline=""
         )
 
         self.canvas.create_text(
-            396.0,
-            3.0,
+            411.0,
+            22.0,
             anchor="nw",
             text="Y:",
             fill="#000000",
@@ -74,16 +74,16 @@ class ScatterPane(tk.Frame):
         )
 
         self.canvas.create_rectangle(
-            725.0,
-            0.0,
-            975.0,
-            75.0,
+            737.0,
+            19.0,
+            987.0,
+            94.0,
             fill="#F1F5FF",
             outline="")
 
         self.canvas.create_text(
-            746.0,
-            4.0,
+            758.0,
+            23.0,
             anchor="nw",
             text="Z:",
             fill="#000000",
@@ -91,67 +91,68 @@ class ScatterPane(tk.Frame):
         )
 
         self.canvas.create_rectangle(
-            725.0,
-            95.0,
-            975.0,
-            170.0,
+            737.0,
+            132.0,
+            987.0,
+            207.0,
             fill="#F1F5FF",
             outline="")
 
         self.canvas.create_rectangle(
-            725.0,
-            317.0,
-            975.0,
-            392.0,
+            387.0,
+            132.0,
+            637.0,
+            207.0,
             fill="#F1F5FF",
             outline="")
 
         self.canvas.create_text(
-            745.0,
-            328.0,
+            411.0,
+            141.0,
             anchor="nw",
             text=TEXT[config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
+
         self.canvas.create_text(
-            746.0,
-            99.0,
+            758.0,
+            141.0,
             anchor="nw",
             text=TEXT[config['INITIAL']['IDIOMA']]["Cores:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
 
-        self.button_image_5 = PhotoImage(
+        self.button_image_1 = PhotoImage(
             file=relative_to_assets("xerar_button.png"))
-        self.button_5 = Button(
+        self.button_1 = Button(
             self,
-            image=self.button_image_5,
+            image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: controller.xerarNovoScatter(
                 self.getDataCollected()),
             relief="flat"
         )
-        self.button_5.place(
-            x=625.0,
-            y=571.0,
+        self.button_1.place(
+            x=602.0,
+            y=527.0,
             width=180.0,
             height=55.0
         )
 
         self.canvas.create_rectangle(
-            24.0,
-            113.0,
-            694.0,
-            563.0,
+            36.0,
+            132.0,
+            286.0,
+            582.0,
             fill="#F1F5FF",
             outline="")
 
         self.canvas.create_text(
-            725.0,
-            207.0,
+            387.0,
+            282.0,
             anchor="nw",
             text="Outliers:",
             fill="#000000",
@@ -163,8 +164,8 @@ class ScatterPane(tk.Frame):
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
         self.entry_bg_1 = self.canvas.create_image(
-            841.0,
-            216.5,
+            504.0,
+            290.5,
             image=self.entry_image_1
         )
         self.entry_1 = Entry(
@@ -175,8 +176,8 @@ class ScatterPane(tk.Frame):
             textvariable=self.minOutlier_entry
         )
         self.entry_1.place(
-            x=805.0 + 5.0,
-            y=199.0 + 1.0,
+            x=468.0 + 5.0,
+            y=273.0 + 1.0,
             width=72.0 - 7.0,
             height=33.0
         )
@@ -186,8 +187,8 @@ class ScatterPane(tk.Frame):
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
         self.entry_bg_2 = self.canvas.create_image(
-            938.0,
-            216.5,
+            601.0,
+            290.5,
             image=self.entry_image_2
         )
         self.entry_2 = Entry(
@@ -198,23 +199,23 @@ class ScatterPane(tk.Frame):
             textvariable=self.maxOutlier_entry
         )
         self.entry_2.place(
-            x=902.0 + 5.0,
-            y=199.0 + 1.0,
+            x=565.0 + 5.0,
+            y=273.0 + 1.0,
             width=72.0 - 7.0,
             height=33.0
         )
 
         self.canvas.create_rectangle(
-            886.0,
-            216.0,
-            897.0,
-            218.0,
+            547.0,
+            290.0,
+            558.0,
+            292.0,
             fill="#000000",
             outline="")
 
         self.canvas.create_text(
-            751.0,
-            276.0,
+            387.0,
+            249.0,
             anchor="nw",
             text=TEXT[config['INITIAL']['IDIOMA']]["Eliminar Outliers:"],
             fill="#000000",
@@ -222,8 +223,17 @@ class ScatterPane(tk.Frame):
         )
 
         self.canvas.create_text(
-            819.0,
-            235.0,
+            758.0,
+            249.0,
+            anchor="nw",
+            text=TEXT[config['INITIAL']['IDIOMA']]["Unir puntos plot:"],
+            fill="#000000",
+            font=("Inter", 15 * -1)
+        )
+
+        self.canvas.create_text(
+            482.0,
+            309.0,
             anchor="nw",
             text="μ - 2σ",
             fill="#000000",
@@ -231,8 +241,8 @@ class ScatterPane(tk.Frame):
         )
 
         self.canvas.create_text(
-            914.0,
-            236.0,
+            577.0,
+            310.0,
             anchor="nw",
             text="μ + 2σ",
             fill="#000000",
@@ -240,8 +250,8 @@ class ScatterPane(tk.Frame):
         )
 
         self.canvas.create_text(
-            45.0,
-            91.0,
+            54.0,
+            110.0,
             anchor="nw",
             text=TEXT[config['INITIAL']['IDIOMA']
                       ]["Seleccione PIDs e TIDs a empregar:"],
@@ -260,8 +270,8 @@ class ScatterPane(tk.Frame):
             relief="flat"
         )
         self.button_2.place(
-            x=819.0,
-            y=571.0,
+            x=807.0,
+            y=527.0,
             width=180.0,
             height=55.0
         )
@@ -269,8 +279,8 @@ class ScatterPane(tk.Frame):
         self.entry_image_3 = PhotoImage(
             file=relative_to_assets("entry_3.png"))
         self.entry_bg_3 = self.canvas.create_image(
-            850.5,
-            367.5,
+            506.5,
+            182.5,
             image=self.entry_image_3
         )
         self.entry_3 = Entry(
@@ -280,8 +290,8 @@ class ScatterPane(tk.Frame):
             highlightthickness=0
         )
         self.entry_3.place(
-            x=745.0,
-            y=353.0,
+            x=401.0,
+            y=168.0,
             width=211.0,
             height=27.0
         )
@@ -295,14 +305,43 @@ class ScatterPane(tk.Frame):
             variable=self.deleteOutliers,
             onvalue=1,
             offvalue=0,
-            background='#FFFFFF'
+            background='#FFFFFF',
+            image=self.classParent.getUnCheckedImage(),
+            selectimage=self.classParent.getCheckedImage(),
+            indicatoron=False,
+            highlightthickness=0,
+            borderwidth=0
         )
 
         self.checkButton.place(
-            x=909.0,
-            y=390.0 - 120.0,
-            width=72.0,
-            height=33.0
+            x=585.0,
+            y=249.0,
+            width=20.0,
+            height=20.0
+        )
+
+        self.unirPuntos = IntVar()
+
+        self.unirPuntos_CB = Checkbutton(
+            self,
+            text='',
+            command=self.unirPuntos_changed,
+            variable=self.unirPuntos,
+            onvalue=1,
+            offvalue=0,
+            background='#FFFFFF',
+            image=self.classParent.getUnCheckedImage(),
+            selectimage=self.classParent.getCheckedImage(),
+            indicatoron=False,
+            highlightthickness=0,
+            borderwidth=0
+        )
+
+        self.unirPuntos_CB.place(
+            x=912.0,
+            y=249.0,
+            width=20.0,
+            height=20.0
         )
 
         self.xData = StringVar()
@@ -317,8 +356,8 @@ class ScatterPane(tk.Frame):
 
         # place the widget
         self.xData_cb.place(
-            x=45.0,
-            y=165.0 - 120.0,
+            x=57.0,
+            y=165.0 - 110.0,
             width=170.0,
             height=20.0
         )
@@ -335,8 +374,8 @@ class ScatterPane(tk.Frame):
 
         # place the widget
         self.yData_cb.place(
-            x=395.0,
-            y=165.0 - 120.0,
+            x=411.0,
+            y=165.0 - 110.0,
             width=170.0,
             height=20.0
         )
@@ -353,8 +392,8 @@ class ScatterPane(tk.Frame):
 
         # place the widget
         self.zData_cb.place(
-            x=745.0,
-            y=165.0 - 120.0,
+            x=758.0,
+            y=165.0 - 110.0,
             width=170.0,
             height=20.0
         )
@@ -371,22 +410,22 @@ class ScatterPane(tk.Frame):
 
         # place the widget
         self.colors_cb.place(
-            x=745.0,
-            y=265.0 - 120.0,
+            x=758.0,
+            y=265.0 - 90.0,
             width=170.0,
             height=20.0
         )
 
         self.treeFrame = Frame(
             self,
-            width=660.0,
+            width=235.0,
             height=440.0
         )
 
         self.treeFrame.place(
-            x=30.0,
-            y=118.0,
-            width=660.0,
+            x=42.0,
+            y=140.0,
+            width=235.0,
             height=440.0
         )
 
@@ -394,7 +433,7 @@ class ScatterPane(tk.Frame):
         self.t.place(
             x=0.0,
             y=0.0,
-            width=660.0,
+            width=235.0,
             height=440.0
         )
 
@@ -411,8 +450,19 @@ class ScatterPane(tk.Frame):
         info = self.controller.getPidsTids()
         self.t.insertElements(info)
 
+        self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+        self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+
     def deleteOutliers_changed(self):
-        print('het')
+        if self.deleteOutliers.get():
+            self.entry_1.config(state=tk.NORMAL)
+            self.entry_2.config(state=tk.NORMAL)
+        else:
+            self.entry_1.config(state=tk.DISABLED)
+            self.entry_2.config(state=tk.DISABLED)
+
+    def unirPuntos_changed(self):
+        ""
 
     def getDataCollected(self):
         info = {}

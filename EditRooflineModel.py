@@ -19,7 +19,7 @@ def relative_to_assets(path: str) -> Path:
 class RooflineModelPane(tk.Frame):
 
     def __init__(self, parent, controller, classParent):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, background='#FFFFFF')
 
         self.controller = controller
         self.classParent = classParent
@@ -27,7 +27,7 @@ class RooflineModelPane(tk.Frame):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",
-            height=625,
+            height=650,
             width=1024,
             bd=0,
             highlightthickness=0,
@@ -314,8 +314,16 @@ class RooflineModelPane(tk.Frame):
         self.yData_cb['values'] = list(columns)
         self.yData_cb.current(1)
 
+        self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+        self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+
     def deleteOutliers_changed(self):
-        print('het')
+        if self.deleteOutliers.get():
+            self.entry_1.config(state=tk.NORMAL)
+            self.entry_2.config(state=tk.NORMAL)
+        else:
+            self.entry_1.config(state=tk.DISABLED)
+            self.entry_2.config(state=tk.DISABLED)
 
     def getDataCollected(self):
         ""

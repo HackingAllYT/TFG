@@ -149,7 +149,6 @@ class CheckboxTreeview(ttk.Treeview):
             self.insert(aux, "end", pid, text=pid)
             aux = pid
             tids = info[pid]
-            self.insert(pid, "end", str(pid) + "Todos", text="Todos")
             for tid in tids:
                 self.insert(pid, "end", str(pid)+str(tid), text=tid)
             aux = "Todos"

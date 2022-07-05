@@ -10,7 +10,7 @@ from PageTwo import PageTwo
 from threading import *
 import tkinter.filedialog as fd
 from tkinter.messagebox import showinfo, askyesno
-from migplot import parse_file, initial_chart, interactive_chart_plot, interactive_scatter
+from migplot import parse_file, initial_chart, interactive_chart_plot, interactive_scatter, try_interactive_scatter
 from checkBoxTreeview import loadPids
 import modalConfiguration as cm
 import modalSelectFigure as msf
@@ -34,7 +34,7 @@ def relative_to_assets(path: str) -> Path:
 LARGE_FONT = ("Verdana", 12)
 
 
-class SeaofBTCapp(tk.Tk):
+class AppController(tk.Tk):
 
     def __init__(self, *args, **kwargs):
 
@@ -43,8 +43,9 @@ class SeaofBTCapp(tk.Tk):
         self.geometry(RESOLU[config['INITIAL']['RESOLU']])
         self.resizable(False, False)
         self.center()
+        self.iconphoto(False, tk.PhotoImage(
+            file=relative_to_assets('icon/icon.png')))
         self.title('Aplicación para a visualización de datos de servidores NUMA')
-        #self.eval(f'tk::PlaceWindow {str(self)} center')
         self.container = tk.Frame(self)
 
         self.container.pack(side="top", fill="both", expand=True)
@@ -52,9 +53,12 @@ class SeaofBTCapp(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
+        # Variables que nos serven para coñecer a cantidade de gráficas xeradas
         self.numHeatmap = 0
         self.numScatter = 0
         self.numRoofMod = 0
+        self.numRoofCol = 0
+        self.numRoofM3D = 0
 
         self.frames = {}
 
@@ -209,14 +213,19 @@ class SeaofBTCapp(tk.Tk):
         )
 
     def xerarNovoScatter(self, info):
-        interactive_scatter(
+        '''interactive_scatter(
             x_index=infoData[0][1].columns.get_loc(info['xRow']),
             y_index=infoData[0][1].columns.get_loc(info['yRow']),
             zName=info['zRow'],
             plotName=info['name'],
             data=infoData[0][1],
             save=None
-        )
+        )'''
+
+        aux = (infoData[0][1].columns.get_loc(info['xRow']),
+               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+
+        try_interactive_scatter(aux, info['name'], infoData[0][1], None, False)
 
     def xerarNovoRooflineModel(self, info):
         ""
@@ -262,6 +271,5 @@ class SeaofBTCapp(tk.Tk):
 
 
 if __name__ == '__main__':
-    app = SeaofBTCapp()
-    #app.eval(f'tk::PlaceWindow {str(app)} center')
+    app = AppController(className="NUMA data visualization")
     app.mainloop()

@@ -4,8 +4,8 @@ import tkinter as tk
 from tkinter import ttk, Button, Canvas, PhotoImage
 from pathlib import Path
 import configparser
+from turtle import bgcolor
 
-from matplotlib.pyplot import text
 from StartPage import StartPage
 from text import TEXT
 
@@ -24,13 +24,17 @@ def relative_to_assets(path: str) -> Path:
 class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller, *args, **kwargs):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, background='#FFFFFF')
 
         self.__initialize_custom_style()
         kwargs["style"] = "CustomNotebook"
 
         self.controller = controller
         self.pageTwoFrames = []
+        self.im_checked = tk.PhotoImage(
+            file=relative_to_assets('checked_18x18.png'))
+        self.im_unchecked = tk.PhotoImage(
+            file=relative_to_assets('unchecked_18x18.png'))
 
         self.notebook = ttk.Notebook(self, *args, **kwargs)
         self.notebook.place(
@@ -243,6 +247,9 @@ class PageTwo(tk.Frame):
             })
         ])
 
+        style.configure("CustomNotebook",
+                        highlightbackground="#848a98", background='#FFFFFF')
+
     def addFrame(self, frameType, name: str):
         self.aux = frameType(self.notebook, self.controller, self)
         self.pageTwoFrames.append(self.aux)
@@ -253,6 +260,24 @@ class PageTwo(tk.Frame):
             width=1024.0,
             height=699.0
         )
+
+    '''
+    *******************************************************************************
+    ****************** Funcións para obter información (getters) ******************
+    *******************************************************************************
+    '''
+
+    def getCheckedImage(self):
+        return self.im_checked
+
+    def getUnCheckedImage(self):
+        return self.im_unchecked
+
+    '''
+    *******************************************************************************
+    ****************** Funcións para xogar cos efectos das fotos ******************
+    *******************************************************************************
+    '''
 
     def button_1_enter(self, e):
         aux = PhotoImage(
@@ -291,6 +316,12 @@ class PageTwo(tk.Frame):
 
     def button_6_leave(self, e):
         ""
+
+    '''
+    *******************************************************************************
+    ************************ Funcións propias do Frame Two ************************
+    *******************************************************************************
+    '''
 
     def go_home(self):
         self.controller.show_frame(StartPage)

@@ -1,6 +1,5 @@
 import sys
 import time
-from matplotlib.pyplot import title
 import numpy as np
 
 # Visualization
@@ -253,14 +252,6 @@ def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str
             visible = np.full(len(columns), False)
             visible[z_index] = True
 
-            '''buttons.append(
-                dict(
-                    method='update',
-                    label=z_name,
-                    args=[{'visible': visible}, {'title': z_name}]
-                )
-            )'''
-
     fig.update_layout(
         updatemenus=[
             dict(
@@ -353,9 +344,34 @@ def qualitative_scatter(xs, ys, zs, data):
     return px.scatter(data_frame=data, x=xs, y=ys, text=zs)
 
 
+def try_interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool):
+    x_index, y_index, zName = index
+
+    columns = list(data.columns)
+
+    x_name = columns[x_index]
+    y_name = columns[y_index]
+
+    fig = go.Figure()
+
+    data = data.query("PID == 1566542")
+    #fig = px.line(data, x=x_name, y=y_name, color=zName, markers=False)
+    fig = px.strip(data, x=x_name, y=y_name, color=zName)
+
+    fig.update_layout(
+        yaxis_type='category',
+        xaxis=dict(title=x_name),
+        yaxis=dict(title=y_name),
+        title=plotName
+    )
+
+    if not save:
+        fig.show()
+
+
 def interactive_scatter(x_index: int, y_index: int, zName: str, plotName: str, data, save: dict):
-    xs = np.unique(np.array(data.iloc[:, x_index]))
-    ys = np.unique(np.array(data.iloc[:, y_index]))
+    # xs = np.unique(np.array(data.iloc[:, x_index]))
+    # ys = np.unique(np.array(data.iloc[:, y_index]))
 
     columns = list(data.columns)
 
@@ -366,7 +382,7 @@ def interactive_scatter(x_index: int, y_index: int, zName: str, plotName: str, d
 
     fig = go.Figure()
 
-    # data = data.query("CPU == 20")
+    data = data.query("PID == 1566542")
     fig = px.line(data, x=x_name, y=y_name, color=zName, markers=True)
 
     fig.update_layout(
@@ -389,3 +405,15 @@ if __name__ == '__main__':
         print(f"Reading file: {file}")
         data = parse_file(file)
         interactive_chart(data)
+
+
+'''
+**************************************************************+
+
+Mirar os seguintes links:
+    - https://plotly.com/python/discrete-color/
+    - https://plotly.com/python/line-and-scatter/
+    - https://plotly.com/python/3d-scatter-plots/
+    - https://plotly.com/python/plotly-express/
+
+'''
