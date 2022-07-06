@@ -2,6 +2,7 @@ import tkinter.ttk as ttk
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
+import numpy as np
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -61,6 +62,9 @@ class CheckboxTreeview(ttk.Treeview):
         self.bind("<Button-1>", self.box_click, True)
         vsb = ttk.Scrollbar(self, orient="vertical", command=self.yview)
         vsb.pack(side='right', fill='y')
+
+        self.itemsSelected = {}
+        self.bind('<ButtonRelease-1>', self.selectItem)
 
         self.configure(yscrollcommand=vsb.set)
 
@@ -150,11 +154,72 @@ class CheckboxTreeview(ttk.Treeview):
             aux = pid
             tids = info[pid]
             for tid in tids:
-                self.insert(pid, "end", str(pid)+str(tid), text=tid)
+                self.insert(pid, "end", str(pid)+'-'+str(tid), text=tid)
             aux = "Todos"
 
-    def on_tree_select(self, event):
-        print("selected items:")
-        for item in self.selection():
-            item_text = self.item(item, "text")
-            print(item_text)
+    '''
+    *******************************************************************************
+    ***** Funcións que serven para actualizar o valor dos items seleccionados *****
+    *******************************************************************************
+    '''
+
+    def selectItem(self, e):
+        curItem = self.focus()
+        item = self.item(curItem)
+        if item["tags"][0] == 'checked':
+            if '-' in curItem:
+                # Isto quere dicir que é un TID
+                info = curItem.split('-')
+                self.insertItemSelected(info)
+            elif 'Todos' in curItem:
+                childrens = self.get_children(curItem)
+                for PID in childrens:
+                    childrens = self.get_children(PID)
+                    for child in childrens:
+                        info = child.split('-')
+                        self.insertItemSelected(info)
+            else:
+                # Isto quere dicir que é un PID
+                childrens = self.get_children(curItem)
+                for child in childrens:
+                    info = child.split('-')
+                    self.insertItemSelected(info)
+
+        elif item['tags'][0] == 'unchecked':
+            if '-' in curItem:
+                # Isto quere dicir que é un TID
+                info = curItem.split('-')
+                if info[0] in self.itemsSelected:
+                    self.itemsSelected[info[0]].remove(info[1])
+                    if not self.itemsSelected[info[0]]:
+                        self.itemsSelected.pop(info[0])
+            elif 'Todos' in curItem:
+                self.itemsSelected = {}
+            else:
+                # Isto quere dicir que é un PID
+                if curItem in self.itemsSelected:
+                    self.itemsSelected.pop(curItem)
+
+        for i in self.itemsSelected:
+            aux = np.unique(self.itemsSelected[i])
+            self.itemsSelected[i] = list(aux)
+
+    def insertPIDSelected(self, childrens: tuple[str, ...]):
+        for child in childrens:
+            info = child.split('-')
+            self.insertItemSelected(info)
+
+    def insertItemSelected(self, info: list[str]):
+        if info[0] in self.itemsSelected:
+            self.itemsSelected[info[0]].append(info[1])
+        else:
+            self.itemsSelected[info[0]] = [info[1]]
+
+    '''
+    *******************************************************************************
+    *** Función que serve para devolver un diccionario cos items seleccionados ****
+    *******************************************************************************
+    '''
+
+    def getSelectedItems(self):
+        return self.itemsSelected

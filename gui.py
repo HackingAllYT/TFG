@@ -240,10 +240,10 @@ class AppController(tk.Tk):
         self.openSaveAsDialog(info=info, graphType='roofline')
 
     def openSaveAsDialog(self, info, graphType):
-        saveImaxeDialog = sim.gardarImaxeModal(self, graphType)
+        info['graphType'] = graphType
+        saveImaxeDialog = sim.gardarImaxeModal(self, info)
         result = saveImaxeDialog.show()
         if result['do']:
-            result['name'] = info['name']
             if result['type'] == 'heatmap':
                 interactive_chart_plot(
                     x_index=infoData[0][1].columns.get_loc(info['xRow']),

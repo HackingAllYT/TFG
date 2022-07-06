@@ -1,10 +1,11 @@
 import tkinter as tk
 
-from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
+from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
 from pathlib import Path
 import configparser
 from text import TEXT
 from checkBoxTreeview import CheckboxTreeview
+import numpy as np
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -21,18 +22,7 @@ class HeatMapPane(tk.Frame):
 
     def __init__(self, parent, controller, classParent):
         tk.Frame.__init__(self, parent)
-        '''
-        label = tk.Label(self, text="Page Two!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
 
-        button1 = tk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.pack()
-
-        button2 = tk.Button(self, text="Page One",
-                            command=lambda: controller.show_frame(PageOne))
-        button2.pack()
-        '''
         self.controller = controller
         self.parent = parent
         self.classParent = classParent
@@ -309,7 +299,7 @@ class HeatMapPane(tk.Frame):
             highlightthickness=0
         )
         self.entry_3.place(
-            x=401.0,
+            x=411.0,
             y=168.0,
             width=211.0,
             height=27.0
@@ -353,7 +343,7 @@ class HeatMapPane(tk.Frame):
         # columnas_cb.pack(fill=None, side=LEFT, padx=0, pady=110)
         self.xData_cb.place(
             x=57.0,
-            y=165.0 - 110.0,
+            y=57.0,
             width=170.0,
             height=20.0
         )
@@ -371,7 +361,7 @@ class HeatMapPane(tk.Frame):
         # place the widget
         self.yData_cb.place(
             x=411.0,
-            y=165.0 - 110.0,
+            y=57.0,
             width=170.0,
             height=20.0
         )
@@ -389,7 +379,7 @@ class HeatMapPane(tk.Frame):
         # place the widget
         self.zData_cb.place(
             x=758.0,
-            y=165.0 - 110.0,
+            y=57.0,
             width=170.0,
             height=20.0
         )
@@ -407,7 +397,7 @@ class HeatMapPane(tk.Frame):
         # place the widget
         self.z_tipoDatos_cb.place(
             x=758.0,
-            y=265.0 - 90.0,
+            y=175.0,
             width=170.0,
             height=20.0
         )
@@ -425,8 +415,8 @@ class HeatMapPane(tk.Frame):
 
         # place the widget
         self.colors_cb.place(
-            x=745.0,
-            y=455.0,
+            x=758.0,
+            y=284.0,
             width=170.0,
             height=20.0
         )
@@ -451,7 +441,6 @@ class HeatMapPane(tk.Frame):
             width=235.0,
             height=440.0
         )
-        self.t.bind('<ButtonRelease-1>', self.selectItem)
 
         self.loadDataItems()
 
@@ -492,34 +481,6 @@ class HeatMapPane(tk.Frame):
             info['name'] = 'Heatmap: ' + self.zData.get()
 
         # get Info selected items
-        # self.getInfoTreeview()
+        print(self.t.getSelectedItems())
+
         return info
-
-    '''
-    *******************************************************************************
-    ************** Funcións de proba para conseguir info do treeview **************
-    *******************************************************************************
-    '''
-
-    def getInfoTreeview(self):
-        self.info = self.t.get_children()
-        self.list = ''
-        for i in self.info:
-            self.info2 = self.t.set(i)
-            for a in self.info2:
-                print(a, ":", self.info2[a])
-                self.list = self.list + a + ": " + self.info2[a]+'\n'
-
-        self.msg = "{} \n" .format(self.list)
-        print("Message:", self.msg)
-
-    def selectItem(self, e):
-        curItem = self.t.focus()
-        item = self.t.item(curItem)
-        if item['text'] == 'Todos':
-            parent = self.t.parent(self.t.selection()[0])
-            if item['tags'][0] == 'checked':
-                self.t.check_descendant(parent)
-            elif item['tags'][0] == 'unchecked':
-                self.t.uncheck_descendant(parent)
-            # print(self.t.item(curItem), parent)

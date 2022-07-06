@@ -354,9 +354,9 @@ def try_interactive_scatter(index: tuple, plotName: str, data, save: dict, lines
 
     fig = go.Figure()
 
-    data = data.query("PID == 1566542")
+    #data = data.query("PID == 1566542")
     #fig = px.line(data, x=x_name, y=y_name, color=zName, markers=False)
-    fig = px.strip(data, x=x_name, y=y_name, color=zName)
+    fig = px.scatter(data, x=x_name, y=y_name, color=zName)
 
     fig.update_layout(
         yaxis_type='category',

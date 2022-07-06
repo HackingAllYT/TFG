@@ -290,7 +290,7 @@ class ScatterPane(tk.Frame):
             highlightthickness=0
         )
         self.entry_3.place(
-            x=401.0,
+            x=411.0,
             y=168.0,
             width=211.0,
             height=27.0

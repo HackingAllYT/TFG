@@ -2,7 +2,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, BOTH, Button, PhotoImage, filedialog, ttk, Toplevel, Frame, Radiobutton, StringVar
+from tkinter import Canvas, Entry, Button, PhotoImage, filedialog, ttk, StringVar, IntVar
 
 import tkinter as tk
 import configparser
@@ -23,13 +23,13 @@ config.read('config.ini')
 
 
 class gardarImaxeModal(tk.Toplevel):
-    def __init__(self, parent, graphType):
+    def __init__(self, parent, info):
         super().__init__(parent)
 
         self.parent = parent
-        self.graphType = graphType
+        self.graphType = info['graphType']
         self.title("Gardar imaxe como")
-        self.geometry("557x575")
+        self.geometry("557x650")
         self.resizable(False, False)
 
         self.idioma = config['INITIAL']['IDIOMA']
@@ -38,7 +38,7 @@ class gardarImaxeModal(tk.Toplevel):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",
-            height=575,
+            height=650,
             width=557,
             bd=0,
             highlightthickness=0,
@@ -93,7 +93,7 @@ class gardarImaxeModal(tk.Toplevel):
         )
         self.button_2.place(
             x=65.0,
-            y=465.0,
+            y=557.0,
             width=180.0,
             height=55.0
         )
@@ -110,7 +110,7 @@ class gardarImaxeModal(tk.Toplevel):
         )
         self.button_3.place(
             x=313.0,
-            y=465.0,
+            y=557.0,
             width=180.0,
             height=55.0
         )
@@ -134,15 +134,15 @@ class gardarImaxeModal(tk.Toplevel):
 
         self.canvas.create_rectangle(
             95.0,
-            260.0,
+            241.0,
             463.0,
-            335.0,
+            316.0,
             fill="#F1F5FF",
             outline="")
 
         self.canvas.create_text(
             106.0,
-            268.0,
+            249.0,
             anchor="nw",
             text=TEXT[config['INITIAL']['IDIOMA']
                       ]["Escolla a carpeta destino:"],
@@ -162,7 +162,7 @@ class gardarImaxeModal(tk.Toplevel):
         )
         self.button_4.place(
             x=407.0,
-            y=287.0,
+            y=262.0,
             width=24.0,
             height=22.0
         )
@@ -190,23 +190,27 @@ class gardarImaxeModal(tk.Toplevel):
         )
         self.fileFormat_cb.current(0)
 
+        self.width_entry = IntVar()
+        self.height_entry = IntVar()
+
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_witdhXheight.png"))
         self.entry_bg_1 = self.canvas.create_image(
             155.0,
-            408.0,
+            389.0,
             image=self.entry_image_1
         )
         self.entry_1 = Entry(
             self,
             bd=0,
             bg="#F1F5FF",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable=self.width_entry
         )
         self.entry_1.place(
-            x=95.0,
-            y=388.0,
-            width=120.0,
+            x=100.0,
+            y=369.0,
+            width=110.0,
             height=38.0
         )
 
@@ -214,7 +218,7 @@ class gardarImaxeModal(tk.Toplevel):
             file=relative_to_assets("entry_folder.png"))
         self.entry_bg_2 = self.canvas.create_image(
             229.0,
-            310.0,
+            291.0,
             image=self.entry_image_2
         )
         self.entry_2 = Entry(
@@ -225,34 +229,37 @@ class gardarImaxeModal(tk.Toplevel):
         )
         self.entry_2.place(
             x=106.0,
-            y=294.0,
+            y=275.0,
             width=246.0,
             height=30.0
         )
 
+        self.plotName_entry = StringVar()
+
         self.entry_image_3 = PhotoImage(
-            file=relative_to_assets("entry_witdhXheight.png"))
+            file=relative_to_assets("entry_folder.png"))
         self.entry_bg_3 = self.canvas.create_image(
-            403.0,
-            408.0,
+            229.0,
+            486.0,
             image=self.entry_image_3
         )
         self.entry_3 = Entry(
             self,
             bd=0,
             bg="#F1F5FF",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable=self.plotName_entry
         )
         self.entry_3.place(
-            x=343.0,
-            y=388.0,
-            width=120.0,
-            height=38.0
+            x=106.0,
+            y=470.0,
+            width=260.0,
+            height=30.0
         )
 
         self.canvas.create_text(
             105.0,
-            364.0,
+            345.0,
             anchor="nw",
             text="Ancho:",
             fill="#000000",
@@ -261,11 +268,49 @@ class gardarImaxeModal(tk.Toplevel):
 
         self.canvas.create_text(
             357.0,
-            365.0,
+            346.0,
             anchor="nw",
             text="Alto:",
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
+        )
+
+        self.canvas.create_rectangle(
+            95.0,
+            436.0,
+            463.0,
+            511.0,
+            fill="#F1F5FF",
+            outline="")
+
+        self.canvas.create_text(
+            106.0,
+            444.0,
+            anchor="nw",
+            text="Introduza o nome da gráfica:",
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+
+        self.entry_image_4 = PhotoImage(
+            file=relative_to_assets("entry_witdhXheight.png"))
+        self.entry_bg_4 = self.canvas.create_image(
+            403.0,
+            389.0,
+            image=self.entry_image_4
+        )
+        self.entry_4 = Entry(
+            self,
+            bd=0,
+            bg="#F1F5FF",
+            highlightthickness=0,
+            textvariable=self.height_entry
+        )
+        self.entry_4.place(
+            x=348.0,
+            y=369.0,
+            width=110.0,
+            height=38.0
         )
 
         self.button_1.bind('<Enter>', self.button_1_enter)
@@ -283,11 +328,11 @@ class gardarImaxeModal(tk.Toplevel):
         self.result['do'] = False
         self.isAskDirectory = False
 
-    def select(self):
-        selection = self.listbox.curselection()
-        if selection:
-            self.selection = self.listbox.get(selection[0])
-        self.destroy()
+        self.entry_3.delete(0, tk.END)
+        self.entry_3.insert(0, info['name'])
+
+        self.width_entry.set(config['FIGURE-DEFAULT']['width'])
+        self.height_entry.set(config['FIGURE-DEFAULT']['height'])
 
     def show(self):
         self.deiconify()
@@ -298,35 +343,18 @@ class gardarImaxeModal(tk.Toplevel):
         self.result['dir'] = self.dir
         self.result['format'] = self.format
         self.result['type'] = self.graphType
+        self.result['name'] = self.plotName_entry.get()
+        print(self.plotName_entry.get())
 
         try:
-            self.result['w'] = float(self.entry_1.get())
+            self.result['w'] = float(self.width_entry.get())
         except:
             self.result['w'] = config['FIGURE-DEFAULT']['width']
         try:
-            self.result['h'] = float(self.entry_3.get())
+            self.result['h'] = float(self.height_entry.get())
         except:
             self.result['h'] = config['FIGURE-DEFAULT']['height']
         return self.result
-
-    def destroyPop(self, event=None):
-        if not self.isAskDirectory:
-            self.destroy()
-
-    def okey(self, event=None):
-        self.format = self.fileFormat.get()
-        self.result['do'] = True
-        self.destroy()
-
-    def cancel(self, event=None):
-        self.destroy()
-
-    def selectDirectory(self):
-        self.isAskDirectory = True
-        self.dir = filedialog.askdirectory()
-        self.entry_2.delete(0, tk.END)
-        self.entry_2.insert(0, self.dir)
-        self.isAskDirectory = False
 
     def center(self):
         """
@@ -344,6 +372,36 @@ class gardarImaxeModal(tk.Toplevel):
         y = self.winfo_screenheight() // 2 - win_height // 2
         self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         self.deiconify()
+
+    '''
+    *******************************************************************************
+    **************** Funcións de control de pulsacións nos botóns  ****************
+    *******************************************************************************
+    '''
+
+    def okey(self, event=None):
+        self.format = self.fileFormat.get()
+        self.result['do'] = True
+        self.destroy()
+
+    def cancel(self, event=None):
+        self.destroy()
+
+    def selectDirectory(self):
+        self.isAskDirectory = True
+        self.dir = filedialog.askdirectory()
+        self.entry_2.delete(0, tk.END)
+        self.entry_2.insert(0, self.dir)
+        self.isAskDirectory = False
+
+    def destroyPop(self, event=None):
+        if not self.isAskDirectory:
+            self.destroy()
+    '''
+    *******************************************************************************
+    ******************* Funcións para facer efectos nos botóns  *******************
+    *******************************************************************************
+    '''
 
     def button_1_enter(self, e):
         aux = PhotoImage(

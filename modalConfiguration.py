@@ -21,6 +21,14 @@ def relative_to_assets(path: str) -> Path:
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+GAL = 'gal'
+CAS = 'es'
+ENG = 'en'
+
+BLUE = ('blue', 'blue-bg')
+GREEN = ('green', 'green-bg')
+ORANGE = ('orange', 'orange-bg')
+
 
 class configurationModal(tk.Toplevel):
     def __init__(self, parent):
@@ -138,7 +146,7 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=self.idiomaGalego,
+            command=lambda: self.languageColorClicked(GAL),
             relief="flat"
         )
         self.button_2.place(
@@ -155,7 +163,7 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=self.idiomaEspanol,
+            command=lambda: self.languageColorClicked(CAS),
             relief="flat"
         )
         self.button_3.place(
@@ -172,7 +180,7 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=self.idiomaEnglish,
+            command=lambda: self.languageColorClicked(ENG),
             relief="flat"
         )
         self.button_4.place(
@@ -278,7 +286,7 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_6,
             borderwidth=0,
             highlightthickness=0,
-            command=self.colorBlue,
+            command=lambda: self.languageColorClicked(BLUE),
             relief="flat"
         )
         self.button_6.place(
@@ -295,7 +303,7 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_7,
             borderwidth=0,
             highlightthickness=0,
-            command=self.colorOrange,
+            command=lambda: self.languageColorClicked(ORANGE),
             relief="flat"
         )
         self.button_7.place(
@@ -312,7 +320,7 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_8,
             borderwidth=0,
             highlightthickness=0,
-            command=self.colorGreen,
+            command=lambda: self.languageColorClicked(GREEN),
             relief="flat"
         )
         self.button_8.place(
@@ -388,31 +396,18 @@ class configurationModal(tk.Toplevel):
         self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         self.deiconify()
 
-    def idiomaGalego(self, event=None):
-        self.idioma = 'gal'
-        self.changes = True
+    '''
+    *******************************************************************************
+    **************** Funcións de control de pulsacións nos botóns  ****************
+    *******************************************************************************
+    '''
 
-    def idiomaEspanol(self, event=None):
-        self.idioma = 'es'
-        self.changes = True
-
-    def idiomaEnglish(self, event=None):
-        self.idioma = 'en'
-        self.changes = True
-
-    def colorOrange(self, event=None):
-        self.color = 'orange'
-        self.colorBg = 'orange-bg'
-        self.changes = True
-
-    def colorGreen(self, event=None):
-        self.color = 'green'
-        self.colorBg = 'green-bg'
-        self.changes = True
-
-    def colorBlue(self, event=None):
-        self.color = 'blue'
-        self.colorBg = 'blue-bg'
+    def languageColorClicked(self, value):
+        if type(value) == tuple:
+            self.color = value[0]
+            self.colorBg = value[1]
+        else:
+            self.idioma = value
         self.changes = True
 
     def aplicar(self, event=None):
@@ -423,6 +418,12 @@ class configurationModal(tk.Toplevel):
         # save to a file
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
+
+    '''
+    *******************************************************************************
+    ******************* Funcións para facer efectos nos botóns  *******************
+    *******************************************************************************
+    '''
 
     def button_1_enter(self, e):
         aux = PhotoImage(
