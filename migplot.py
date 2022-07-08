@@ -10,6 +10,7 @@ import plotly.express as px
 # Save Image
 import platform
 import os
+from PIL import Image
 
 
 def parse_file(file):
@@ -298,14 +299,7 @@ def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str
         print(type(route), type(save["format"]),
               type(save['w']), type(save["h"]))
         '''
-        name = save['name'] + "." + save['format']
-        name = name.replace(' ', '').replace(':', '_')
-        fig.write_image(
-            file=name,
-            format=save['format'],
-            width=float(save['w']),
-            height=float(save['h'])
-        )
+        save_image(fig, save)
 
 
 def numeric_scatter(xs, ys, zs):
@@ -394,6 +388,50 @@ def interactive_scatter(x_index: int, y_index: int, zName: str, plotName: str, d
 
     if not save:
         fig.show()
+
+# Pensar de facelo doutro xeito, xa que gardalo de este tam e despois facer un resize quizáis non
+# é a mellor idea, ainda que se a imaxe é moi pequena facéndoo directamente con write_image
+# pérdese moita información, e ao facer o resize pérdese moita definición
+
+
+def save_image(fig: go.Figure, info: dict):
+
+    name = info['name'] + "." + info['format']
+    name = name.replace(' ', '').replace(':', '_')
+    fig.write_image(
+        file=name,
+        format=info['format'],
+        width=float(info['wc']),
+        height=float(info['hc'])
+    )
+    if info['wc'] != info['w'] or info['hc'] != info['h']:
+        img = Image.open(name)
+        aux = resize_with_pad(img, info['w'], info['h'])
+        aux.save(name, format=info['format'])
+
+
+def resize_with_pad(im, target_width, target_height):
+    '''
+    Resize PIL image keeping ratio and using white background.
+    '''
+    target_ratio = target_height / target_width
+    im_ratio = im.height / im.width
+    if target_ratio > im_ratio:
+        # It must be fixed by width
+        resize_width = target_width
+        resize_height = round(resize_width * im_ratio)
+    else:
+        # Fixed by height
+        resize_height = target_height
+        resize_width = round(resize_height / im_ratio)
+
+    image_resize = im.resize((resize_width, resize_height), Image.ANTIALIAS)
+    background = Image.new(
+        'RGBA', (target_width, target_height), (255, 255, 255, 255))
+    offset = (round((target_width - resize_width) / 2),
+              round((target_height - resize_height) / 2))
+    background.paste(image_resize, offset)
+    return background.convert('RGB')
 
 
 if __name__ == '__main__':

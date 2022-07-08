@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
 from pathlib import Path
 import configparser
-from text import TEXT
+from text import TEXT, TREETYPE_TIDs_PIDs
 from checkBoxTreeview import CheckboxTreeview
 
 OUTPUT_PATH = Path(__file__).parent
@@ -429,7 +429,8 @@ class ScatterPane(tk.Frame):
             height=440.0
         )
 
-        self.t = CheckboxTreeview(self.treeFrame, show="tree")
+        self.t = CheckboxTreeview(
+            master=self.treeFrame, treeType=TREETYPE_TIDs_PIDs, show="tree")
         self.t.place(
             x=0.0,
             y=0.0,
@@ -448,10 +449,12 @@ class ScatterPane(tk.Frame):
         self.zData_cb['values'] = list(columns)
         self.zData_cb.current(5)
         info = self.controller.getPidsTids()
-        self.t.insertElements(info)
+        self.t.insertElements(info, TREETYPE_TIDs_PIDs)
 
         self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+        self.entry_3.delete(0, tk.END)
+        self.entry_3.insert(0, 'Scatter: ' + self.zData.get())
 
     def deleteOutliers_changed(self):
         if self.deleteOutliers.get():

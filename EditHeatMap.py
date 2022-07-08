@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
 from pathlib import Path
 import configparser
-from text import TEXT
+from text import TEXT, TREETYPE_TIDs_PIDs
 from checkBoxTreeview import CheckboxTreeview
 import numpy as np
 
@@ -434,7 +434,8 @@ class HeatMapPane(tk.Frame):
             height=440.0
         )
 
-        self.t = CheckboxTreeview(self.treeFrame, show="tree")
+        self.t = CheckboxTreeview(
+            master=self.treeFrame, treeType=TREETYPE_TIDs_PIDs, show="tree")
         self.t.place(
             x=0.0,
             y=0.0,
@@ -456,10 +457,12 @@ class HeatMapPane(tk.Frame):
             "Enteiros", "Flotantes", "Booleans", "String"]
         self.z_tipoDatos_cb.current(0)
         info = self.controller.getPidsTids()
-        self.t.insertElements(info)
+        self.t.insertElements(info, TREETYPE_TIDs_PIDs)
 
         self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+        self.entry_3.delete(0, tk.END)
+        self.entry_3.insert(0, 'Heatmap: ' + self.zData.get())
 
     def deleteOutliers_changed(self):
         if self.deleteOutliers.get():
@@ -481,6 +484,6 @@ class HeatMapPane(tk.Frame):
             info['name'] = 'Heatmap: ' + self.zData.get()
 
         # get Info selected items
-        print(self.t.getSelectedItems())
+        print(self.t.getSelectedItemsPIDsTIDs())
 
         return info

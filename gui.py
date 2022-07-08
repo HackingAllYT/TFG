@@ -269,6 +269,11 @@ class AppController(tk.Tk):
     def getPidsTids(self):
         return info
 
+    def getCPUs(self):
+        aux = {}
+        aux['cpus'] = list(range(max(infoData[0][1].CPU) + 1))
+        return aux
+
 
 if __name__ == '__main__':
     app = AppController(className="NUMA data visualization")

@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 import numpy as np
+from text import TREETYPE_TIDs_PIDs, TREETYPE_CPUs
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -39,6 +40,13 @@ def loadPids(data):
     return info
 
 
+'''
+*******************************************************************************
+*************************** Checbox Treeview Class ****************************
+*******************************************************************************
+'''
+
+
 class CheckboxTreeview(ttk.Treeview):
     """
         Treeview widget with checkboxes left of each item.
@@ -46,27 +54,30 @@ class CheckboxTreeview(ttk.Treeview):
         the checkbox, you cannot add an image to the item.
     """
 
-    def __init__(self, master=None, **kw):
-        ttk.Treeview.__init__(self, master, **kw)
-        # checkboxes are implemented with pictures
-        self.im_checked = tk.PhotoImage(
-            file=relative_to_assets('checked_18x18.png'))
-        self.im_unchecked = tk.PhotoImage(
-            file=relative_to_assets('unchecked_18x18.png'))
-        self.im_tristate = tk.PhotoImage(
-            file=relative_to_assets('tristate_18x18.png'))
-        self.tag_configure("unchecked", image=self.im_unchecked)
-        self.tag_configure("tristate", image=self.im_tristate)
-        self.tag_configure("checked", image=self.im_checked)
-        # check / uncheck boxes on click
-        self.bind("<Button-1>", self.box_click, True)
-        vsb = ttk.Scrollbar(self, orient="vertical", command=self.yview)
-        vsb.pack(side='right', fill='y')
+    def __init__(self, master=None, treeType: str = None, **kw):
+        if treeType != None:
+            ttk.Treeview.__init__(self, master, **kw)
+            # checkboxes are implemented with pictures
+            self.im_checked = tk.PhotoImage(
+                file=relative_to_assets('checked_18x18.png'))
+            self.im_unchecked = tk.PhotoImage(
+                file=relative_to_assets('unchecked_18x18.png'))
+            self.im_tristate = tk.PhotoImage(
+                file=relative_to_assets('tristate_18x18.png'))
+            self.tag_configure("unchecked", image=self.im_unchecked)
+            self.tag_configure("tristate", image=self.im_tristate)
+            self.tag_configure("checked", image=self.im_checked)
+            # check / uncheck boxes on click
+            self.bind("<Button-1>", self.box_click, True)
+            vsb = ttk.Scrollbar(self, orient="vertical", command=self.yview)
+            vsb.pack(side='right', fill='y')
 
-        self.itemsSelected = {}
-        self.bind('<ButtonRelease-1>', self.selectItem)
+            self.itemsPidTidSelected = {}
+            self.itemsCpuSelected = []
+            self.treeType = treeType
+            self.bind('<ButtonRelease-1>', self.selectItem)
 
-        self.configure(yscrollcommand=vsb.set)
+            self.configure(yscrollcommand=vsb.set)
 
     def insert(self, parent, index, iid=None, **kw):
         """ same method as for standard treeview but add the tag 'unchecked'
@@ -146,16 +157,25 @@ class CheckboxTreeview(ttk.Treeview):
                 self.uncheck_descendant(item)
                 self.uncheck_ancestor(item)
 
-    def insertElements(self, info: dict):
+    def insertElements(self, info: dict, treeType: str):
+        """
+        Función que serve para insertar os elementos que se atopan no diccionario
+        dependendo do tipo de datos que sexan, TREETYPE_TIDs_PIDs ou TREETYPE_CPUs
+        """
         self.insert("", 0, "Todos", text="Todos")
         aux = "Todos"
-        for pid in info:
-            self.insert(aux, "end", pid, text=pid)
-            aux = pid
-            tids = info[pid]
-            for tid in tids:
-                self.insert(pid, "end", str(pid)+'-'+str(tid), text=tid)
-            aux = "Todos"
+        if treeType == TREETYPE_TIDs_PIDs:
+            for pid in info:
+                self.insert(aux, "end", pid, text=pid)
+                aux = pid
+                tids = info[pid]
+                for tid in tids:
+                    self.insert(pid, "end", str(pid)+'-'+str(tid), text=tid)
+                aux = "Todos"
+        elif treeType == TREETYPE_CPUs:
+            datos = info['cpus']
+            for cpu in datos:
+                self.insert(aux, "end", cpu, text=cpu)
 
     '''
     *******************************************************************************
@@ -164,6 +184,19 @@ class CheckboxTreeview(ttk.Treeview):
     '''
 
     def selectItem(self, e):
+        if self.treeType == TREETYPE_TIDs_PIDs:
+            self.__selectItemTidPid__()
+        elif self.treeType == TREETYPE_CPUs:
+            self.__selectItemCpu__()
+
+    '''
+    *******************************************************************************
+    ***** Funcións que serven para actualizar o valor dos items seleccionados *****
+    ************ no caso de que o treeview sexa un TREETYPE_TIDs_PIDs *************
+    *******************************************************************************
+    '''
+
+    def __selectItemTidPid__(self):
         curItem = self.focus()
         item = self.item(curItem)
         if item["tags"][0] == 'checked':
@@ -189,20 +222,20 @@ class CheckboxTreeview(ttk.Treeview):
             if '-' in curItem:
                 # Isto quere dicir que é un TID
                 info = curItem.split('-')
-                if info[0] in self.itemsSelected:
-                    self.itemsSelected[info[0]].remove(info[1])
-                    if not self.itemsSelected[info[0]]:
-                        self.itemsSelected.pop(info[0])
+                if info[0] in self.itemsPidTidSelected:
+                    self.itemsPidTidSelected[info[0]].remove(info[1])
+                    if not self.itemsPidTidSelected[info[0]]:
+                        self.itemsPidTidSelected.pop(info[0])
             elif 'Todos' in curItem:
-                self.itemsSelected = {}
+                self.itemsPidTidSelected = {}
             else:
                 # Isto quere dicir que é un PID
-                if curItem in self.itemsSelected:
-                    self.itemsSelected.pop(curItem)
+                if curItem in self.itemsPidTidSelected:
+                    self.itemsPidTidSelected.pop(curItem)
 
-        for i in self.itemsSelected:
-            aux = np.unique(self.itemsSelected[i])
-            self.itemsSelected[i] = list(aux)
+        for i in self.itemsPidTidSelected:
+            aux = np.unique(self.itemsPidTidSelected[i])
+            self.itemsPidTidSelected[i] = list(aux)
 
     def insertPIDSelected(self, childrens: tuple[str, ...]):
         for child in childrens:
@@ -210,10 +243,36 @@ class CheckboxTreeview(ttk.Treeview):
             self.insertItemSelected(info)
 
     def insertItemSelected(self, info: list[str]):
-        if info[0] in self.itemsSelected:
-            self.itemsSelected[info[0]].append(info[1])
+        if info[0] in self.itemsPidTidSelected:
+            self.itemsPidTidSelected[info[0]].append(info[1])
         else:
-            self.itemsSelected[info[0]] = [info[1]]
+            self.itemsPidTidSelected[info[0]] = [info[1]]
+
+    '''
+    *******************************************************************************
+    ***** Funcións que serven para actualizar o valor dos items seleccionados *****
+    *************** no caso de que o treeview sexa un TREETYPE_CPUs ***************
+    *******************************************************************************
+    '''
+
+    def __selectItemCpu__(self):
+        curItem = self.focus()
+        item = self.item(curItem)
+        if item["tags"][0] == 'checked':
+            if 'Todos' in curItem:
+                self.itemsCpuSelected = []
+                childrens = self.get_children(curItem)
+                for child in childrens:
+                    self.itemsCpuSelected.append(child)
+            else:
+                self.itemsCpuSelected.append(curItem)
+        elif item['tags'][0] == 'unchecked':
+            if 'Todos' in curItem:
+                self.itemsCpuSelected = []
+            else:
+                self.itemsCpuSelected.remove(curItem)
+
+        self.itemsCpuSelected.sort()
 
     '''
     *******************************************************************************
@@ -221,5 +280,8 @@ class CheckboxTreeview(ttk.Treeview):
     *******************************************************************************
     '''
 
-    def getSelectedItems(self):
-        return self.itemsSelected
+    def getSelectedItemsPIDsTIDs(self):
+        return self.itemsPidTidSelected
+
+    def getSelectedItemsCPUs(self):
+        return self.itemsCpuSelected

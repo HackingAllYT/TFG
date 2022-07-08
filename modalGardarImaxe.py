@@ -344,16 +344,18 @@ class gardarImaxeModal(tk.Toplevel):
         self.result['format'] = self.format
         self.result['type'] = self.graphType
         self.result['name'] = self.plotName_entry.get()
-        print(self.plotName_entry.get())
 
         try:
-            self.result['w'] = float(self.width_entry.get())
+            self.result['w'] = int(self.width_entry.get())
         except:
             self.result['w'] = config['FIGURE-DEFAULT']['width']
         try:
-            self.result['h'] = float(self.height_entry.get())
+            self.result['h'] = int(self.height_entry.get())
         except:
             self.result['h'] = config['FIGURE-DEFAULT']['height']
+
+        self.result['wc'] = int(config['FIGURE-DEFAULT']['width'])
+        self.result['hc'] = int(config['FIGURE-DEFAULT']['height'])
         return self.result
 
     def center(self):
@@ -397,6 +399,7 @@ class gardarImaxeModal(tk.Toplevel):
     def destroyPop(self, event=None):
         if not self.isAskDirectory:
             self.destroy()
+
     '''
     *******************************************************************************
     ******************* Funcións para facer efectos nos botóns  *******************
