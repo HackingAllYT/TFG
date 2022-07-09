@@ -40,7 +40,7 @@ def compute_zs(data, x_index, y_index, xs, ys):
     return zs
 
 
-def numeric_heatmap(xs, ys, zs):
+def numeric_heatmap(xs, ys, zs, colors):
     z_values = zs.astype(float)
     z_values = z_values[np.isfinite(z_values)]
 
@@ -69,10 +69,13 @@ def numeric_heatmap(xs, ys, zs):
 
     print(f"\tColor range: ({zmin}, {zmax})")
 
-    return go.Heatmap(z=zs, x=xs, y=ys, zmin=zmin, zmax=zmax)
+    if colors == 'default':
+        colors = None
+
+    return go.Heatmap(z=zs, x=xs, y=ys, zmin=zmin, zmax=zmax, colorscale=colors)
 
 
-def qualitative_heatmap(xs, ys, zs):
+def qualitative_heatmap(xs, ys, zs) -> go.Heatmap:
     z_values = zs.copy()
     z_values = z_values.astype(str).flatten()
     legend_entries = np.unique(z_values)
@@ -95,6 +98,9 @@ def qualitative_heatmap(xs, ys, zs):
         tickvals=[i for i in range(len(legend_entries))],
         ticktext=legend_entries
     )
+
+    if not colors:
+        colors = None
 
     return go.Heatmap(z=z_values, x=xs, y=ys, hovertemplate='x:%{x:d}<br>y:%{y:d}<br>z:%{text}', text=zs,
                       colorbar=color_bar, colorscale=colors)
@@ -123,7 +129,7 @@ def initial_chart(data):
         if z_name == "CPU%":
             print(f"Column {z_name}: ")
             try:
-                hm = numeric_heatmap(xs, ys, zs[z_index])
+                hm = numeric_heatmap(xs, ys, zs[z_index], None)
                 fig.add_trace(hm)
             except:
                 print(f"\tNot numeric. Treating as qualitative.")
@@ -170,7 +176,7 @@ def interactive_chart(data):
     for z_index, z_name in enumerate(columns):
         print(f"Column {z_name}: ")
         try:
-            hm = numeric_heatmap(xs, ys, zs[z_index])
+            hm = numeric_heatmap(xs, ys, zs[z_index], None)
             fig.add_trace(hm)
         except:
             print(f"\tNot numeric. Treating as qualitative.")
@@ -213,7 +219,11 @@ def interactive_chart(data):
     fig.show()
 
 
-def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str, data, save: dict):
+def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoData: dict, colors: str):
+    x_index, y_index, zName = index
+
+    data = data[data.TID.isin(getListOfPids(infoData))]
+
     xs = np.unique(np.array(data.iloc[:, x_index]))
     ys = np.unique(np.array(data.iloc[:, y_index]))
 
@@ -239,11 +249,14 @@ def interactive_chart_plot(x_index: int, y_index: int, zName: str, plotName: str
 
     print(f"Zs computed in {end - start} seconds")
 
+    if colors == 'default':
+        colors = None
+
     for z_index, z_name in enumerate(columns):
         if z_name == zName:
             print(f"Column {z_name}: ")
             try:
-                hm = numeric_heatmap(xs, ys, zs[z_index])
+                hm = numeric_heatmap(xs, ys, zs[z_index], colors)
                 fig.add_trace(hm)
             except:
                 print(f"\tNot numeric. Treating as qualitative.")
@@ -338,7 +351,7 @@ def qualitative_scatter(xs, ys, zs, data):
     return px.scatter(data_frame=data, x=xs, y=ys, text=zs)
 
 
-def try_interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool):
+def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool, infoData: dict, colors: str):
     x_index, y_index, zName = index
 
     columns = list(data.columns)
@@ -349,8 +362,23 @@ def try_interactive_scatter(index: tuple, plotName: str, data, save: dict, lines
     fig = go.Figure()
 
     #data = data.query("PID == 1566542")
-    #fig = px.line(data, x=x_name, y=y_name, color=zName, markers=False)
-    fig = px.scatter(data, x=x_name, y=y_name, color=zName)
+
+    # Esto é se o queremos facer por PIDs>
+    # Pids = list(infoData.keys())
+    # Pids = list(map(int, Pids))
+    # data = data[data.PID.isin(Pids)]
+
+    data = data[data.TID.isin(getListOfPids(infoData))]
+
+    if colors == 'default':
+        colors = None
+
+    if lines:
+        fig = px.line(data, x=x_name, y=y_name, color=zName,
+                      markers=False, color_continuous_scale=colors)
+    else:
+        fig = px.scatter(data, x=x_name, y=y_name, color=zName,
+                         color_continuous_scale=colors)
 
     fig.update_layout(
         yaxis_type='category',
@@ -363,31 +391,61 @@ def try_interactive_scatter(index: tuple, plotName: str, data, save: dict, lines
         fig.show()
 
 
-def interactive_scatter(x_index: int, y_index: int, zName: str, plotName: str, data, save: dict):
-    # xs = np.unique(np.array(data.iloc[:, x_index]))
-    # ys = np.unique(np.array(data.iloc[:, y_index]))
+def getColors():
+    aux = px.colors.named_colorscales()
+    aux.append('default')
+    aux.sort()
+    return aux
 
-    columns = list(data.columns)
 
-    x_name = columns[x_index]
-    y_name = columns[y_index]
+def getListOfPids(infoData: dict):
+    aux = []
+    for listAux in infoData:
+        aux.extend(infoData[listAux])
+    return list(map(int, aux))
 
-    print(f"Preparing plots for: {columns}")
 
-    fig = go.Figure()
+def roofline_model():
+    ''
+    x = [1, 4, None, 2, 3, None, 3, 4]
+    y = [0, 0, None, 1, 1, None, 2, 2]
+    # fig.add_trace(go.Scatter(x=x, y=y))
 
-    data = data.query("PID == 1566542")
-    fig = px.line(data, x=x_name, y=y_name, color=zName, markers=True)
 
-    fig.update_layout(
-        yaxis_type='category',
-        xaxis=dict(title=x_name),
-        yaxis=dict(title=y_name),
-        title=plotName
-    )
+def calcularOutliers(data: pd.DataFrame, zName: str, values: dict):
+    if not values:
+        return (np.NaN, np.NaN)
+    print(data.dtypes[zName], type(data.dtypes[zName]))
 
-    if not save:
-        fig.show()
+    data = data[data.TID.isin(getListOfPids(values))]
+    z_values = data[zName].astype(float)
+    z_values = z_values[np.isfinite(z_values)]
+
+    zmin = np.min(z_values)
+    zmax = np.max(z_values)
+
+    av = np.mean(z_values)
+    median = np.median(z_values)
+    stdev = np.std(z_values)
+
+    print(f"\tAv.: {av}, Median: {median}, Std: {stdev}")
+    first = av - 2 * stdev
+    second = av + 2 * stdev
+    return (first, second)
+    # If zs are of float type
+    if (z_values != z_values.astype(int)).any():
+        # Use percentiles for computing zmin and zmax
+        zs_no_outliers = remove_outliers(z_values, 0.15, 0.85)
+
+        zmin = np.min(zs_no_outliers)
+        zmax = np.max(zs_no_outliers)
+
+        av = np.mean(zs_no_outliers)
+        median = np.median(zs_no_outliers)
+        stdev = np.std(zs_no_outliers)
+
+        print(f"\tWithout outliers: Av.: {av}, Median: {median}, Std: {stdev}")
+
 
 # Pensar de facelo doutro xeito, xa que gardalo de este tam e despois facer un resize quizáis non
 # é a mellor idea, ainda que se a imaxe é moi pequena facéndoo directamente con write_image

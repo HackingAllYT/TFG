@@ -10,7 +10,14 @@ from PageTwo import PageTwo
 from threading import *
 import tkinter.filedialog as fd
 from tkinter.messagebox import showinfo, askyesno
-from migplot import parse_file, initial_chart, interactive_chart_plot, interactive_scatter, try_interactive_scatter
+from migplot import (
+    parse_file,
+    initial_chart,
+    interactive_chart_plot,
+    interactive_scatter,
+    getColors,
+    calcularOutliers
+)
 from checkBoxTreeview import loadPids
 import modalConfiguration as cm
 import modalSelectFigure as msf
@@ -203,13 +210,15 @@ class AppController(tk.Tk):
             self.destroy()
 
     def xerarNovoHeatmap(self, info):
+        aux = (infoData[0][1].columns.get_loc(info['xRow']),
+               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
         interactive_chart_plot(
-            x_index=infoData[0][1].columns.get_loc(info['xRow']),
-            y_index=infoData[0][1].columns.get_loc(info['yRow']),
-            zName=info['zRow'],
+            index=aux,
             plotName=info['name'],
             data=infoData[0][1],
-            save=None
+            save=None,
+            infoData=info['PIDsTIDs'],
+            colors=info['colors']
         )
 
     def xerarNovoScatter(self, info):
@@ -225,7 +234,15 @@ class AppController(tk.Tk):
         aux = (infoData[0][1].columns.get_loc(info['xRow']),
                infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
 
-        try_interactive_scatter(aux, info['name'], infoData[0][1], None, False)
+        interactive_scatter(
+            index=aux,
+            plotName=info['name'],
+            data=infoData[0][1],
+            save=None,
+            lines=info['unir'],
+            infoData=info['PIDsTIDs'],
+            colors=info['colors']
+        )
 
     def xerarNovoRooflineModel(self, info):
         ""
@@ -273,6 +290,12 @@ class AppController(tk.Tk):
         aux = {}
         aux['cpus'] = list(range(max(infoData[0][1].CPU) + 1))
         return aux
+
+    def getColors(self):
+        return getColors()
+
+    def getCalcularOutliers(self, zName, info):
+        return calcularOutliers(infoData[0][1], zName, info)
 
 
 if __name__ == '__main__':

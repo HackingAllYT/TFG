@@ -451,6 +451,9 @@ class ScatterPane(tk.Frame):
         info = self.controller.getPidsTids()
         self.t.insertElements(info, TREETYPE_TIDs_PIDs)
 
+        self.colors_cb['values'] = self.controller.getColors()
+        self.colors_cb.current(self.controller.getColors().index('default'))
+
         self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_3.delete(0, tk.END)
@@ -473,10 +476,15 @@ class ScatterPane(tk.Frame):
         info['xRow'] = self.xData.get()
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
+        info['unir'] = bool(self.unirPuntos.get())
+        info['colors'] = self.colors.get()
 
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
         else:
             info['name'] = 'Scatter: ' + self.zData.get()
+
+        # get Info selected items
         # self.t.on_tree_select(None)
+        info['PIDsTIDs'] = self.t.getSelectedItemsPIDsTIDs()
         return info

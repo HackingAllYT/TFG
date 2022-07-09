@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
+from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
 from pathlib import Path
 import configparser
 from text import TEXT, TREETYPE_TIDs_PIDs
@@ -176,7 +176,7 @@ class HeatMapPane(tk.Frame):
             font=("Inter", 15 * -1)
         )
 
-        self.minOutlier_entry = IntVar()
+        self.minOutlier_entry = DoubleVar()
 
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
@@ -199,7 +199,7 @@ class HeatMapPane(tk.Frame):
             height=33.0
         )
 
-        self.maxOutlier_entry = IntVar()
+        self.maxOutlier_entry = DoubleVar()
 
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
@@ -383,6 +383,7 @@ class HeatMapPane(tk.Frame):
             width=170.0,
             height=20.0
         )
+        self.zData_cb.bind('<<ComboboxSelected>>', self.zDataCallback)
 
         self.z_tipoDatos = StringVar()
         self.z_tipoDatos_cb = ttk.Combobox(
@@ -426,7 +427,6 @@ class HeatMapPane(tk.Frame):
             width=235.0,
             height=440.0
         )
-        # self.treeFrame.pack(fill=BOTH, expand=1)
         self.treeFrame.place(
             x=42.0,
             y=140.0,
@@ -435,7 +435,7 @@ class HeatMapPane(tk.Frame):
         )
 
         self.t = CheckboxTreeview(
-            master=self.treeFrame, treeType=TREETYPE_TIDs_PIDs, show="tree")
+            master=self.treeFrame, treeType=TREETYPE_TIDs_PIDs, show="tree", editClass=self)
         self.t.place(
             x=0.0,
             y=0.0,
@@ -459,10 +459,15 @@ class HeatMapPane(tk.Frame):
         info = self.controller.getPidsTids()
         self.t.insertElements(info, TREETYPE_TIDs_PIDs)
 
+        self.colors_cb['values'] = self.controller.getColors()
+        self.colors_cb.current(self.controller.getColors().index('default'))
+
         self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_3.delete(0, tk.END)
         self.entry_3.insert(0, 'Heatmap: ' + self.zData.get())
+
+        self.zDataCallback(None)
 
     def deleteOutliers_changed(self):
         if self.deleteOutliers.get():
@@ -478,12 +483,19 @@ class HeatMapPane(tk.Frame):
         info['xRow'] = self.xData.get()
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
+        info['colors'] = self.colors.get()
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
         else:
             info['name'] = 'Heatmap: ' + self.zData.get()
 
         # get Info selected items
-        print(self.t.getSelectedItemsPIDsTIDs())
+        info['PIDsTIDs'] = self.t.getSelectedItemsPIDsTIDs()
 
         return info
+
+    def zDataCallback(self, e):
+        aux = self.controller.getCalcularOutliers(
+            self.zData.get(), self.t.getSelectedItemsPIDsTIDs())
+        self.minOutlier_entry.set(aux[0])
+        self.maxOutlier_entry.set(aux[1])

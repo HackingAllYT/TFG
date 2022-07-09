@@ -116,15 +116,15 @@ class ScrollableFrame(ttk.Frame):
         self.addFrame()
 
     def addFrame(self):
-        aux = TraceRoofline(self.second_frame,
+        aux = TraceRoofline(self.canvas,
                             self.controller, self.classParent)
         self.frames.append(aux)
 
 
 class TraceRoofline(tk.Frame):
 
-    def __init__(self, parent, controller, classParent):
-        tk.Frame.__init__(self, parent, background='#FFFFFF')
+    def __init__(self, parent, controller, classParent, **kw):
+        tk.Frame.__init__(self, parent, background='#FFFFFF', **kw)
 
         self.controller = controller
         self.classParent = classParent
@@ -211,7 +211,7 @@ class TraceRoofline(tk.Frame):
         self.button_image_1 = PhotoImage(
             file=relative_to_assets("add.png"))
         self.button_1 = Button(
-            self,
+            self.parent,
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
@@ -233,7 +233,7 @@ class TraceRoofline(tk.Frame):
             image=self.entry_image_1
         )
         self.entry_1 = Entry(
-            self,
+            self.parent,
             bd=0,
             bg="#F1F5FF",
             highlightthickness=0
@@ -253,7 +253,7 @@ class TraceRoofline(tk.Frame):
             image=self.entry_image_2
         )
         self.entry_2 = Entry(
-            self,
+            self.parent,
             bd=0,
             bg="#F1F5FF",
             highlightthickness=0
@@ -273,7 +273,7 @@ class TraceRoofline(tk.Frame):
             image=self.entry_image_3
         )
         self.entry_3 = Entry(
-            self,
+            self.parent,
             bd=0,
             bg="#F1F5FF",
             highlightthickness=0

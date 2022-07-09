@@ -6,6 +6,7 @@ import configparser
 from text import TEXT, TREETYPE_TIDs_PIDs, TREETYPE_CPUs
 from checkBoxTreeview import CheckboxTreeview
 from addTraceRoofline import TraceRooflineContainer, TraceRoofline, ScrollableFrame
+from scrollbarFrame import ScrolledFrame
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -206,6 +207,12 @@ class RooflineModelPane(tk.Frame):
             height=440.0
         )
 
+        '''self.linhasFrame = ScrolledFrame(
+            parent=self, controller=self.controller, classParent=self.classParent
+        )'''
+        '''self.linhasFrame = ScrolledFrame(
+            master=self
+        )'''
         self.linhasFrame = ScrollableFrame(
             parent=self, controller=self.controller, classParent=self.classParent
         )
@@ -225,6 +232,27 @@ class RooflineModelPane(tk.Frame):
         infoCpus = self.controller.getCPUs()
         self.tPidTid.insertElements(infoTIDs, TREETYPE_TIDs_PIDs)
         self.tCpu.insertElements(infoCpus, TREETYPE_CPUs)
+
+        ''' aux = TraceRoofline(
+            self.linhasFrame.interior, self.controller, self.classParent).grid(row=0, column=0)
+        aux = TraceRoofline(
+            self.linhasFrame.interior, self.controller, self.classParent).grid(row=1, column=0)
+        aux = TraceRoofline(
+            self.linhasFrame.interior, self.controller, self.classParent).grid(row=2, column=0)
+        aux = TraceRoofline(
+            self.linhasFrame.interior, self.controller, self.classParent).grid(row=3, column=0)
+        for i in range(20):
+            tk.ttk.Label(self.linhasFrame.interior, text='Label %i' % i).pack()'''
+
+        for i in range(50):
+            tk.ttk.Label(self.linhasFrame.canvas,
+                         text="Sample scrolling label").pack()
+        '''aux = TraceRoofline(
+            self.linhasFrame.canvas, self.controller, self.classParent).pack()'''
+
+        self.linhasFrame.addFrame()
+
+        # self.linhasFrame.addFrame(aux)
 
     def getDataCollected(self):
         info = {}

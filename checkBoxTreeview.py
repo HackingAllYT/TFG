@@ -54,7 +54,7 @@ class CheckboxTreeview(ttk.Treeview):
         the checkbox, you cannot add an image to the item.
     """
 
-    def __init__(self, master=None, treeType: str = None, **kw):
+    def __init__(self, master=None, treeType: str = None, editClass=None, **kw):
         if treeType != None:
             ttk.Treeview.__init__(self, master, **kw)
             # checkboxes are implemented with pictures
@@ -75,6 +75,7 @@ class CheckboxTreeview(ttk.Treeview):
             self.itemsPidTidSelected = {}
             self.itemsCpuSelected = []
             self.treeType = treeType
+            self.editClass = editClass
             self.bind('<ButtonRelease-1>', self.selectItem)
 
             self.configure(yscrollcommand=vsb.set)
@@ -188,6 +189,8 @@ class CheckboxTreeview(ttk.Treeview):
             self.__selectItemTidPid__()
         elif self.treeType == TREETYPE_CPUs:
             self.__selectItemCpu__()
+        if self.editClass:
+            self.editClass.zDataCallback(None)
 
     '''
     *******************************************************************************

@@ -260,6 +260,7 @@ class PageTwo(tk.Frame):
             width=1024.0,
             height=699.0
         )
+        self.notebook.select(self.aux)
 
     '''
     *******************************************************************************
