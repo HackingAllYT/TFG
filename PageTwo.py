@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import ttk, Button, Canvas, PhotoImage
 from pathlib import Path
 import configparser
-from turtle import bgcolor
 
 from StartPage import StartPage
 from text import TEXT

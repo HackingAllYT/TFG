@@ -397,6 +397,7 @@ class ScatterPane(tk.Frame):
             width=170.0,
             height=20.0
         )
+        self.zData_cb.bind('<<ComboboxSelected>>', self.zDataCallback)
 
         self.colors = StringVar()
         self.colors_cb = ttk.Combobox(
@@ -430,7 +431,7 @@ class ScatterPane(tk.Frame):
         )
 
         self.t = CheckboxTreeview(
-            master=self.treeFrame, treeType=TREETYPE_TIDs_PIDs, show="tree")
+            master=self.treeFrame, treeType=TREETYPE_TIDs_PIDs, show="tree", editClass=self)
         self.t.place(
             x=0.0,
             y=0.0,
@@ -458,6 +459,8 @@ class ScatterPane(tk.Frame):
         self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_3.delete(0, tk.END)
         self.entry_3.insert(0, 'Scatter: ' + self.zData.get())
+
+        self.zDataCallback(None)
 
     def deleteOutliers_changed(self):
         if self.deleteOutliers.get():
@@ -488,3 +491,9 @@ class ScatterPane(tk.Frame):
         # self.t.on_tree_select(None)
         info['PIDsTIDs'] = self.t.getSelectedItemsPIDsTIDs()
         return info
+
+    def zDataCallback(self, e):
+        aux = self.controller.getCalcularOutliers(
+            self.zData.get(), self.t.getSelectedItemsPIDsTIDs())
+        self.minOutlier_entry.set(aux[0])
+        self.maxOutlier_entry.set(aux[1])

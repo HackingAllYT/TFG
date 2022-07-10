@@ -315,42 +315,6 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
         save_image(fig, save)
 
 
-def numeric_scatter(xs, ys, zs):
-    z_values = zs.astype(float)
-    z_values = z_values[np.isfinite(z_values)]
-
-    zmin = np.min(z_values)
-    zmax = np.max(z_values)
-
-    av = np.mean(z_values)
-    median = np.median(z_values)
-    stdev = np.std(z_values)
-
-    print(f"\tAv.: {av}, Median: {median}, Std: {stdev}")
-
-    # If zs are of float type
-    if (z_values != z_values.astype(int)).any():
-        # Use percentiles for computing zmin and zmax
-        zs_no_outliers = remove_outliers(z_values, 0.15, 0.85)
-
-        zmin = np.min(zs_no_outliers)
-        zmax = np.max(zs_no_outliers)
-
-        av = np.mean(zs_no_outliers)
-        median = np.median(zs_no_outliers)
-        stdev = np.std(zs_no_outliers)
-
-        print(f"\tWithout outliers: Av.: {av}, Median: {median}, Std: {stdev}")
-
-    print(f"\tColor range: ({zmin}, {zmax})")
-
-    return px.scatter(z=zs, x=xs, y=ys, zmin=zmin, zmax=zmax)
-
-
-def qualitative_scatter(xs, ys, zs, data):
-    return px.scatter(data_frame=data, x=xs, y=ys, text=zs)
-
-
 def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool, infoData: dict, colors: str):
     x_index, y_index, zName = index
 
@@ -374,8 +338,12 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
         colors = None
 
     if lines:
-        fig = px.line(data, x=x_name, y=y_name, color=zName,
-                      markers=False, color_continuous_scale=colors)
+        try:
+            fig = px.line(data, x=x_name, y=y_name, color=zName,
+                          markers=False, color_continuous_scale=colors)
+        except:
+            fig = px.line(data, x=x_name, y=y_name, color=zName,
+                          markers=False, color_discrete_sequence=colors)
     else:
         fig = px.scatter(data, x=x_name, y=y_name, color=zName,
                          color_continuous_scale=colors)
@@ -389,6 +357,44 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
 
     if not save:
         fig.show()
+
+
+def interactive_app_scatter():
+    from dash import Dash, dcc, html, Input, Output
+    app = Dash(__name__)
+
+    app.layout = html.Div([
+        html.H4('Interactive scatter plot with Iris dataset'),
+        dcc.Graph(id="scatter-plot"),
+        html.P("Filter by petal width:"),
+        dcc.RangeSlider(
+            id='range-slider',
+            min=0, max=2.5, step=0.1,
+            marks={0: '0', 2.5: '2.5'},
+            value=[0.5, 2]
+        ),
+    ])
+
+    @app.callback(
+        Output("scatter-plot", "figure"),
+        Input("range-slider", "value"))
+    def update_bar_chart(slider_range):
+        df = px.data.iris()  # replace with your own data source
+        low, high = slider_range
+        mask = (df['petal_width'] > low) & (df['petal_width'] < high)
+        fig = px.scatter(
+            df[mask], x="sepal_width", y="sepal_length",
+            color="species", size='petal_length',
+            hover_data=['petal_width'])
+        return fig
+
+    app.run_server(debug=True)
+
+
+def is_port_in_use(port: int) -> bool:
+    import socket
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
 
 
 def getColors():
@@ -493,6 +499,9 @@ def resize_with_pad(im, target_width, target_height):
 
 
 if __name__ == '__main__':
+
+    interactive_app_scatter()
+    '''
     files = sys.argv[1:]
 
     print(f"Reading files: {files}")
@@ -501,7 +510,7 @@ if __name__ == '__main__':
         print(f"Reading file: {file}")
         data = parse_file(file)
         interactive_chart(data)
-
+    '''
 
 '''
 **************************************************************+

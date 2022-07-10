@@ -82,6 +82,7 @@ class AppController(tk.Tk):
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+        self.activateFrame = cont
 
     def center(self):
         """
