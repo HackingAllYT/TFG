@@ -20,6 +20,9 @@ info['resumo do seu contido'] = 'resumo do seu contido'
 info['Saír?'] = 'Saír?'
 info['Está seguro que quere pechar?'] = 'Are you sure you want to close?'
 
+info['Reiniciar?'] = 'Reiniciar?'
+info['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
+
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nome da gráfica:'
 info['Eliminar Outliers:'] = 'Eliminar Outliers:'
@@ -63,6 +66,9 @@ info['resumo do seu contido'] = 'resumo do seu contido'
 
 info['Saír?'] = 'Saír?'
 info['Está seguro que quere pechar?'] = 'Está seguro que quere pechar?'
+
+info['Reiniciar?'] = 'Reiniciar?'
+info['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nome da gráfica:'
@@ -108,6 +114,9 @@ info['resumo do seu contido'] = 'resumen de su contenido'
 
 info['Saír?'] = '¿Salir?'
 info['Está seguro que quere pechar?'] = '¿Está seguro que queire cerrar?'
+
+info['Reiniciar?'] = '¿Reiniciar?'
+info['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'] = 'Para ver los cambios hay que reiniciar la aplicación. ¿Está seguro que quiere reiniciar la aplicación?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nombre de la gráfica:'
@@ -159,6 +168,11 @@ RESOLU['HD'] = '1024x720'
 RESOLU['FullHD'] = '1920x1000'
 RESOLU['2K'] = '1024x720'
 RESOLU['4K'] = '1024x720'
+
+RESOLU['1'] = 'HD'
+RESOLU['2'] = 'FullHD'
+RESOLU['3'] = '2K'
+RESOLU['4'] = '4K'
 
 TREETYPE_TIDs_PIDs = 'TIDs-PIDs'
 TREETYPE_CPUs = 'CPUs'

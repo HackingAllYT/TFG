@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from tkinter import Canvas, Button, PhotoImage, Entry, Frame
+from tkinter import Canvas, Button, PhotoImage, Entry, Frame, IntVar, Checkbutton
 from pathlib import Path
 import configparser
 from text import TEXT, TREETYPE_TIDs_PIDs, TREETYPE_CPUs
@@ -163,6 +163,70 @@ class RooflineModelPane(tk.Frame):
             font=("Inter", 12 * -1)
         )
 
+        self.canvas.create_text(
+            337.0,
+            27.0,
+            anchor="nw",
+            text="Eixe X logarítmico:",
+            fill="#000000",
+            font=("Inter", 15 * -1)
+        )
+
+        self.canvas.create_text(
+            337.0,
+            68.0,
+            anchor="nw",
+            text="Eixe Y logarítmico:",
+            fill="#000000",
+            font=("Inter", 15 * -1)
+        )
+
+        self.eixoX = IntVar()
+
+        self.eixoX_CB = Checkbutton(
+            self,
+            text='',
+            variable=self.eixoX,
+            onvalue=1,
+            offvalue=0,
+            background='#FFFFFF',
+            image=self.classParent.getUnCheckedImage(),
+            selectimage=self.classParent.getCheckedImage(),
+            indicatoron=False,
+            highlightthickness=0,
+            borderwidth=0
+        )
+
+        self.eixoX_CB.place(
+            x=534.0,
+            y=27.0,
+            width=20.0,
+            height=20.0
+        )
+
+        self.eixoY = IntVar()
+
+        self.eixoY_CB = Checkbutton(
+            self,
+            text='',
+            variable=self.eixoY,
+            onvalue=1,
+            offvalue=0,
+            background='#FFFFFF',
+            image=self.classParent.getUnCheckedImage(),
+            selectimage=self.classParent.getCheckedImage(),
+            indicatoron=False,
+            highlightthickness=0,
+            borderwidth=0
+        )
+
+        self.eixoY_CB.place(
+            x=534.0,
+            y=68.0,
+            width=20.0,
+            height=20.0
+        )
+
         self.treeFramePidTid = Frame(
             self,
             width=235.0,
@@ -256,11 +320,13 @@ class RooflineModelPane(tk.Frame):
 
     def getDataCollected(self):
         info = {}
-        '''info['name'] = self.entry_3.get()
-        info['xRow'] = self.xData.get()
-        info['yRow'] = self.yData.get()'''
+        info['name'] = self.entry_1.get()
+        info['logX'] = bool(self.eixoX.get())
+        info['logY'] = bool(self.eixoY.get())
+
         if self.entry_1.get():
             self.classParent.changeName(self.entry_1.get())
-        '''else:
-            info['name'] = 'Roofline Model: ' + self.xData.get()'''
+
+        info['PIDsTIDs'] = self.tPidTid.getSelectedItemsPIDsTIDs()
+        info['CPUs'] = self.tCpu.getSelectedItemsCPUs()
         return info

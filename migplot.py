@@ -333,6 +333,7 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
     # data = data[data.PID.isin(Pids)]
 
     data = data[data.TID.isin(getListOfPids(infoData))]
+    data = data.sort_values(by=y_name)
 
     if colors == 'default':
         colors = None
@@ -391,10 +392,49 @@ def interactive_app_scatter():
     app.run_server(debug=True)
 
 
+def interactive_app_scatter_data(data):
+    from dash import Dash, dcc, html, Input, Output
+    app = Dash(__name__)
+
+    app.layout = html.Div([
+        html.H4('Interactive scatter plot with Iris dataset'),
+        dcc.Graph(id="scatter-plot"),
+        html.P("Filter by petal width:"),
+        dcc.RangeSlider(
+            id='range-slider',
+            min=1000, max=100000000, step=100,
+            marks={1000: '1000', 100000000: '100000000'},
+            value=[1000, 100000000]
+        ),
+    ])
+
+    @app.callback(
+        Output("scatter-plot", "figure"),
+        Input("range-slider", "value"))
+    def update_bar_chart(slider_range):
+        df = data  # replace with your own data source
+        low, high = slider_range
+        mask = (df['Timestamp'] > low) & (df['Timestamp'] < high)
+        fig = px.scatter(
+            df[mask], x="Timestamp", y="TID",
+            color="CPU%", size='TID',
+            hover_data=['Timestamp'])
+        return fig
+
+    app.run_server(debug=True)
+
+
 def is_port_in_use(port: int) -> bool:
     import socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('localhost', port)) == 0
+
+
+def getColorsContinuos():
+    aux = px.colors.sequential.__all__
+    aux.append('default')
+    aux.sort()
+    return aux
 
 
 def getColors():
@@ -411,11 +451,13 @@ def getListOfPids(infoData: dict):
     return list(map(int, aux))
 
 
-def roofline_model():
+def roofline_model(data):
     ''
     x = [1, 4, None, 2, 3, None, 3, 4]
     y = [0, 0, None, 1, 1, None, 2, 2]
+    # fig = px.scatter(data, x="gdpPercap", y="lifeExp",hover_name="country", log_x=True, log_y=False)
     # fig.add_trace(go.Scatter(x=x, y=y))
+    # fig.show()
 
 
 def calcularOutliers(data: pd.DataFrame, zName: str, values: dict):
@@ -500,7 +542,9 @@ def resize_with_pad(im, target_width, target_height):
 
 if __name__ == '__main__':
 
-    interactive_app_scatter()
+    data = parse_file('thread_info_1.csv')
+    # interactive_app_scatter_data(data)
+
     '''
     files = sys.argv[1:]
 

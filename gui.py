@@ -9,13 +9,14 @@ from PageOne import PageOne
 from PageTwo import PageTwo
 from threading import *
 import tkinter.filedialog as fd
-from tkinter.messagebox import showinfo, askyesno
+from tkinter.messagebox import showinfo, askyesno, askyesnocancel
 from migplot import (
     parse_file,
     initial_chart,
     interactive_chart_plot,
     interactive_scatter,
     getColors,
+    getColorsContinuos,
     calcularOutliers
 )
 from checkBoxTreeview import loadPids
@@ -32,6 +33,8 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 config = configparser.ConfigParser()
 config.read('config.ini')
+
+askExit = True
 
 
 def relative_to_assets(path: str) -> Path:
@@ -78,6 +81,8 @@ class AppController(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame(StartPage)
+        global askExit
+        askExit = False
 
     def show_frame(self, cont):
         frame = self.frames[cont]
@@ -205,14 +210,18 @@ class AppController(tk.Tk):
     '''
 
     def confirmExit(self):
-        answer = askyesno(title=TEXT[config['INITIAL']['IDIOMA']]['Saír?'],
-                          message=TEXT[config['INITIAL']['IDIOMA']]['Está seguro que quere pechar?'])
+        answer = askyesno(
+            title=TEXT[config['INITIAL']['IDIOMA']]['Saír?'],
+            message=TEXT[config['INITIAL']['IDIOMA']
+                         ]['Está seguro que quere pechar?']
+        )
         if answer:
             self.destroy()
 
     def xerarNovoHeatmap(self, info):
         aux = (infoData[0][1].columns.get_loc(info['xRow']),
                infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+
         interactive_chart_plot(
             index=aux,
             plotName=info['name'],
@@ -223,15 +232,6 @@ class AppController(tk.Tk):
         )
 
     def xerarNovoScatter(self, info):
-        '''interactive_scatter(
-            x_index=infoData[0][1].columns.get_loc(info['xRow']),
-            y_index=infoData[0][1].columns.get_loc(info['yRow']),
-            zName=info['zRow'],
-            plotName=info['name'],
-            data=infoData[0][1],
-            save=None
-        )'''
-
         aux = (infoData[0][1].columns.get_loc(info['xRow']),
                infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
 
@@ -295,10 +295,28 @@ class AppController(tk.Tk):
     def getColors(self):
         return getColors()
 
+    def getColorsContinuos(self):
+        return getColorsContinuos()
+
     def getCalcularOutliers(self, zName, info):
         return calcularOutliers(infoData[0][1], zName, info)
 
+    def askReloadApp(self):
+        global askExit
+        answer = askyesnocancel(
+            title=TEXT[config['INITIAL']['IDIOMA']]['Reiniciar?'],
+            message=TEXT[config['INITIAL']['IDIOMA']
+                         ]['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?']
+        )
+        # true = si
+        # false = non
+        # cancel = None
+        if answer:
+            askExit = True
+            self.destroy()
+
 
 if __name__ == '__main__':
-    app = AppController(className="NUMA data visualization")
-    app.mainloop()
+    while askExit:
+        app = AppController(className="NUMA data visualization")
+        app.mainloop()

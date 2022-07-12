@@ -119,6 +119,9 @@ class ScrollableFrame(ttk.Frame):
         aux = TraceRoofline(self.canvas,
                             self.controller, self.classParent)
         self.frames.append(aux)
+        aux = TraceRoofline(self.canvas,
+                            self.controller, self.classParent)
+        self.frames.append(aux)
 
 
 class TraceRoofline(tk.Frame):

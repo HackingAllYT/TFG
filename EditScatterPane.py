@@ -471,7 +471,16 @@ class ScatterPane(tk.Frame):
             self.entry_2.config(state=tk.DISABLED)
 
     def unirPuntos_changed(self):
-        ""
+        if self.unirPuntos.get():
+            # self.colors_cb['values'] = self.controller.getColorsContinuos()
+            # self.colors_cb.current(self.controller.getColorsContinuos().index('default'))
+            self.colors_cb.config(state='disabled')
+            self.colors_cb.current(
+                self.controller.getColors().index('default'))
+        else:
+            # self.colors_cb['values'] = self.controller.getColors()
+            # self.colors_cb.current(self.controller.getColors().index('default'))
+            self.colors_cb.config(state='readonly')
 
     def getDataCollected(self):
         info = {}

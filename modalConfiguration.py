@@ -7,7 +7,7 @@ from tkinter import Canvas, Button, PhotoImage, ttk, StringVar
 import tkinter as tk
 import configparser
 
-from text import TEXT
+from text import TEXT, RESOLU
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -34,7 +34,7 @@ class configurationModal(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.parent = parent
+        self.controller = parent
         self.title("Configuración")
         self.geometry("700x900")
         self.resizable(False, False)
@@ -262,6 +262,7 @@ class configurationModal(tk.Toplevel):
                 height=30
             )
             aux += 100
+
         self.button_image_5 = PhotoImage(
             file=relative_to_assets("aplicar.png"))
         self.button_5 = Button(
@@ -269,12 +270,29 @@ class configurationModal(tk.Toplevel):
             image=self.button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=self.aplicar,
+            command=self.reiniciarApp,
             relief="flat"
         )
         self.button_5.place(
-            x=508.0,
-            y=836.0,
+            x=450.0,
+            y=828.0,
+            width=180.0,
+            height=55.0
+        )
+
+        self.button_image_9 = PhotoImage(
+            file=relative_to_assets("gardar_button.png"))
+        self.button_9 = Button(
+            self,
+            image=self.button_image_9,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.aplicar,
+            relief="flat"
+        )
+        self.button_9.place(
+            x=160.0,
+            y=828.0,
             width=180.0,
             height=55.0
         )
@@ -355,28 +373,23 @@ class configurationModal(tk.Toplevel):
 
         self.changes = False
 
-    def select(self):
-        selection = self.listbox.curselection()
-        if selection:
-            self.selection = self.listbox.get(selection[0])
-        self.destroy()
+    '''
+    *******************************************************************************
+    ******************* Funcións de control do modal en xeral  ********************
+    *******************************************************************************
+    '''
 
     def show(self):
         self.deiconify()
+        self.transient(self.controller)
         self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
         #self.parent.eval(f'tk::PlaceWindow {str(self)} center')
         self.center()
         self.wait_window(self)
         return self.changes
 
-    def destroyPop(self, event=None):
-        self.destroy()
-
     def ok(self, event=None):
         # self.valor.set(self.e.get())
-        self.destroy()
-
-    def cancel(self, event=None):
         self.destroy()
 
     def center(self):
@@ -414,10 +427,15 @@ class configurationModal(tk.Toplevel):
         config.set('INITIAL', 'IDIOMA', self.idioma)
         config.set('INITIAL', 'COLOR', self.color)
         config.set('INITIAL', 'COLOR-BG', self.colorBg)
+        config.set('INITIAL', 'RESOLU', RESOLU[self.screenResolution.get()])
 
         # save to a file
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
+
+    def reiniciarApp(self, event=None):
+        self.aplicar()
+        self.controller.askReloadApp()
 
     '''
     *******************************************************************************
