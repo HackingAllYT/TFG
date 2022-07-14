@@ -14,32 +14,6 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-def loadPids(data):
-    global infoAux
-    dataNoRepeat = data.drop_duplicates(subset=["PID"], keep='first')
-    # Create an empty list
-    infoAux = {}
-
-    # Iterate over each row
-    for rows in dataNoRepeat.itertuples():
-
-        item = data.loc[data['PID'] == rows.PID]
-        if rows.PID in infoAux:
-            aux = infoAux[rows.PID]
-            for it in item.itertuples():
-                aux.append(it.TID)
-            aux = list(set(aux))
-            infoAux[rows.PID] = aux
-        else:
-            aux = []
-            for it in item.itertuples():
-                aux.append(it.TID)
-            aux = list(set(aux))
-            infoAux[rows.PID] = aux
-
-    return infoAux
-
-
 '''
 *******************************************************************************
 *************************** Checbox Treeview Class ****************************

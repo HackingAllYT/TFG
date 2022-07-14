@@ -3,6 +3,8 @@ import tkinter as tk
 
 from pathlib import Path
 import configparser
+
+import pandas as pd
 from text import TEXT, RESOLU
 from StartPage import StartPage
 from PageOne import PageOne
@@ -19,7 +21,6 @@ from migplot import (
     getColorsContinuos,
     calcularOutliers
 )
-from checkBoxTreeview import loadPids
 import modalConfiguration as cm
 import modalSelectFigure as msf
 from EditHeatMap import HeatMapPane
@@ -154,13 +155,13 @@ class AppController(tk.Tk):
         )
         if type(filename) == str:
             data = parse_file(file=filename)
-            info = loadPids(data=data)
+            info = self.loadPids(data=data)
             infoData.append([filename, data])
             initial_chart(data=data)
         else:
             for x in filename:
                 data = parse_file(file=x)
-                info = loadPids(data=data)
+                info = self.loadPids(data=data)
                 infoData.append([x, data])
                 initial_chart(data=data)
 
@@ -371,6 +372,35 @@ class AppController(tk.Tk):
         if answer:
             askExit = True
             self.destroy()
+    '''
+    *******************************************************************************
+    *********** Función auxiliar para devolver un diccionario cos PIDs ************
+    *******************************************************************************
+    '''
+
+    def loadPids(self, data: pd.DataFrame):
+        dataNoRepeat = data.drop_duplicates(subset=["PID"], keep='first')
+        # Create an empty list
+        infoAux = {}
+
+        # Iterate over each row
+        for rows in dataNoRepeat.itertuples():
+
+            item = data.loc[data['PID'] == rows.PID]
+            if rows.PID in infoAux:
+                aux = infoAux[rows.PID]
+                for it in item.itertuples():
+                    aux.append(it.TID)
+                aux = list(set(aux))
+                infoAux[rows.PID] = aux
+            else:
+                aux = []
+                for it in item.itertuples():
+                    aux.append(it.TID)
+                aux = list(set(aux))
+                infoAux[rows.PID] = aux
+
+        return infoAux
 
 
 if __name__ == '__main__':
