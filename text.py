@@ -21,7 +21,7 @@ info['Saír?'] = 'Saír?'
 info['Está seguro que quere pechar?'] = 'Are you sure you want to close?'
 
 info['Reiniciar?'] = 'Reiniciar?'
-info['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
+info['text-ask-reload'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nome da gráfica:'
@@ -29,6 +29,10 @@ info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
+
+info['Seleccione os CPUs a empregar:'] = 'Seleccione os CPUs a empregar:'
+info['Eixe X logarítmico:'] = 'Eixe X logarítmico:'
+info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -47,6 +51,9 @@ info['Cores:'] = 'Colors:'
 info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de arquivo de saída'
 info['Escolla o formato:'] = 'Escolla o formato:'
 info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
+
+info['Xerando gráfica'] = 'Xerando gráfica!'
+info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador.'
 
 TEXT['en'] = info
 
@@ -68,7 +75,7 @@ info['Saír?'] = 'Saír?'
 info['Está seguro que quere pechar?'] = 'Está seguro que quere pechar?'
 
 info['Reiniciar?'] = 'Reiniciar?'
-info['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
+info['text-ask-reload'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nome da gráfica:'
@@ -76,6 +83,10 @@ info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
+
+info['Seleccione os CPUs a empregar:'] = 'Seleccione os CPUs a empregar:'
+info['Eixe X logarítmico:'] = 'Eixe X logarítmico:'
+info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -94,6 +105,9 @@ info['Cores:'] = 'Cores:'
 info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de arquivo de saída'
 info['Escolla o formato:'] = 'Escolla o formato:'
 info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
+
+info['Xerando gráfica'] = 'Xerando gráfica!'
+info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador.'
 
 TEXT['gal'] = info
 
@@ -116,7 +130,7 @@ info['Saír?'] = '¿Salir?'
 info['Está seguro que quere pechar?'] = '¿Está seguro que queire cerrar?'
 
 info['Reiniciar?'] = '¿Reiniciar?'
-info['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'] = 'Para ver los cambios hay que reiniciar la aplicación. ¿Está seguro que quiere reiniciar la aplicación?'
+info['text-ask-reload'] = 'Para ver los cambios hay que reiniciar la aplicación. ¿Está seguro que quiere reiniciar la aplicación?'
 
 info['Tipo dato Z:'] = 'Tipo dato Z:'
 info['Nome da gráfica:'] = 'Nombre de la gráfica:'
@@ -124,6 +138,10 @@ info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs y TIDs a utilizar:'
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
+
+info['Seleccione os CPUs a empregar:'] = 'Seleccione os CPUs a empregar:'
+info['Eixe X logarítmico:'] = 'Eixe X logarítmico:'
+info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -142,6 +160,9 @@ info['Cores:'] = 'Colores:'
 info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de archivo de salida'
 info['Escolla o formato:'] = 'Escoja el formato:'
 info['Escolla a carpeta destino:'] = 'Escoja la carpeta destino:'
+
+info['Xerando gráfica'] = 'Xerando gráfica!'
+info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador.'
 
 
 TEXT['es'] = info

@@ -15,29 +15,29 @@ def relative_to_assets(path: str) -> Path:
 
 
 def loadPids(data):
-    global info
+    global infoAux
     dataNoRepeat = data.drop_duplicates(subset=["PID"], keep='first')
     # Create an empty list
-    info = {}
+    infoAux = {}
 
     # Iterate over each row
     for rows in dataNoRepeat.itertuples():
 
         item = data.loc[data['PID'] == rows.PID]
-        if rows.PID in info:
-            aux = info[rows.PID]
+        if rows.PID in infoAux:
+            aux = infoAux[rows.PID]
             for it in item.itertuples():
                 aux.append(it.TID)
             aux = list(set(aux))
-            info[rows.PID] = aux
+            infoAux[rows.PID] = aux
         else:
             aux = []
             for it in item.itertuples():
                 aux.append(it.TID)
             aux = list(set(aux))
-            info[rows.PID] = aux
+            infoAux[rows.PID] = aux
 
-    return info
+    return infoAux
 
 
 '''

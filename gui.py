@@ -164,6 +164,38 @@ class AppController(tk.Tk):
                 infoData.append([x, data])
                 initial_chart(data=data)
 
+    def xerarNovaHeatMapThread(self, info):
+        global infoData
+        aux = (infoData[0][1].columns.get_loc(info['xRow']),
+               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+
+        interactive_chart_plot(
+            index=aux,
+            plotName=info['name'],
+            data=infoData[0][1],
+            save=None,
+            infoData=info['PIDsTIDs'],
+            colors=info['colors']
+        )
+
+    def xerarNovoScatterThread(self, info):
+        global infoData
+        aux = (infoData[0][1].columns.get_loc(info['xRow']),
+               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+
+        interactive_scatter(
+            index=aux,
+            plotName=info['name'],
+            data=infoData[0][1],
+            save=None,
+            lines=info['unir'],
+            infoData=info['PIDsTIDs'],
+            colors=info['colors']
+        )
+
+    def xerarNovoRooflineThread(self, info):
+        ''
+
     '''
     *******************************************************************************
     ************************ Funcións propias do Frame One ************************
@@ -172,7 +204,7 @@ class AppController(tk.Tk):
 
     def openConfigurationModal(self):
         global conModal
-        #conModal = cm.configurationModal(window)
+
         conModal = cm.configurationModal(self)
         result = conModal.show()
         if result == True:
@@ -218,35 +250,50 @@ class AppController(tk.Tk):
         if answer:
             self.destroy()
 
-    def xerarNovoHeatmap(self, info):
-        aux = (infoData[0][1].columns.get_loc(info['xRow']),
-               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+    '''
+    *******************************************************************************
+    **************** Funcións para xerar as gráficas do Frame Two *****************
+    *******************************************************************************
+    '''
 
-        interactive_chart_plot(
-            index=aux,
-            plotName=info['name'],
-            data=infoData[0][1],
-            save=None,
-            infoData=info['PIDsTIDs'],
-            colors=info['colors']
-        )
+    def xerarNovoHeatmap(self, info):
+        # creating a thread
+        Thread_loadFile = Thread(
+            target=lambda: self.xerarNovaHeatMapThread(info))
+
+        # change T to daemon
+        Thread_loadFile.daemon = True
+        Thread_loadFile.start()
+
+        self.showNewGraphic()
 
     def xerarNovoScatter(self, info):
-        aux = (infoData[0][1].columns.get_loc(info['xRow']),
-               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+        # creating a thread
+        Thread_loadFile = Thread(
+            target=lambda: self.xerarNovoScatterThread(info))
 
-        interactive_scatter(
-            index=aux,
-            plotName=info['name'],
-            data=infoData[0][1],
-            save=None,
-            lines=info['unir'],
-            infoData=info['PIDsTIDs'],
-            colors=info['colors']
-        )
+        # change T to daemon
+        Thread_loadFile.daemon = True
+        Thread_loadFile.start()
+
+        self.showNewGraphic()
 
     def xerarNovoRooflineModel(self, info):
-        ""
+        # creating a thread
+        Thread_loadFile = Thread(
+            target=lambda: self.xerarNovoRooflineThread(info))
+
+        # change T to daemon
+        Thread_loadFile.daemon = True
+        Thread_loadFile.start()
+
+        self.showNewGraphic()
+
+    '''
+    *******************************************************************************
+    ************* Funcións xerais para gardar as imaxes das gráficas **************
+    *******************************************************************************
+    '''
 
     def gardarNovoHeatMap(self, info):
         self.openSaveAsDialog(info=info, graphType='heatmap')
@@ -271,6 +318,17 @@ class AppController(tk.Tk):
                     data=infoData[0][1],
                     save=result
                 )
+    '''
+    *******************************************************************************
+    ********* Funcións xerais para mostrar que se está a xerar a gráfica **********
+    *******************************************************************************
+    '''
+
+    def showNewGraphic(self):
+        showinfo(
+            title=TEXT[config['INITIAL']['IDIOMA']]['Xerando gráfica'],
+            message=TEXT[config['INITIAL']['IDIOMA']]['info-creating-graph']
+        )
 
     '''
     *******************************************************************************
@@ -305,8 +363,7 @@ class AppController(tk.Tk):
         global askExit
         answer = askyesnocancel(
             title=TEXT[config['INITIAL']['IDIOMA']]['Reiniciar?'],
-            message=TEXT[config['INITIAL']['IDIOMA']
-                         ]['Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?']
+            message=TEXT[config['INITIAL']['IDIOMA']]['text-ask-reload']
         )
         # true = si
         # false = non

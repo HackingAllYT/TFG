@@ -124,7 +124,8 @@ class RooflineModelPane(tk.Frame):
             54.0,
             110.0,
             anchor="nw",
-            text="Seleccione PIDs e TIDs a empregar:",
+            text=TEXT[config['INITIAL']['IDIOMA']
+                      ]["Seleccione PIDs e TIDs a empregar:"],
             fill="#000000",
             font=("Inter", 12 * -1)
         )
@@ -141,7 +142,8 @@ class RooflineModelPane(tk.Frame):
             337.0,
             109.0,
             anchor="nw",
-            text="Seleccione os CPUs a empregar:",
+            text=TEXT[config['INITIAL']['IDIOMA']
+                      ]["Seleccione os CPUs a empregar:"],
             fill="#000000",
             font=("Inter", 12 * -1)
         )
@@ -167,7 +169,7 @@ class RooflineModelPane(tk.Frame):
             337.0,
             27.0,
             anchor="nw",
-            text="Eixe X logarítmico:",
+            text=TEXT[config['INITIAL']['IDIOMA']]["Eixe X logarítmico:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -176,7 +178,7 @@ class RooflineModelPane(tk.Frame):
             337.0,
             68.0,
             anchor="nw",
-            text="Eixe Y logarítmico:",
+            text=TEXT[config['INITIAL']['IDIOMA']]["Eixe Y logarítmico:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
