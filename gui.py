@@ -123,7 +123,7 @@ class AppController(tk.Tk):
         # chamar a: fd.askopenfilenames
         filename = fd.askopenfilename(
             title=TEXT[config['INITIAL']['IDIOMA']]['Escolla un arquivo:'],
-            initialdir='/',
+            initialdir=Path.home(),
             filetypes=filetypes)
 
         if filename:
@@ -178,6 +178,8 @@ class AppController(tk.Tk):
             infoData=info['PIDsTIDs'],
             colors=info['colors']
         )
+        # self.root.destroy()
+        # self.root.after(0, self.root.destroy)
 
     def xerarNovoScatterThread(self, info):
         global infoData
@@ -193,9 +195,13 @@ class AppController(tk.Tk):
             infoData=info['PIDsTIDs'],
             colors=info['colors']
         )
+        # self.root.destroy()
+        # self.root.after(0, self.root.destroy)
 
     def xerarNovoRooflineThread(self, info):
         ''
+        # self.root.destroy()
+        # self.root.after(0, self.root.destroy)
 
     '''
     *******************************************************************************
@@ -326,10 +332,30 @@ class AppController(tk.Tk):
     '''
 
     def showNewGraphic(self):
-        showinfo(
+
+        self.showMessage(TEXT[config['INITIAL']['IDIOMA']]
+                         ['info-creating-graph'])
+        '''showinfo(
             title=TEXT[config['INITIAL']['IDIOMA']]['Xerando gráfica'],
             message=TEXT[config['INITIAL']['IDIOMA']]['info-creating-graph']
-        )
+        )'''
+
+    def showMessage(self, message, type='info'):
+        from tkinter import messagebox as msgb
+
+        self.root = tk.Tk()
+        self.root.withdraw()
+        self.root.after(4000, self.root.destroy)
+        try:
+            if type == 'info':
+                msgb.showinfo(TEXT[config['INITIAL']['IDIOMA']]
+                              ['Xerando gráfica'], message, master=self.root)
+            elif type == 'warning':
+                msgb.showwarning('Warning', message, master=self.root)
+            elif type == 'error':
+                msgb.showerror('Error', message, master=self.root)
+        except:
+            pass
 
     '''
     *******************************************************************************

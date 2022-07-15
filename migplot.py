@@ -339,6 +339,7 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
         colors = None
 
     if lines:
+        data = data.sort_values(by=x_name)
         try:
             fig = px.line(data, x=x_name, y=y_name, color=zName,
                           markers=False, color_continuous_scale=colors)

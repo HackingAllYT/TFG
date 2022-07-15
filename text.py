@@ -10,37 +10,37 @@ info['Esta ferramenta permite crear'] = 'This tool allows you to create'
 info['gráficas para a visualización de'] = 'graphics to visualize of data'
 info['datos obtidos dos contadores'] = 'obtained from NUMA server'
 info['hardware de servidores NUMA'] = 'hardware counters'
-info['Para comezar seleccione o'] = 'Para comezar seleccione o'
-info['arquivo que quere procesar no'] = 'arquivo que quere procesar no'
-info['cadro que aparece a continuación'] = 'cadro que aparece a continuación'
-info['Este arquivo será procesado pola'] = 'Este arquivo será procesado pola'
-info['aplicación e mostrará un pequeno'] = 'aplicación e mostrará un pequeno'
-info['resumo do seu contido'] = 'resumo do seu contido'
+info['Para comezar seleccione o'] = 'To get started, select'
+info['arquivo que quere procesar no'] = 'the file you want to'
+info['cadro que aparece a continuación'] = 'process in the box below.'
+info['Este arquivo será procesado pola'] = 'This file will be processed and'
+info['aplicación e mostrará un pequeno'] = 'will show a small summary'
+info['resumo do seu contido'] = 'of its content.'
 
-info['Saír?'] = 'Saír?'
+info['Saír?'] = 'Exit?'
 info['Está seguro que quere pechar?'] = 'Are you sure you want to close?'
 
 info['Reiniciar?'] = 'Reiniciar?'
-info['text-ask-reload'] = 'Para ver os cambios hai que reiniciar a aplicación. Está seguro que quere reiniciar a aplicación?'
+info['text-ask-reload'] = 'To see the changes you have to restart the application. Are you sure you want to restart the application?'
 
-info['Tipo dato Z:'] = 'Tipo dato Z:'
-info['Nome da gráfica:'] = 'Nome da gráfica:'
-info['Eliminar Outliers:'] = 'Eliminar Outliers:'
-info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
-info['Tipo de gráfica:'] = 'Tipo de gráfica:'
-info['Unir puntos plot:'] = 'Unir puntos plot:'
+info['Tipo dato Z:'] = 'Data type Z:'
+info['Nome da gráfica:'] = 'Char name:'
+info['Eliminar Outliers:'] = 'Remove Outliers:'
+info['Seleccione PIDs e TIDs a empregar:'] = 'Select PIDs and TIDs to use:'
+info['Tipo de gráfica:'] = 'Type of grahp:'
+info['Unir puntos plot:'] = 'Join dots plot:'
 
-info['Seleccione os CPUs a empregar:'] = 'Seleccione os CPUs a empregar:'
-info['Eixe X logarítmico:'] = 'Eixe X logarítmico:'
-info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
+info['Seleccione os CPUs a empregar:'] = 'Select the CPUs to use:'
+info['Eixe X logarítmico:'] = 'Logarithmic X-axis:'
+info['Eixe Y logarítmico:'] = 'Logarithmic Y-axis:'
 
-info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
+info['Seleccione tipo de gráfica:'] = 'Select chart type:'
 
 info['Nome do gráfico:'] = 'Graphic name:'
 
-info['Arquivo seleccionado:'] = 'Arquivo seleccionado:'
+info['Arquivo seleccionado:'] = 'Selected File:'
 
-info['Escolla un arquivo:'] = 'Escolla un arquivo:'
+info['Escolla un arquivo:'] = 'Choose a file:'
 
 info['Configuración xeral:'] = 'General configuration:'
 info['Ruta do arquivo'] = 'File path'
@@ -48,12 +48,12 @@ info['Idioma:'] = 'Language:'
 info['Resolución:'] = 'Resolución:'
 info['Cores:'] = 'Colors:'
 
-info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de arquivo de saída'
-info['Escolla o formato:'] = 'Escolla o formato:'
-info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
+info['Seleccione tipo de arquivo de saída'] = 'Select output file type'
+info['Escolla o formato:'] = 'Choose the format:'
+info['Escolla a carpeta destino:'] = 'Choose the destination folder:'
 
-info['Xerando gráfica'] = 'Xerando gráfica!'
-info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador.'
+info['Xerando gráfica'] = 'Generating graph!'
+info['info-creating-graph'] = 'Order received, we are to generate the graph indicates!\nIt will soon appear in a new browser tab!'
 
 TEXT['en'] = info
 
@@ -107,7 +107,7 @@ info['Escolla o formato:'] = 'Escolla o formato:'
 info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
 
 info['Xerando gráfica'] = 'Xerando gráfica!'
-info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador.'
+info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador!'
 
 TEXT['gal'] = info
 
@@ -139,9 +139,9 @@ info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs y TIDs a utilizar:
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
 
-info['Seleccione os CPUs a empregar:'] = 'Seleccione os CPUs a empregar:'
-info['Eixe X logarítmico:'] = 'Eixe X logarítmico:'
-info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
+info['Seleccione os CPUs a empregar:'] = 'Seleccione los CPUs a utilizar:'
+info['Eixe X logarítmico:'] = 'Eje X logarítmico:'
+info['Eixe Y logarítmico:'] = 'Eje Y logarítmico:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -161,8 +161,8 @@ info['Seleccione tipo de arquivo de saída'] = 'Seleccione tipo de archivo de sa
 info['Escolla o formato:'] = 'Escoja el formato:'
 info['Escolla a carpeta destino:'] = 'Escoja la carpeta destino:'
 
-info['Xerando gráfica'] = 'Xerando gráfica!'
-info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador.'
+info['Xerando gráfica'] = 'Generando gráfica!'
+info['info-creating-graph'] = 'Orden recibida, estamos a generar la gráfica indicada!\nPróximamente aparecerá en una nueva pestaña del navegador!'
 
 
 TEXT['es'] = info
