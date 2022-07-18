@@ -6,7 +6,7 @@
 - [x] Cerrar el diálogo modal de "Xerando gráfica" automáticamente una vez se genere la gráfica.
 - [ ] El cuadro de texto para el título de la gráfica no tiene la apariencia de cuadro de texto modificable.
 - [ ] El cuadro de texto para el título de la gráfica debería aparecer arriba a la izquierda, separado visualmente del resto de opciones.
-- [ ] En el menú superior, solamente la opción de "nova gráfica" reacciona al hover y tiene un tamaño diferente al resto de opciones.
+- [x] En el menú superior, solamente la opción de "nova gráfica" reacciona al hover y tiene un tamaño diferente al resto de opciones.
 - [x] Cuando se genera una gráfica, ¿se calculan los valores Z para todas las columnas, o solamente para la que se va a representar? En la consola aparece un mensaje que da a entender lo último. ----> Estás no correcto, só na especificada
 - [ ] Deberíamos corregir la fórmula de detección de outliers. Sugiero utilizar rangos intercuartílicos como en los boxplot (<https://en.wikipedia.org/wiki/Box_plot#Elements>).
 
@@ -20,6 +20,8 @@
 - [x] Activar la opción de unir puntos de la gráfica bloque la selección del esquema de colores. ¿Es un bug o hay alguna razón por la que tenga que ser así? image.png Fallo ao extraer as cores, non permite esa selección
 - [x] ¿Tiene sentido poder definir el tipo de dato del eje Z? A discutir en la próxima reunión.  ----> Oscar dixo que si
 - [x] Al unir puntos de la gráfica, los puntos se unen de manera arbitraria en lugar de ordenarse según el eje X o timestamp.
+- [ ] Activar la eliminación de outliers no cambia la gráfica a generar.
+
 
 # Roofline
 
@@ -27,8 +29,8 @@
 
 # Opciones
 
-- [ ] Los cambios no funcionan hasta matar por completo el proceso y volver a abrirlo. El diálogo modal no cumple su objetivo.
+- [x] Los cambios no funcionan hasta matar por completo el proceso y volver a abrirlo. El diálogo modal no cumple su objetivo.
 - [ ] No se resaltan las opciones seleccionadas y activas respecto al idioma o esquema de color.
-- [ ] Los esquemas de colores están rotos, se mezclan distintos esquemas.
+- [x] Los esquemas de colores están rotos, se mezclan distintos esquemas.
 - [x] La selección de idioma no funciona correctamente, se mezclan distintos idiomas.
 - [x] Sobra la "X" para cerrar la ventana de opciones.

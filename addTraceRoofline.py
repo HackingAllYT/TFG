@@ -2,7 +2,6 @@ import tkinter as tk
 
 from tkinter import BOTTOM, Canvas, Button, PhotoImage, Entry, Frame, ttk, NONE, END, X
 from pathlib import Path
-import configparser
 from text import TEXT, TREETYPE_TIDs_PIDs, TREETYPE_CPUs
 from checkBoxTreeview import CheckboxTreeview
 
@@ -10,9 +9,6 @@ import platform
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 
 def relative_to_assets(path: str) -> Path:
@@ -132,6 +128,7 @@ class TraceRoofline(tk.Frame):
         self.controller = controller
         self.classParent = classParent
         self.parent = parent
+        self.config = self.controller.getConfig()
 
         self.canvas = Canvas(
             self.parent,

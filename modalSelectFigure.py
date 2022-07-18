@@ -61,25 +61,6 @@ class selectFigureModal(tk.Toplevel):
             fill=TEXT[config['INITIAL']['COLOR-BG']],
             outline="")
 
-        self.button_image_1 = PhotoImage(
-            file=relative_to_assets("cross.png"))
-        self.button_1 = Button(
-            self,
-            image=self.button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=self.destroyPop,
-            relief="flat"
-        )
-        self.button_1.place(
-            x=630.0,
-            y=9.0,
-            width=58.0,
-            height=58.0
-        )
-        self.button_1.bind('<Enter>', self.button_1_enter)
-        self.button_1.bind('<Leave>', self.button_1_leave)
-
         self.button_image_2 = PhotoImage(
             file=relative_to_assets("button_heatmap.png"))
         self.button_2 = Button(
@@ -203,30 +184,6 @@ class selectFigureModal(tk.Toplevel):
     ******************* Funcións para facer efectos nos botóns  *******************
     *******************************************************************************
     '''
-
-    def button_1_enter(self, e):
-        aux = PhotoImage(
-            file=relative_to_assets("cross_62x62.png")
-        )
-        self.button_1["image"] = aux
-        self.button_1.image = aux
-        '''self.button_1.place_forget()
-        self.button_1.place(
-            x=628.0,
-            y=7.0,
-            width=62.0,
-            height=62.0
-        )'''
-
-    def button_1_leave(self, e):
-        self.button_1["image"] = self.button_image_1
-        '''self.button_1.place_forget()
-        self.button_1.place(
-            x=630.0,
-            y=9.0,
-            width=58.0,
-            height=58.0
-        )'''
 
     def button_2_enter(self, e):
         ""

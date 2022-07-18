@@ -2,7 +2,6 @@ import tkinter as tk
 
 from tkinter import Canvas, Button, PhotoImage, Entry, Frame, IntVar, Checkbutton
 from pathlib import Path
-import configparser
 from text import TEXT, TREETYPE_TIDs_PIDs, TREETYPE_CPUs
 from checkBoxTreeview import CheckboxTreeview
 from addTraceRoofline import TraceRooflineContainer, TraceRoofline, ScrollableFrame
@@ -10,9 +9,6 @@ from scrollbarFrame import ScrolledFrame
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 
 def relative_to_assets(path: str) -> Path:
@@ -26,6 +22,10 @@ class RooflineModelPane(tk.Frame):
 
         self.controller = controller
         self.classParent = classParent
+        self.config = self.controller.getConfig()
+
+        self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
+            '/' + self.config['INITIAL']['idioma'] + '/'
 
         self.canvas = Canvas(
             self,
@@ -51,13 +51,14 @@ class RooflineModelPane(tk.Frame):
             60.0,
             23.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
 
+        aux = self.auxRoute + 'xerar.png'
         self.button_image_1 = PhotoImage(
-            file=relative_to_assets("xerar_button.png"))
+            file=relative_to_assets(aux))
         self.button_1 = Button(
             self,
             image=self.button_image_1,
@@ -74,8 +75,9 @@ class RooflineModelPane(tk.Frame):
             height=55.0
         )
 
+        aux = self.auxRoute + 'gardar_saida.png'
         self.button_image_2 = PhotoImage(
-            file=relative_to_assets("button_2.png"))
+            file=relative_to_assets(aux))
         self.button_2 = Button(
             self,
             image=self.button_image_2,
@@ -124,7 +126,7 @@ class RooflineModelPane(tk.Frame):
             54.0,
             110.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Seleccione PIDs e TIDs a empregar:"],
             fill="#000000",
             font=("Inter", 12 * -1)
@@ -142,7 +144,7 @@ class RooflineModelPane(tk.Frame):
             337.0,
             109.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Seleccione os CPUs a empregar:"],
             fill="#000000",
             font=("Inter", 12 * -1)
@@ -169,7 +171,7 @@ class RooflineModelPane(tk.Frame):
             337.0,
             27.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Eixe X logarítmico:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Eixe X logarítmico:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -178,7 +180,7 @@ class RooflineModelPane(tk.Frame):
             337.0,
             68.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Eixe Y logarítmico:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Eixe Y logarítmico:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -289,6 +291,11 @@ class RooflineModelPane(tk.Frame):
             height=358
         )
 
+        self.button_1.bind('<Enter>', self.button_1_enter)
+        self.button_1.bind('<Leave>', self.button_1_leave)
+
+        self.button_2.bind('<Enter>', self.button_2_enter)
+        self.button_2.bind('<Leave>', self.button_2_leave)
         self.loadDataItems()
 
     def loadDataItems(self):
@@ -332,3 +339,31 @@ class RooflineModelPane(tk.Frame):
         info['PIDsTIDs'] = self.tPidTid.getSelectedItemsPIDsTIDs()
         info['CPUs'] = self.tCpu.getSelectedItemsCPUs()
         return info
+
+    '''
+    *******************************************************************************
+    ****************** Funcións para xogar cos efectos das fotos ******************
+    *******************************************************************************
+    '''
+
+    def button_1_enter(self, e):
+        route = self.auxRoute + 'xerar_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_1["image"] = aux
+        self.button_1.image = aux
+
+    def button_1_leave(self, e):
+        self.button_1["image"] = self.button_image_1
+
+    def button_2_enter(self, e):
+        route = self.auxRoute + 'gardar_saida_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_2["image"] = aux
+        self.button_2.image = aux
+
+    def button_2_leave(self, e):
+        self.button_2["image"] = self.button_image_2

@@ -3,7 +3,6 @@ import tkinter as tk
 
 from tkinter import ttk, Button, Canvas, PhotoImage
 from pathlib import Path
-import configparser
 
 from StartPage import StartPage
 from text import TEXT
@@ -11,9 +10,6 @@ from text import TEXT
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 
 def relative_to_assets(path: str) -> Path:
@@ -24,9 +20,14 @@ class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller, *args, **kwargs):
         tk.Frame.__init__(self, parent, background='#FFFFFF')
+        self.controller = controller
+        self.config = self.controller.getConfig()
 
         self.__initialize_custom_style()
         kwargs["style"] = "CustomNotebook"
+
+        self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
+            '/' + self.config['INITIAL']['idioma'] + '/'
 
         self.controller = controller
         self.pageTwoFrames = []
@@ -59,11 +60,12 @@ class PageTwo(tk.Frame):
             0.0,
             1024.0,
             55.0,
-            fill=TEXT[config['INITIAL']['COLOR-BG']],
+            fill=TEXT[self.config['INITIAL']['COLOR-BG']],
             outline="")
 
+        aux = self.auxRoute + 'sair.png'
         self.button_image_1 = PhotoImage(
-            file=relative_to_assets("sair_small.png"))
+            file=relative_to_assets(aux))
         self.button_1 = Button(
             self,
             image=self.button_image_1,
@@ -79,8 +81,9 @@ class PageTwo(tk.Frame):
             height=53.0
         )
 
+        aux = self.auxRoute + 'configuracion.png'
         self.button_image_2 = PhotoImage(
-            file=relative_to_assets("configuration_button.png"))
+            file=relative_to_assets(aux))
         self.button_2 = Button(
             self,
             image=self.button_image_2,
@@ -96,8 +99,9 @@ class PageTwo(tk.Frame):
             height=53.0
         )
 
+        aux = self.auxRoute + 'nova_grafica.png'
         self.button_image_3 = PhotoImage(
-            file=relative_to_assets("nova_grafica_small.png"))
+            file=relative_to_assets(aux))
         self.button_3 = Button(
             self,
             image=self.button_image_3,
@@ -113,8 +117,9 @@ class PageTwo(tk.Frame):
             height=53.0
         )
 
+        aux = self.auxRoute + 'cargar_arquivo.png'
         self.button_image_4 = PhotoImage(
-            file=relative_to_assets("loadFile_button.png"))
+            file=relative_to_assets(aux))
         self.button_4 = Button(
             self,
             image=self.button_image_4,
@@ -130,8 +135,9 @@ class PageTwo(tk.Frame):
             height=53.0
         )
 
+        aux = self.auxRoute + 'home_over.png'
         self.button_image_6 = PhotoImage(
-            file=relative_to_assets("home.png"))
+            file=relative_to_assets(aux))
         self.button_6 = Button(
             self,
             image=self.button_image_6,
@@ -280,8 +286,9 @@ class PageTwo(tk.Frame):
     '''
 
     def button_1_enter(self, e):
+        route = self.auxRoute + 'sair_over.png'
         aux = PhotoImage(
-            file=relative_to_assets("sair_big.png")
+            file=relative_to_assets(route)
         )
         self.button_1["image"] = aux
         self.button_1.image = aux
@@ -290,14 +297,20 @@ class PageTwo(tk.Frame):
         self.button_1["image"] = self.button_image_1
 
     def button_2_enter(self, e):
-        ""
+        route = self.auxRoute + 'configuracion_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_2["image"] = aux
+        self.button_2.image = aux
 
     def button_2_leave(self, e):
-        ""
+        self.button_2["image"] = self.button_image_2
 
     def button_3_enter(self, e):
+        route = self.auxRoute + 'nova_grafica_over.png'
         aux = PhotoImage(
-            file=relative_to_assets("nova_grafica_big.png")
+            file=relative_to_assets(route)
         )
         self.button_3["image"] = aux
         self.button_3.image = aux
@@ -306,16 +319,26 @@ class PageTwo(tk.Frame):
         self.button_3["image"] = self.button_image_3
 
     def button_4_enter(self, e):
-        ""
+        route = self.auxRoute + 'cargar_arquivo_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_4["image"] = aux
+        self.button_4.image = aux
 
     def button_4_leave(self, e):
-        ""
+        self.button_4["image"] = self.button_image_4
 
     def button_6_enter(self, e):
-        ""
+        route = self.auxRoute + 'home.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_6["image"] = aux
+        self.button_6.image = aux
 
     def button_6_leave(self, e):
-        ""
+        self.button_6["image"] = self.button_image_6
 
     '''
     *******************************************************************************

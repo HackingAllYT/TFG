@@ -2,15 +2,11 @@ import tkinter as tk
 
 from tkinter import Canvas, Button, PhotoImage, Entry
 from pathlib import Path
-import configparser
-from text import TEXT
+from text import TEXT, RESOLU
 
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 
 def relative_to_assets(path: str) -> Path:
@@ -21,16 +17,30 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.config = self.controller.getConfig()
 
-        if config["INITIAL"]['RESOLU'] == 'HD':
+        self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
+            '/' + self.config['INITIAL']['idioma'] + '/'
+
+        if self.config["INITIAL"]['RESOLU'] == RESOLU['1']:
             self.__init_HD__(controller)
-        if config["INITIAL"]['RESOLU'] == 'FullHD':
+        elif self.config["INITIAL"]['RESOLU'] == RESOLU['2']:
             self.__init_FullHD__(controller)
+
+        self.button_1.bind('<Enter>', self.button_1_enter)
+        self.button_1.bind('<Leave>', self.button_1_leave)
+
+        self.button_2.bind('<Enter>', self.button_2_enter)
+        self.button_2.bind('<Leave>', self.button_2_leave)
+
+        self.button_3.bind('<Enter>', self.button_3_enter)
+        self.button_3.bind('<Leave>', self.button_3_leave)
 
     def __init_HD__(self, controller):
         self.canvas = Canvas(
             self,
-            bg="#3A7FF6",  # 3A7FF6
+            bg=TEXT[self.config['INITIAL']['COLOR']],  # 3A7FF6
             height=720,
             width=1024,
             bd=0,
@@ -70,7 +80,7 @@ class StartPage(tk.Frame):
         self.canvas.create_text(
             608.0,
             466.0,
-            text=TEXT[config['INITIAL']['IDIOMA']]["Ruta do arquivo"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Ruta do arquivo"],
             fill="#515486",
             font=("Inter Regular", int(13.0)),
             anchor="w")
@@ -92,8 +102,9 @@ class StartPage(tk.Frame):
             height=22.0
         )
 
+        route = self.auxRoute + 'vista_rapida.png'
         self.button_image_2 = PhotoImage(
-            file=relative_to_assets("vista_rapida.png"))
+            file=relative_to_assets(route))
         self.button_2 = Button(
             self,
             image=self.button_image_2,
@@ -110,8 +121,9 @@ class StartPage(tk.Frame):
             height=55.0
         )
 
+        route = self.auxRoute + 'detallar_datos.png'
         self.button_image_3 = PhotoImage(
-            file=relative_to_assets("detallar_datos.png"))
+            file=relative_to_assets(route))
         self.button_3 = Button(
             self,
             image=self.button_image_3,
@@ -148,7 +160,8 @@ class StartPage(tk.Frame):
             40.0,
             127.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Benvid@ á aplicación"],
+            text=TEXT[self.config['INITIAL']
+                      ['IDIOMA']]["Benvid@ á aplicación"],
             fill="#FCFCFC",
             font=("Roboto Bold", 24 * -1)
         )
@@ -157,7 +170,7 @@ class StartPage(tk.Frame):
             40.0,
             197.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Esta ferramenta permite crear"],
             fill="#FCFCFC",
             font=("Inter Regular", 24 * -1)
@@ -167,7 +180,7 @@ class StartPage(tk.Frame):
             40.0,
             234.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["gráficas para a visualización de"],
             fill="#FCFCFC",
             font=("Inter Regular", 24 * -1)
@@ -177,7 +190,7 @@ class StartPage(tk.Frame):
             40.0,
             270.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["datos obtidos dos contadores"],
             fill="#FCFCFC",
             font=("Inter Regular", 24 * -1)
@@ -187,7 +200,7 @@ class StartPage(tk.Frame):
             40.0,
             306.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["hardware de servidores NUMA"],
             fill="#FCFCFC",
             font=("Inter Regular", 24 * -1)
@@ -197,7 +210,7 @@ class StartPage(tk.Frame):
             591.0,
             169.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Para comezar seleccione o"],
             fill="#000000",
             font=("Inter Regular", 24 * -1)
@@ -207,7 +220,7 @@ class StartPage(tk.Frame):
             591.0,
             209.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["arquivo que quere procesar no"],
             fill="#000000",
             font=("Inter Regular", 24 * -1)
@@ -217,7 +230,7 @@ class StartPage(tk.Frame):
             591.0,
             249.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["cadro que aparece a continuación"],
             fill="#000000",
             font=("Inter Regular", 24 * -1)
@@ -227,7 +240,7 @@ class StartPage(tk.Frame):
             591.0,
             289.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Este arquivo será procesado pola"],
             fill="#000000",
             font=("Inter Regular", 24 * -1)
@@ -237,7 +250,7 @@ class StartPage(tk.Frame):
             591.0,
             329.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["aplicación e mostrará un pequeno"],
             fill="#000000",
             font=("Inter Regular", 24 * -1)
@@ -247,7 +260,8 @@ class StartPage(tk.Frame):
             591.0,
             369.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["resumo do seu contido"],
+            text=TEXT[self.config['INITIAL']
+                      ['IDIOMA']]["resumo do seu contido"],
             fill="#000000",
             font=("Inter Regular", 24 * -1)
         )
@@ -258,7 +272,7 @@ class StartPage(tk.Frame):
 
         self.canvas = Canvas(
             self,
-            bg="#42A5F5",
+            bg=TEXT[self.config['INITIAL']['COLOR']],
             height=1000,
             width=1920,
             bd=0,
@@ -324,7 +338,8 @@ class StartPage(tk.Frame):
             40.0,
             127.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Benvid@ á aplicación"],
+            text=TEXT[self.config['INITIAL']
+                      ['IDIOMA']]["Benvid@ á aplicación"],
             fill="#FCFCFC",
             font=("Roboto Bold", 28 * -1)
         )
@@ -333,7 +348,7 @@ class StartPage(tk.Frame):
             40.0,
             197.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Esta ferramenta permite crear"],
             fill="#FCFCFC",
             font=("Inter Regular", 28 * -1)
@@ -343,7 +358,7 @@ class StartPage(tk.Frame):
             40.0,
             234.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["gráficas para a visualización de"],
             fill="#FCFCFC",
             font=("Inter Regular", 28 * -1)
@@ -353,7 +368,7 @@ class StartPage(tk.Frame):
             40.0,
             270.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["datos obtidos dos contadores"],
             fill="#FCFCFC",
             font=("Inter Regular", 28 * -1)
@@ -363,7 +378,7 @@ class StartPage(tk.Frame):
             40.0,
             306.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["hardware de servidores NUMA"],
             fill="#FCFCFC",
             font=("Inter Regular", 28 * -1)
@@ -373,7 +388,7 @@ class StartPage(tk.Frame):
             1106.0,
             253.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Para comezar seleccione o"],
             fill="#000000",
             font=("Inter Regular", 28 * -1)
@@ -383,7 +398,7 @@ class StartPage(tk.Frame):
             1106.0,
             313.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["arquivo que quere procesar no"],
             fill="#000000",
             font=("Inter Regular", 28 * -1)
@@ -393,7 +408,7 @@ class StartPage(tk.Frame):
             1106.0,
             373.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["cadro que aparece a continuación"],
             fill="#000000",
             font=("Inter Regular", 28 * -1)
@@ -403,7 +418,7 @@ class StartPage(tk.Frame):
             1106.0,
             433.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Este arquivo será procesado pola"],
             fill="#000000",
             font=("Inter Regular", 28 * -1)
@@ -413,7 +428,7 @@ class StartPage(tk.Frame):
             1106.0,
             493.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["aplicación e mostrará un pequeno"],
             fill="#000000",
             font=("Inter Regular", 28 * -1)
@@ -423,13 +438,15 @@ class StartPage(tk.Frame):
             1106.0,
             554.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["resumo do seu contido"],
+            text=TEXT[self.config['INITIAL']
+                      ['IDIOMA']]["resumo do seu contido"],
             fill="#000000",
             font=("Inter Regular", 28 * -1)
         )
 
+        route = self.auxRoute + 'vista_rapida.png'
         self.button_image_2 = PhotoImage(
-            file=relative_to_assets("vista_rapida.png"))
+            file=relative_to_assets(route))
         self.button_2 = Button(
             self,
             image=self.button_image_2,
@@ -445,8 +462,9 @@ class StartPage(tk.Frame):
             height=82.5
         )
 
+        route = self.auxRoute + 'detallar_datos.png'
         self.button_image_3 = PhotoImage(
-            file=relative_to_assets("detallar_datos.png"))
+            file=relative_to_assets(route))
         self.button_3 = Button(
             self,
             image=self.button_image_3,
@@ -479,3 +497,44 @@ class StartPage(tk.Frame):
     def setEntryName(self, filename):
         self.entry_1.delete(0, tk.END)
         self.entry_1.insert(0, filename)
+
+    '''
+    *******************************************************************************
+    ****************** Funcións para xogar cos efectos das fotos ******************
+    *******************************************************************************
+    '''
+
+    def button_1_enter(self, e):
+        name = self.auxRoute + 'folder_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets('folder.png')
+        )
+        self.button_1["image"] = aux
+        self.button_1.image = aux
+
+    def button_1_leave(self, e):
+        self.button_1["image"] = self.button_image_1
+
+    def button_2_enter(self, e):
+        if self.button_2["state"] == tk.NORMAL:
+            name = self.auxRoute + 'vista_rapida_over.png'
+            aux = PhotoImage(
+                file=relative_to_assets(name)
+            )
+            self.button_2["image"] = aux
+            self.button_2.image = aux
+
+    def button_2_leave(self, e):
+        self.button_2["image"] = self.button_image_2
+
+    def button_3_enter(self, e):
+        if self.button_3["state"] == tk.NORMAL:
+            name = self.auxRoute + 'detallar_datos_over.png'
+            aux = PhotoImage(
+                file=relative_to_assets(name)
+            )
+            self.button_3["image"] = aux
+            self.button_3.image = aux
+
+    def button_3_leave(self, e):
+        self.button_3["image"] = self.button_image_3

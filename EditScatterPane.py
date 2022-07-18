@@ -2,15 +2,11 @@ import tkinter as tk
 
 from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
 from pathlib import Path
-import configparser
 from text import TEXT, TREETYPE_TIDs_PIDs
 from checkBoxTreeview import CheckboxTreeview
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 
 def relative_to_assets(path: str) -> Path:
@@ -25,6 +21,10 @@ class ScatterPane(tk.Frame):
         self.controller = controller
         self.parent = parent
         self.classParent = classParent
+        self.config = self.controller.getConfig()
+
+        self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
+            '/' + self.config['INITIAL']['idioma'] + '/'
 
         self.canvas = Canvas(
             self,
@@ -110,7 +110,7 @@ class ScatterPane(tk.Frame):
             411.0,
             141.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -119,13 +119,14 @@ class ScatterPane(tk.Frame):
             758.0,
             141.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Cores:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Cores:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
 
+        aux = self.auxRoute + 'xerar.png'
         self.button_image_1 = PhotoImage(
-            file=relative_to_assets("xerar_button.png"))
+            file=relative_to_assets(aux))
         self.button_1 = Button(
             self,
             image=self.button_image_1,
@@ -217,7 +218,7 @@ class ScatterPane(tk.Frame):
             387.0,
             249.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Eliminar Outliers:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Eliminar Outliers:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -226,7 +227,7 @@ class ScatterPane(tk.Frame):
             758.0,
             249.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Unir puntos plot:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Unir puntos plot:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -253,14 +254,15 @@ class ScatterPane(tk.Frame):
             54.0,
             110.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Seleccione PIDs e TIDs a empregar:"],
             fill="#000000",
             font=("Inter", 12 * -1)
         )
 
+        aux = self.auxRoute + 'gardar_saida.png'
         self.button_image_2 = PhotoImage(
-            file=relative_to_assets("button_2.png"))
+            file=relative_to_assets(aux))
         self.button_2 = Button(
             self,
             image=self.button_image_2,
@@ -439,6 +441,11 @@ class ScatterPane(tk.Frame):
             height=440.0
         )
 
+        self.button_1.bind('<Enter>', self.button_1_enter)
+        self.button_1.bind('<Leave>', self.button_1_leave)
+
+        self.button_2.bind('<Enter>', self.button_2_enter)
+        self.button_2.bind('<Leave>', self.button_2_leave)
         self.loadDataItems()
 
     def loadDataItems(self):
@@ -455,8 +462,10 @@ class ScatterPane(tk.Frame):
         self.colors_cb['values'] = self.controller.getColors()
         self.colors_cb.current(self.controller.getColors().index('default'))
 
-        self.entry_1.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
-        self.entry_2.config(state=tk.DISABLED, disabledbackground="#F1F5FF")
+        self.entry_1.config(
+            state=tk.DISABLED, disabledbackground="#F1F5FF")
+        self.entry_2.config(
+            state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_3.delete(0, tk.END)
         self.entry_3.insert(0, 'Scatter: ' + self.zData.get())
 
@@ -506,3 +515,31 @@ class ScatterPane(tk.Frame):
             self.zData.get(), self.t.getSelectedItemsPIDsTIDs())
         self.minOutlier_entry.set(aux[0])
         self.maxOutlier_entry.set(aux[1])
+
+    '''
+    *******************************************************************************
+    ****************** Funcións para xogar cos efectos das fotos ******************
+    *******************************************************************************
+    '''
+
+    def button_1_enter(self, e):
+        route = self.auxRoute + 'xerar_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_1["image"] = aux
+        self.button_1.image = aux
+
+    def button_1_leave(self, e):
+        self.button_1["image"] = self.button_image_1
+
+    def button_2_enter(self, e):
+        route = self.auxRoute + 'gardar_saida_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(route)
+        )
+        self.button_2["image"] = aux
+        self.button_2.image = aux
+
+    def button_2_leave(self, e):
+        self.button_2["image"] = self.button_image_2

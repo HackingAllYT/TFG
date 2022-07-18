@@ -32,9 +32,6 @@ import modalGardarImaxe as sim
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-
 askExit = True
 
 
@@ -50,8 +47,10 @@ class AppController(tk.Tk):
     def __init__(self, *args, **kwargs):
 
         tk.Tk.__init__(self, *args, **kwargs)
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
 
-        self.geometry(RESOLU[config['INITIAL']['RESOLU']])
+        self.geometry(RESOLU[self.config['INITIAL']['RESOLU']])
         self.resizable(False, False)
         self.center()
         self.iconphoto(False, tk.PhotoImage(
@@ -122,7 +121,8 @@ class AppController(tk.Tk):
         # Se queremos obter máis dun arquivo temos que modificar a función e
         # chamar a: fd.askopenfilenames
         filename = fd.askopenfilename(
-            title=TEXT[config['INITIAL']['IDIOMA']]['Escolla un arquivo:'],
+            title=TEXT[self.config['INITIAL']
+                       ['IDIOMA']]['Escolla un arquivo:'],
             initialdir=Path.home(),
             filetypes=filetypes)
 
@@ -150,7 +150,8 @@ class AppController(tk.Tk):
         global infoData, info
         infoData = []
         showinfo(
-            title=TEXT[config['INITIAL']['IDIOMA']]['Arquivo seleccionado:'],
+            title=TEXT[self.config['INITIAL']
+                       ['IDIOMA']]['Arquivo seleccionado:'],
             message=filename
         )
         if type(filename) == str:
@@ -164,6 +165,8 @@ class AppController(tk.Tk):
                 info = self.loadPids(data=data)
                 infoData.append([x, data])
                 initial_chart(data=data)
+        self.update()
+        self.update_idletasks()
 
     def xerarNovaHeatMapThread(self, info):
         global infoData
@@ -250,8 +253,8 @@ class AppController(tk.Tk):
 
     def confirmExit(self):
         answer = askyesno(
-            title=TEXT[config['INITIAL']['IDIOMA']]['Saír?'],
-            message=TEXT[config['INITIAL']['IDIOMA']
+            title=TEXT[self.config['INITIAL']['IDIOMA']]['Saír?'],
+            message=TEXT[self.config['INITIAL']['IDIOMA']
                          ]['Está seguro que quere pechar?']
         )
         if answer:
@@ -333,7 +336,7 @@ class AppController(tk.Tk):
 
     def showNewGraphic(self):
 
-        self.showMessage(TEXT[config['INITIAL']['IDIOMA']]
+        self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]
                          ['info-creating-graph'])
         '''showinfo(
             title=TEXT[config['INITIAL']['IDIOMA']]['Xerando gráfica'],
@@ -348,7 +351,7 @@ class AppController(tk.Tk):
         self.root.after(4000, self.root.destroy)
         try:
             if type == 'info':
-                msgb.showinfo(TEXT[config['INITIAL']['IDIOMA']]
+                msgb.showinfo(TEXT[self.config['INITIAL']['IDIOMA']]
                               ['Xerando gráfica'], message, master=self.root)
             elif type == 'warning':
                 msgb.showwarning('Warning', message, master=self.root)
@@ -389,8 +392,8 @@ class AppController(tk.Tk):
     def askReloadApp(self):
         global askExit
         answer = askyesnocancel(
-            title=TEXT[config['INITIAL']['IDIOMA']]['Reiniciar?'],
-            message=TEXT[config['INITIAL']['IDIOMA']]['text-ask-reload']
+            title=TEXT[self.config['INITIAL']['IDIOMA']]['Reiniciar?'],
+            message=TEXT[self.config['INITIAL']['IDIOMA']]['text-ask-reload']
         )
         # true = si
         # false = non
@@ -398,6 +401,10 @@ class AppController(tk.Tk):
         if answer:
             askExit = True
             self.destroy()
+
+    def getConfig(self):
+        return self.config
+
     '''
     *******************************************************************************
     *********** Función auxiliar para devolver un diccionario cos PIDs ************

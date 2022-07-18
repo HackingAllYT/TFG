@@ -54,23 +54,6 @@ class gardarImaxeModal(tk.Toplevel):
             fill=TEXT[config['INITIAL']['COLOR-BG']],
             outline="")
 
-        self.button_image_1 = PhotoImage(
-            file=relative_to_assets("cross.png"))
-        self.button_1 = Button(
-            self,
-            image=self.button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=self.cancel,
-            relief="flat"
-        )
-        self.button_1.place(
-            x=489.0,
-            y=11.0,
-            width=58.0,
-            height=58.0
-        )
-
         self.canvas.create_text(
             106.0,
             28.0,
@@ -313,9 +296,6 @@ class gardarImaxeModal(tk.Toplevel):
             height=38.0
         )
 
-        self.button_1.bind('<Enter>', self.button_1_enter)
-        self.button_1.bind('<Leave>', self.button_1_leave)
-
         self.button_2.bind('<Enter>', self.button_2_enter)
         self.button_2.bind('<Leave>', self.button_2_leave)
 
@@ -405,16 +385,6 @@ class gardarImaxeModal(tk.Toplevel):
     ******************* Funcións para facer efectos nos botóns  *******************
     *******************************************************************************
     '''
-
-    def button_1_enter(self, e):
-        aux = PhotoImage(
-            file=relative_to_assets("cross_62x62.png")
-        )
-        self.button_1["image"] = aux
-        self.button_1.image = aux
-
-    def button_1_leave(self, e):
-        self.button_1["image"] = self.button_image_1
 
     def button_2_enter(self, e):
         ""
