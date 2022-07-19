@@ -491,8 +491,9 @@ class ScatterPane(tk.Frame):
         info['zRow'] = self.zData.get()
         info['unir'] = bool(self.unirPuntos.get())
         info['colors'] = self.colors.get()
-        info['zmin'] = self.minOutlier_entry.get()
-        info['zmax'] = self.maxOutlier_entry.get()
+        info['zMin'] = self.minOutlier_entry.get()
+        info['zMax'] = self.maxOutlier_entry.get()
+        info['delOut'] = bool(self.deleteOutliers.get())
 
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())

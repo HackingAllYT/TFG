@@ -220,10 +220,11 @@ def interactive_chart(data):
 
 
 def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoData: dict, colors: str):
-    x_index, y_index, zName, zMin, zMax = index
+    x_index, y_index, zName, zMin, zMax, zType, delOut = index
 
     data = data[data.TID.isin(getListOfPids(infoData))]
-    data = data[(data[zName] > zMin) & (data[zName] < zMax)]
+    if delOut:
+        data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
 
     xs = np.unique(np.array(data.iloc[:, x_index]))
     ys = np.unique(np.array(data.iloc[:, y_index]))
@@ -233,7 +234,7 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
     x_name = columns[x_index]
     y_name = columns[y_index]
 
-    print(f"Preparing plots for: {columns}")
+    print(f"Preparing plots for: {zName}")
 
     fig = go.Figure()
 
@@ -242,6 +243,20 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
     start = time.time()
 
     zs = compute_zs(data, x_index, y_index, xs, ys)
+    z_index = columns.index(zName)
+    print(z_index, type(zs[z_index]))
+
+    '''if zType == 0:
+        zs[z_index] = zs[z_index].astype(int)
+
+    elif zType == 1:
+        zs[z_index] = zs[z_index].astype(float)
+
+    elif zType == 2:
+        zs[z_index] = zs[z_index].astype(bool)
+
+    elif zType == 3:
+        zs[z_index] = zs[z_index].astype(str)'''
 
     xs = xs.astype(str)
     ys = ys.astype(str)
@@ -253,19 +268,17 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
     if colors == 'default':
         colors = None
 
-    for z_index, z_name in enumerate(columns):
-        if z_name == zName:
-            print(f"Column {z_name}: ")
-            try:
-                hm = numeric_heatmap(xs, ys, zs[z_index], colors)
-                fig.add_trace(hm)
-            except:
-                print(f"\tNot numeric. Treating as qualitative.")
-                hm = qualitative_heatmap(xs, ys, zs[z_index])
-                fig.add_trace(hm)
+    print(f"Column {zName}: ")
+    try:
+        hm = numeric_heatmap(xs, ys, zs[z_index], colors)
+        fig.add_trace(hm)
+    except:
+        print(f"\tNot numeric. Treating as qualitative.")
+        hm = qualitative_heatmap(xs, ys, zs[z_index])
+        fig.add_trace(hm)
 
-            visible = np.full(len(columns), False)
-            visible[z_index] = True
+    visible = np.full(len(columns), False)
+    visible[z_index] = True
 
     fig.update_layout(
         updatemenus=[
@@ -317,7 +330,7 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
 
 
 def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool, infoData: dict, colors: str):
-    x_index, y_index, zName, zMin, zMax = index
+    x_index, y_index, zName, zMin, zMax, delOut = index
 
     columns = list(data.columns)
 
@@ -332,7 +345,8 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
     # data = data[data.PID.isin(Pids)]
 
     data = data[data.TID.isin(getListOfPids(infoData))]
-    data = data[(data[zName] > zMin) & (data[zName] < zMax)]
+    if delOut:
+        data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
     data = data.sort_values(by=y_name)
 
     if colors == 'default':

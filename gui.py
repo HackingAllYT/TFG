@@ -171,7 +171,8 @@ class AppController(tk.Tk):
 
     def xerarNovaHeatMapThread(self, info):
         aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
-               self.infoData[0][1].columns.get_loc(info['yRow']), info['zRow'], info['zmin'], info['zmax'])
+               self.infoData[0][1].columns.get_loc(info['yRow']),
+               info['zRow'], info['zMin'], info['zMax'], info['zType'], info['delOut'])
 
         interactive_chart_plot(
             index=aux,
@@ -186,7 +187,8 @@ class AppController(tk.Tk):
 
     def xerarNovoScatterThread(self, info):
         aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
-               self.infoData[0][1].columns.get_loc(info['yRow']), info['zRow'], info['zmin'], info['zmax'])
+               self.infoData[0][1].columns.get_loc(info['yRow']),
+               info['zRow'], info['zMin'], info['zMax'], info['delOut'])
 
         interactive_scatter(
             index=aux,

@@ -220,3 +220,9 @@ RESOLU['4'] = '4K'
 
 TREETYPE_TIDs_PIDs = 'TIDs-PIDs'
 TREETYPE_CPUs = 'CPUs'
+
+TIPODATOS = {}
+
+TIPODATOS['en'] = ["Integers", "Floats", "Booleans", "String"]
+TIPODATOS['gal'] = ["Enteiros", "Flotantes", "Booleanos", "String"]
+TIPODATOS['es'] = ["Enteros", "Flotantes", "Booleanos", "String"]

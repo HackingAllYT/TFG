@@ -2,7 +2,7 @@ import tkinter as tk
 
 from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
 from pathlib import Path
-from text import TEXT, TREETYPE_TIDs_PIDs
+from text import TEXT, TREETYPE_TIDs_PIDs, TIPODATOS
 from checkBoxTreeview import CheckboxTreeview
 
 OUTPUT_PATH = Path(__file__).parent
@@ -459,8 +459,7 @@ class HeatMapPane(tk.Frame):
         self.yData_cb.current(1)
         self.zData_cb['values'] = list(columns)
         self.zData_cb.current(5)
-        self.z_tipoDatos_cb['values'] = [
-            "Enteiros", "Flotantes", "Booleans", "String"]
+        self.z_tipoDatos_cb['values'] = TIPODATOS[self.config['INITIAL']['IDIOMA']]
         self.z_tipoDatos_cb.current(0)
         info = self.controller.getPidsTids()
         self.t.insertElements(info, TREETYPE_TIDs_PIDs)
@@ -492,8 +491,11 @@ class HeatMapPane(tk.Frame):
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
         info['colors'] = self.colors.get()
-        info['zmin'] = self.minOutlier_entry.get()
-        info['zmax'] = self.maxOutlier_entry.get()
+        info['zMin'] = self.minOutlier_entry.get()
+        info['zMax'] = self.maxOutlier_entry.get()
+        info['zType'] = self.z_tipoDatos_cb['values'].index(
+            self.z_tipoDatos.get())
+        info['delOut'] = bool(self.deleteOutliers.get())
 
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
