@@ -63,6 +63,8 @@ class AppController(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
+        self.pidsTids, self.infoData = [], []
+
         # Variables que nos serven para coñecer a cantidade de gráficas xeradas
         self.numHeatmap = 0
         self.numScatter = 0
@@ -147,8 +149,7 @@ class AppController(tk.Tk):
     '''
 
     def loadFileThread(self):
-        global infoData, info
-        infoData = []
+        self.infoData = []
         showinfo(
             title=TEXT[self.config['INITIAL']
                        ['IDIOMA']]['Arquivo seleccionado:'],
@@ -156,27 +157,26 @@ class AppController(tk.Tk):
         )
         if type(filename) == str:
             data = parse_file(file=filename)
-            info = self.loadPids(data=data)
-            infoData.append([filename, data])
+            self.pidsTids = self.loadPids(data=data)
+            self.infoData.append([filename, data])
             initial_chart(data=data)
         else:
             for x in filename:
                 data = parse_file(file=x)
-                info = self.loadPids(data=data)
-                infoData.append([x, data])
+                self.pidsTids = self.loadPids(data=data)
+                self.infoData.append([x, data])
                 initial_chart(data=data)
         self.update()
         self.update_idletasks()
 
     def xerarNovaHeatMapThread(self, info):
-        global infoData
-        aux = (infoData[0][1].columns.get_loc(info['xRow']),
-               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+        aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
+               self.infoData[0][1].columns.get_loc(info['yRow']), info['zRow'], info['zmin'], info['zmax'])
 
         interactive_chart_plot(
             index=aux,
             plotName=info['name'],
-            data=infoData[0][1],
+            data=self.infoData[0][1],
             save=None,
             infoData=info['PIDsTIDs'],
             colors=info['colors']
@@ -185,14 +185,13 @@ class AppController(tk.Tk):
         # self.root.after(0, self.root.destroy)
 
     def xerarNovoScatterThread(self, info):
-        global infoData
-        aux = (infoData[0][1].columns.get_loc(info['xRow']),
-               infoData[0][1].columns.get_loc(info['yRow']), info['zRow'])
+        aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
+               self.infoData[0][1].columns.get_loc(info['yRow']), info['zRow'], info['zmin'], info['zmax'])
 
         interactive_scatter(
             index=aux,
             plotName=info['name'],
-            data=infoData[0][1],
+            data=self.infoData[0][1],
             save=None,
             lines=info['unir'],
             infoData=info['PIDsTIDs'],
@@ -213,8 +212,6 @@ class AppController(tk.Tk):
     '''
 
     def openConfigurationModal(self):
-        global conModal
-
         conModal = cm.configurationModal(self)
         result = conModal.show()
         if result == True:
@@ -222,7 +219,6 @@ class AppController(tk.Tk):
             self.update_idletasks()
 
     def openSelectFigureModal(self):
-        global figModal
         sugges = ((0, 'Item 0'), (1, 'Item 1'))
         figModal = msf.selectFigureModal(self, suggestions=sugges)
         result = figModal.show()
@@ -321,11 +317,11 @@ class AppController(tk.Tk):
         if result['do']:
             if result['type'] == 'heatmap':
                 interactive_chart_plot(
-                    x_index=infoData[0][1].columns.get_loc(info['xRow']),
-                    y_index=infoData[0][1].columns.get_loc(info['yRow']),
+                    x_index=self.infoData[0][1].columns.get_loc(info['xRow']),
+                    y_index=self.infoData[0][1].columns.get_loc(info['yRow']),
                     zName=info['zRow'],
                     plotName=info['name'],
-                    data=infoData[0][1],
+                    data=self.infoData[0][1],
                     save=result
                 )
     '''
@@ -367,17 +363,17 @@ class AppController(tk.Tk):
     '''
 
     def getDataFile(self):
-        return infoData[0][1]
+        return self.infoData[0][1]
 
     def getColumnsFile(self):
-        return infoData[0][1].columns
+        return self.infoData[0][1].columns
 
     def getPidsTids(self):
-        return info
+        return self.pidsTids
 
     def getCPUs(self):
         aux = {}
-        aux['cpus'] = list(range(max(infoData[0][1].CPU) + 1))
+        aux['cpus'] = list(range(max(self.infoData[0][1].CPU) + 1))
         return aux
 
     def getColors(self):
@@ -387,7 +383,7 @@ class AppController(tk.Tk):
         return getColorsContinuos()
 
     def getCalcularOutliers(self, zName, info):
-        return calcularOutliers(infoData[0][1], zName, info)
+        return calcularOutliers(self.infoData[0][1], zName, info)
 
     def askReloadApp(self):
         global askExit

@@ -162,7 +162,7 @@ class RooflineModelPane(tk.Frame):
             620.0,
             110.0,
             anchor="nw",
-            text="Engadir liñas:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Engadir liñas:"],
             fill="#000000",
             font=("Inter", 12 * -1)
         )

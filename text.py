@@ -29,10 +29,14 @@ info['Eliminar Outliers:'] = 'Remove Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Select PIDs and TIDs to use:'
 info['Tipo de gráfica:'] = 'Type of grahp:'
 info['Unir puntos plot:'] = 'Join dots plot:'
+info['Cor dos puntos:'] = 'Color of the dots:'
 
 info['Seleccione os CPUs a empregar:'] = 'Select the CPUs to use:'
 info['Eixe X logarítmico:'] = 'Logarithmic X-axis:'
 info['Eixe Y logarítmico:'] = 'Logarithmic Y-axis:'
+info['Engadir liñas:'] = 'Add lines:'
+info['Nome:'] = 'Name:'
+info['Cor:'] = 'Color:'
 
 info['Seleccione tipo de gráfica:'] = 'Select chart type:'
 
@@ -54,6 +58,10 @@ info['Escolla a carpeta destino:'] = 'Choose the destination folder:'
 
 info['Xerando gráfica'] = 'Generating graph!'
 info['info-creating-graph'] = 'Order received, we are to generate the graph indicates!\nIt will soon appear in a new browser tab!'
+
+info['Ancho:'] = 'Width:'
+info['Alto:'] = 'Height:'
+info['Introduza o nome da gráfica:'] = 'Enter the name of the chart:'
 
 TEXT['en'] = info
 
@@ -83,10 +91,14 @@ info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs e TIDs a empregar:'
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
+info['Cor dos puntos:'] = 'Cor dos puntos:'
 
 info['Seleccione os CPUs a empregar:'] = 'Seleccione os CPUs a empregar:'
 info['Eixe X logarítmico:'] = 'Eixe X logarítmico:'
 info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
+info['Engadir liñas:'] = 'Engadir liñas:'
+info['Nome:'] = 'Nome:'
+info['Cor:'] = 'Cor:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -108,6 +120,10 @@ info['Escolla a carpeta destino:'] = 'Escolla a carpeta destino:'
 
 info['Xerando gráfica'] = 'Xerando gráfica!'
 info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicada!\nPróximamente aparecerá nunha nova pestaña do navegador!'
+
+info['Ancho:'] = 'Ancho:'
+info['Alto:'] = 'Alto:'
+info['Introduza o nome da gráfica:'] = 'Introduza o nome da gráfica:'
 
 TEXT['gal'] = info
 
@@ -138,10 +154,14 @@ info['Eliminar Outliers:'] = 'Eliminar Outliers:'
 info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs y TIDs a utilizar:'
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
+info['Cor dos puntos:'] = 'Color de los puntos:'
 
 info['Seleccione os CPUs a empregar:'] = 'Seleccione los CPUs a utilizar:'
 info['Eixe X logarítmico:'] = 'Eje X logarítmico:'
 info['Eixe Y logarítmico:'] = 'Eje Y logarítmico:'
+info['Engadir liñas:'] = 'Añadir líneas:'
+info['Nome:'] = 'Nombree:'
+info['Cor:'] = 'Color:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -164,6 +184,9 @@ info['Escolla a carpeta destino:'] = 'Escoja la carpeta destino:'
 info['Xerando gráfica'] = 'Generando gráfica!'
 info['info-creating-graph'] = 'Orden recibida, estamos a generar la gráfica indicada!\nPróximamente aparecerá en una nueva pestaña del navegador!'
 
+info['Ancho:'] = 'Ancho:'
+info['Alto:'] = 'Alto:'
+info['Introduza o nome da gráfica:'] = 'Introduzca el nombre de la gráfica:'
 
 TEXT['es'] = info
 

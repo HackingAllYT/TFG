@@ -220,9 +220,10 @@ def interactive_chart(data):
 
 
 def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoData: dict, colors: str):
-    x_index, y_index, zName = index
+    x_index, y_index, zName, zMin, zMax = index
 
     data = data[data.TID.isin(getListOfPids(infoData))]
+    data = data[(data[zName] > zMin) & (data[zName] < zMax)]
 
     xs = np.unique(np.array(data.iloc[:, x_index]))
     ys = np.unique(np.array(data.iloc[:, y_index]))
@@ -316,7 +317,7 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
 
 
 def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool, infoData: dict, colors: str):
-    x_index, y_index, zName = index
+    x_index, y_index, zName, zMin, zMax = index
 
     columns = list(data.columns)
 
@@ -325,14 +326,13 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
 
     fig = go.Figure()
 
-    #data = data.query("PID == 1566542")
-
     # Esto é se o queremos facer por PIDs>
     # Pids = list(infoData.keys())
     # Pids = list(map(int, Pids))
     # data = data[data.PID.isin(Pids)]
 
     data = data[data.TID.isin(getListOfPids(infoData))]
+    data = data[(data[zName] > zMin) & (data[zName] < zMax)]
     data = data.sort_values(by=y_name)
 
     if colors == 'default':
@@ -464,7 +464,7 @@ def roofline_model(data):
 def calcularOutliers(data: pd.DataFrame, zName: str, values: dict):
     if not values:
         return (np.NaN, np.NaN)
-    print(data.dtypes[zName], type(data.dtypes[zName]))
+    # print(data.dtypes[zName], type(data.dtypes[zName]))
 
     data = data[data.TID.isin(getListOfPids(values))]
     z_values = data[zName].astype(float)
@@ -472,6 +472,9 @@ def calcularOutliers(data: pd.DataFrame, zName: str, values: dict):
 
     zmin = np.min(z_values)
     zmax = np.max(z_values)
+
+    # Outliers valores máximos e mínimos da columna Z
+    return (zmin, zmax)
 
     av = np.mean(z_values)
     median = np.median(z_values)

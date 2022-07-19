@@ -169,7 +169,7 @@ class TraceRoofline(tk.Frame):
             157.0,
             20.0,
             anchor="nw",
-            text="Nome:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Nome:"],
             fill="#000000",
             font=("Inter", 12 * -1)
         )
@@ -203,7 +203,7 @@ class TraceRoofline(tk.Frame):
             157.0,
             65.0,
             anchor="nw",
-            text="Cor:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Cor:"],
             fill="#000000",
             font=("Inter", 12 * -1)
         )

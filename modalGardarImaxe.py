@@ -5,7 +5,6 @@ from pathlib import Path
 from tkinter import Canvas, Entry, Button, PhotoImage, filedialog, ttk, StringVar, IntVar
 
 import tkinter as tk
-import configparser
 
 from text import TEXT
 
@@ -18,10 +17,6 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-
 class gardarImaxeModal(tk.Toplevel):
     def __init__(self, parent, info):
         super().__init__(parent)
@@ -32,8 +27,10 @@ class gardarImaxeModal(tk.Toplevel):
         self.geometry("557x650")
         self.resizable(False, False)
 
-        self.idioma = config['INITIAL']['IDIOMA']
-        self.color = config['INITIAL']['COLOR']
+        self.config = self.parent.getConfig()
+
+        self.idioma = self.config['INITIAL']['IDIOMA']
+        self.color = self.config['INITIAL']['COLOR']
 
         self.canvas = Canvas(
             self,
@@ -51,14 +48,14 @@ class gardarImaxeModal(tk.Toplevel):
             0.0,
             700.0,
             80.0,
-            fill=TEXT[config['INITIAL']['COLOR-BG']],
+            fill=TEXT[self.config['INITIAL']['COLOR-BG']],
             outline="")
 
         self.canvas.create_text(
             106.0,
             28.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Seleccione tipo de arquivo de saída"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
@@ -110,7 +107,7 @@ class gardarImaxeModal(tk.Toplevel):
             106.0,
             147.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Escolla o formato:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Escolla o formato:"],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -127,7 +124,7 @@ class gardarImaxeModal(tk.Toplevel):
             106.0,
             249.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Escolla a carpeta destino:"],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
@@ -244,7 +241,7 @@ class gardarImaxeModal(tk.Toplevel):
             105.0,
             345.0,
             anchor="nw",
-            text="Ancho:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Ancho:"],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -253,7 +250,7 @@ class gardarImaxeModal(tk.Toplevel):
             357.0,
             346.0,
             anchor="nw",
-            text="Alto:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Alto:"],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -270,7 +267,8 @@ class gardarImaxeModal(tk.Toplevel):
             106.0,
             444.0,
             anchor="nw",
-            text="Introduza o nome da gráfica:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']
+                      ]["Introduza o nome da gráfica:"],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -311,8 +309,8 @@ class gardarImaxeModal(tk.Toplevel):
         self.entry_3.delete(0, tk.END)
         self.entry_3.insert(0, info['name'])
 
-        self.width_entry.set(config['FIGURE-DEFAULT']['width'])
-        self.height_entry.set(config['FIGURE-DEFAULT']['height'])
+        self.width_entry.set(self.config['FIGURE-DEFAULT']['width'])
+        self.height_entry.set(self.config['FIGURE-DEFAULT']['height'])
 
     def show(self):
         self.deiconify()
@@ -328,14 +326,14 @@ class gardarImaxeModal(tk.Toplevel):
         try:
             self.result['w'] = int(self.width_entry.get())
         except:
-            self.result['w'] = config['FIGURE-DEFAULT']['width']
+            self.result['w'] = self.config['FIGURE-DEFAULT']['width']
         try:
             self.result['h'] = int(self.height_entry.get())
         except:
-            self.result['h'] = config['FIGURE-DEFAULT']['height']
+            self.result['h'] = self.config['FIGURE-DEFAULT']['height']
 
-        self.result['wc'] = int(config['FIGURE-DEFAULT']['width'])
-        self.result['hc'] = int(config['FIGURE-DEFAULT']['height'])
+        self.result['wc'] = int(self.config['FIGURE-DEFAULT']['width'])
+        self.result['hc'] = int(self.config['FIGURE-DEFAULT']['height'])
         return self.result
 
     def center(self):

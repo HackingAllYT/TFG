@@ -492,6 +492,9 @@ class HeatMapPane(tk.Frame):
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
         info['colors'] = self.colors.get()
+        info['zmin'] = self.minOutlier_entry.get()
+        info['zmax'] = self.maxOutlier_entry.get()
+
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
         else:

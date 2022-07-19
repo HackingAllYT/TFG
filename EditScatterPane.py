@@ -77,7 +77,7 @@ class ScatterPane(tk.Frame):
             737.0,
             19.0,
             987.0,
-            94.0,
+            207.0,
             fill="#F1F5FF",
             outline="")
 
@@ -85,18 +85,10 @@ class ScatterPane(tk.Frame):
             758.0,
             23.0,
             anchor="nw",
-            text="Z:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Cor dos puntos:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
-
-        self.canvas.create_rectangle(
-            737.0,
-            132.0,
-            987.0,
-            207.0,
-            fill="#F1F5FF",
-            outline="")
 
         self.canvas.create_rectangle(
             387.0,
@@ -499,6 +491,8 @@ class ScatterPane(tk.Frame):
         info['zRow'] = self.zData.get()
         info['unir'] = bool(self.unirPuntos.get())
         info['colors'] = self.colors.get()
+        info['zmin'] = self.minOutlier_entry.get()
+        info['zmax'] = self.maxOutlier_entry.get()
 
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())

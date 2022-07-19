@@ -2,19 +2,15 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, BOTH, Button, PhotoImage, ttk, Toplevel, Frame
+from tkinter import Canvas, Button, PhotoImage, Frame
 
 import tkinter as tk
-import configparser
 
 from text import TEXT
 
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 
 def relative_to_assets(path: str) -> Path:
@@ -29,16 +25,7 @@ class selectFigureModal(tk.Toplevel):
         self.title("Selección de figura a xerar")
         self.geometry("700x900")
         self.resizable(False, False)
-
-        '''self.listbox = tk.Listbox(self, height=10, width=20)
-        self.listbox.pack(pady=15)
-
-        self.btn = tk.Button(
-            self, text="Confirm selection", command=self.select)
-        self.btn.pack(pady=10)
-
-        for (idd, info) in suggestions:
-            self.listbox.insert(tk.END, info)'''
+        self.config = self.parent.getConfig()
 
         self.frame = Frame(self, width=700, height=900)
 
@@ -58,7 +45,7 @@ class selectFigureModal(tk.Toplevel):
             0.0,
             700.0,
             80.0,
-            fill=TEXT[config['INITIAL']['COLOR-BG']],
+            fill=TEXT[self.config['INITIAL']['COLOR-BG']],
             outline="")
 
         self.button_image_2 = PhotoImage(
@@ -120,7 +107,7 @@ class selectFigureModal(tk.Toplevel):
             220.0,
             28.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Seleccione tipo de gráfica:"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
