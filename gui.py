@@ -174,7 +174,7 @@ class AppController(tk.Tk):
                self.infoData[0][1].columns.get_loc(info['yRow']),
                info['zRow'], info['zMin'], info['zMax'], info['zType'], info['delOut'])
 
-        interactive_chart_plot(
+        result = interactive_chart_plot(
             index=aux,
             plotName=info['name'],
             data=self.infoData[0][1],
@@ -182,6 +182,9 @@ class AppController(tk.Tk):
             infoData=info['PIDsTIDs'],
             colors=info['colors']
         )
+        if result == None:
+            self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica'],
+                             TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica-text'])
         # self.root.destroy()
         # self.root.after(0, self.root.destroy)
 
@@ -334,14 +337,14 @@ class AppController(tk.Tk):
 
     def showNewGraphic(self):
 
-        self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]
-                         ['info-creating-graph'])
+        self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['Xerando gráfica'],
+                         TEXT[self.config['INITIAL']['IDIOMA']]['info-creating-graph'])
         '''showinfo(
             title=TEXT[config['INITIAL']['IDIOMA']]['Xerando gráfica'],
             message=TEXT[config['INITIAL']['IDIOMA']]['info-creating-graph']
         )'''
 
-    def showMessage(self, message, type='info'):
+    def showMessage(self, title, message, type='info'):
         from tkinter import messagebox as msgb
 
         self.root = tk.Tk()
@@ -349,8 +352,7 @@ class AppController(tk.Tk):
         self.root.after(4000, self.root.destroy)
         try:
             if type == 'info':
-                msgb.showinfo(TEXT[self.config['INITIAL']['IDIOMA']]
-                              ['Xerando gráfica'], message, master=self.root)
+                msgb.showinfo(title, message, master=self.root)
             elif type == 'warning':
                 msgb.showwarning('Warning', message, master=self.root)
             elif type == 'error':

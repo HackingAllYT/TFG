@@ -63,6 +63,9 @@ info['Ancho:'] = 'Width:'
 info['Alto:'] = 'Height:'
 info['Introduza o nome da gráfica:'] = 'Enter the name of the chart:'
 
+info['erro-grafica'] = 'Error detected'
+info['erro-grafica-text'] = 'The selected data type cannot be used for this input data'
+
 TEXT['en'] = info
 
 info = {}
@@ -124,6 +127,9 @@ info['info-creating-graph'] = 'Orde recibida, estamos a xerar a gráfica indicad
 info['Ancho:'] = 'Ancho:'
 info['Alto:'] = 'Alto:'
 info['Introduza o nome da gráfica:'] = 'Introduza o nome da gráfica:'
+
+info['erro-grafica'] = 'Erro detectado'
+info['erro-grafica-text'] = 'O tipo de dato seleccionado non se pode empregar para estes datos de entrada'
 
 TEXT['gal'] = info
 
@@ -187,6 +193,9 @@ info['info-creating-graph'] = 'Orden recibida, estamos a generar la gráfica ind
 info['Ancho:'] = 'Ancho:'
 info['Alto:'] = 'Alto:'
 info['Introduza o nome da gráfica:'] = 'Introduzca el nombre de la gráfica:'
+
+info['erro-grafica'] = 'Error detectado'
+info['erro-grafica-text'] = 'El tipo de dato seleccionado no se puede utilizar para estes datos de entrada'
 
 TEXT['es'] = info
 
