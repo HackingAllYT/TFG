@@ -58,7 +58,7 @@ class AppController(tk.Tk):
         self.center()
         self.iconphoto(False, tk.PhotoImage(
             file=relative_to_assets('icon/icon.png')))
-        self.title('Aplicación para a visualización de datos de servidores NUMA')
+        self.title(TEXT[self.config['INITIAL']['IDIOMA']]['title'])
         self.container = tk.Frame(self)
 
         self.container.pack(side="top", fill="both", expand=True)

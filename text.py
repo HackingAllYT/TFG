@@ -69,6 +69,10 @@ info['erro-grafica-text'] = 'The selected data type cannot be used for this inpu
 info['erro-gardar-imaxe'] = 'Error saving image'
 info['erro-gardar-imaxe-text'] = 'The image to be processed contains some incorrect parameters, check the settings before trying to save the image again.'
 
+info['Configuración'] = 'Configuration'
+
+info['title'] = 'Application for displaying NUMA server data'
+
 TEXT['en'] = info
 
 info = {}
@@ -136,6 +140,10 @@ info['erro-grafica-text'] = 'O tipo de dato seleccionado non se pode empregar pa
 
 info['erro-gardar-imaxe'] = 'Erro ao gardar a imaxe'
 info['erro-gardar-imaxe-text'] = 'A imaxe a procesar contén algún parámetro incorrecto, revise a configuración antes de intentar gardar a imaxe de novo.'
+
+info['Configuración'] = 'Configuración'
+
+info['title'] = 'Aplicación para a visualización de datos de servidores NUMA'
 
 TEXT['gal'] = info
 
@@ -205,6 +213,10 @@ info['erro-grafica-text'] = 'El tipo de dato seleccionado no se puede utilizar p
 
 info['erro-gardar-imaxe'] = 'Error al guardar la imagen'
 info['erro-gardar-imaxe-text'] = 'La imagen a procesar contiene algún parámetro incorrecto, revise la configuración antes de intentar guardar la imagen de nuevo.'
+
+info['Configuración'] = 'Configuración'
+
+info['title'] = 'Aplicación para la visualización de datos de servidores NUMA'
 
 TEXT['es'] = info
 

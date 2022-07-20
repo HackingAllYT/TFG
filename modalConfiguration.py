@@ -37,7 +37,7 @@ class configurationModal(tk.Toplevel):
         super().__init__(parent)
 
         self.controller = parent
-        self.title("Configuración")
+        self.title(TEXT[config['INITIAL']['IDIOMA']]["Configuración"])
         self.geometry("700x900")
         self.resizable(False, False)
 
@@ -138,10 +138,10 @@ class configurationModal(tk.Toplevel):
             relief="flat"
         )
         self.button_2.place(
-            x=261.0,
-            y=154.0,
-            width=77.0,
-            height=70.75677490234375
+            x=259.0,
+            y=152.0,
+            width=83.0,
+            height=76.760009765625
         )
 
         self.button_image_3 = PhotoImage(
@@ -155,10 +155,10 @@ class configurationModal(tk.Toplevel):
             relief="flat"
         )
         self.button_3.place(
-            x=377.0,
-            y=154.0,
-            width=70.0,
-            height=70.0
+            x=375.0,
+            y=152.0,
+            width=76.0,
+            height=76.0
         )
 
         self.button_image_4 = PhotoImage(
@@ -172,10 +172,10 @@ class configurationModal(tk.Toplevel):
             relief="flat"
         )
         self.button_4.place(
-            x=484.0,
-            y=154.0,
-            width=69.1064453125,
-            height=70.0
+            x=482.0,
+            y=152.0,
+            width=75.1099853515625,
+            height=76.0
         )
 
         self.canvas.create_text(
@@ -390,6 +390,8 @@ class configurationModal(tk.Toplevel):
 
         self.changes = False
 
+        self.setSelectedItems()
+
     '''
     *******************************************************************************
     ******************* Funcións de control do modal en xeral  ********************
@@ -428,15 +430,56 @@ class configurationModal(tk.Toplevel):
 
     '''
     *******************************************************************************
+    **************** Funcións de control de seleccións dos botóns  ****************
+    *******************************************************************************
+    '''
+
+    def setSelectedItems(self, value: str = None, valueType: str = 'color'):
+        aux = {
+            'gal': [self.button_2, 'galicia_over.png', self.button_image_2],
+            'es': [self.button_3, 'spain_over.png', self.button_image_3],
+            'en': [self.button_4, 'uk_over.png', self.button_image_4],
+            'blue': [self.button_7, self.auxRoute + 'azul_over.png', self.button_image_7],
+            'green': [self.button_8, self.auxRoute + 'verde_over.png', self.button_image_8],
+            'orange': [self.button_9, self.auxRoute + 'laranxa_over.png', self.button_image_9],
+            'light-blue': [self.button_10, self.auxRoute + 'azul_claro_over.png', self.button_image_10]
+        }
+        if value:
+            if valueType == 'color':
+                aux[self.color][0]["image"] = aux[self.color][2]
+            elif valueType == 'lang':
+                aux[self.idioma][0]["image"] = aux[self.idioma][2]
+            img = PhotoImage(
+                file=relative_to_assets(aux[value][1])
+            )
+            aux[value][0]["image"] = img
+            aux[value][0].image = img
+        else:
+            img = PhotoImage(
+                file=relative_to_assets(aux[self.color][1])
+            )
+            aux[self.color][0]["image"] = img
+            aux[self.color][0].image = img
+
+            img = PhotoImage(
+                file=relative_to_assets(aux[self.idioma][1])
+            )
+            aux[self.idioma][0]["image"] = img
+            aux[self.idioma][0].image = img
+
+    '''
+    *******************************************************************************
     **************** Funcións de control de pulsacións nos botóns  ****************
     *******************************************************************************
     '''
 
     def languageColorClicked(self, value):
         if type(value) == tuple:
+            self.setSelectedItems(value[0], 'color')
             self.color = value[0]
             self.colorBg = value[1]
         else:
+            self.setSelectedItems(value, 'lang')
             self.idioma = value
         self.changes = True
 
@@ -462,22 +505,40 @@ class configurationModal(tk.Toplevel):
     '''
 
     def button_2_enter(self, e):
-        ""
+        name = 'galicia_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_2["image"] = aux
+        self.button_2.image = aux
 
     def button_2_leave(self, e):
-        ""
+        if self.idioma != GAL:
+            self.button_2["image"] = self.button_image_2
 
     def button_3_enter(self, e):
-        ""
+        name = 'spain_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_3["image"] = aux
+        self.button_3.image = aux
 
     def button_3_leave(self, e):
-        ""
+        if self.idioma != CAS:
+            self.button_3["image"] = self.button_image_3
 
     def button_4_enter(self, e):
-        ""
+        name = 'uk_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_4["image"] = aux
+        self.button_4.image = aux
 
     def button_4_leave(self, e):
-        ""
+        if self.idioma != ENG:
+            self.button_4["image"] = self.button_image_4
 
     def button_5_enter(self, e):
         '''name = self.auxRoute + 'folder_over.png'
@@ -510,7 +571,8 @@ class configurationModal(tk.Toplevel):
         self.button_7.image = aux
 
     def button_7_leave(self, e):
-        self.button_7["image"] = self.button_image_7
+        if self.color != BLUE[0]:
+            self.button_7["image"] = self.button_image_7
 
     def button_8_enter(self, e):
         name = self.auxRoute + 'verde_over.png'
@@ -521,7 +583,8 @@ class configurationModal(tk.Toplevel):
         self.button_8.image = aux
 
     def button_8_leave(self, e):
-        self.button_8["image"] = self.button_image_8
+        if self.color != GREEN[0]:
+            self.button_8["image"] = self.button_image_8
 
     def button_9_enter(self, e):
         name = self.auxRoute + 'laranxa_over.png'
@@ -532,7 +595,8 @@ class configurationModal(tk.Toplevel):
         self.button_9.image = aux
 
     def button_9_leave(self, e):
-        self.button_9["image"] = self.button_image_9
+        if self.color != ORANGE[0]:
+            self.button_9["image"] = self.button_image_9
 
     def button_10_enter(self, e):
         name = self.auxRoute + 'azul_claro_over.png'
@@ -543,4 +607,5 @@ class configurationModal(tk.Toplevel):
         self.button_10.image = aux
 
     def button_10_leave(self, e):
-        self.button_10["image"] = self.button_image_10
+        if self.color != LIGHT_BLUE[0]:
+            self.button_10["image"] = self.button_image_10
