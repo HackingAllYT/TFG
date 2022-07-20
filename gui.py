@@ -172,6 +172,16 @@ class AppController(tk.Tk):
         self.update()
         self.update_idletasks()
 
+    def setFilename(self, fileName):
+        global filename
+        filename = fileName
+        # creating a thread
+        Thread_loadFile = Thread(target=self.loadFileThread)
+
+        # change T to daemon
+        Thread_loadFile.daemon = True
+        Thread_loadFile.start()
+
     def xerarNovaHeatMapThread(self, info):
         aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
                self.infoData[0][1].columns.get_loc(info['yRow']),

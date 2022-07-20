@@ -42,6 +42,8 @@ class StartPage(tk.Frame):
         self.button_4.bind('<Enter>', self.button_4_enter)
         self.button_4.bind('<Leave>', self.button_4_leave)
 
+        self.entry_1.bind('<Return>', self.processEntry)
+
     def __init_HD__(self, controller):
         self.canvas = Canvas(
             self,
@@ -520,6 +522,9 @@ class StartPage(tk.Frame):
     def setEntryName(self, filename):
         self.entry_1.delete(0, tk.END)
         self.entry_1.insert(0, filename)
+
+    def processEntry(self, e=None):
+        self.controller.setFilename(self.entry_1.get())
 
     '''
     *******************************************************************************

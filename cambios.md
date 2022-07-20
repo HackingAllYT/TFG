@@ -43,7 +43,7 @@
 # Opciones
 
 - [x] Los cambios no funcionan hasta matar por completo el proceso y volver a abrirlo. El diálogo modal no cumple su objetivo.
-- [ ] No se resaltan las opciones seleccionadas y activas respecto al idioma o esquema de color.
+- [x] No se resaltan las opciones seleccionadas y activas respecto al idioma o esquema de color.
 - [x] Los esquemas de colores están rotos, se mezclan distintos esquemas.
 - [x] La selección de idioma no funciona correctamente, se mezclan distintos idiomas.
 - [x] Sobra la "X" para cerrar la ventana de opciones.
