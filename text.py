@@ -66,6 +66,9 @@ info['Introduza o nome da gráfica:'] = 'Enter the name of the chart:'
 info['erro-grafica'] = 'Error detected'
 info['erro-grafica-text'] = 'The selected data type cannot be used for this input data'
 
+info['erro-gardar-imaxe'] = 'Error saving image'
+info['erro-gardar-imaxe-text'] = 'The image to be processed contains some incorrect parameters, check the settings before trying to save the image again.'
+
 TEXT['en'] = info
 
 info = {}
@@ -130,6 +133,9 @@ info['Introduza o nome da gráfica:'] = 'Introduza o nome da gráfica:'
 
 info['erro-grafica'] = 'Erro detectado'
 info['erro-grafica-text'] = 'O tipo de dato seleccionado non se pode empregar para estes datos de entrada'
+
+info['erro-gardar-imaxe'] = 'Erro ao gardar a imaxe'
+info['erro-gardar-imaxe-text'] = 'A imaxe a procesar contén algún parámetro incorrecto, revise a configuración antes de intentar gardar a imaxe de novo.'
 
 TEXT['gal'] = info
 
@@ -196,6 +202,9 @@ info['Introduza o nome da gráfica:'] = 'Introduzca el nombre de la gráfica:'
 
 info['erro-grafica'] = 'Error detectado'
 info['erro-grafica-text'] = 'El tipo de dato seleccionado no se puede utilizar para estes datos de entrada'
+
+info['erro-gardar-imaxe'] = 'Error al guardar la imagen'
+info['erro-gardar-imaxe-text'] = 'La imagen a procesar contiene algún parámetro incorrecto, revise la configuración antes de intentar guardar la imagen de nuevo.'
 
 TEXT['es'] = info
 

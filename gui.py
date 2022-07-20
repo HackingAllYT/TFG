@@ -184,7 +184,9 @@ class AppController(tk.Tk):
         )
         if result == None:
             self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica'],
-                             TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica-text'])
+                             TEXT[self.config['INITIAL']
+                                  ['IDIOMA']]['erro-grafica-text'],
+                             type='warning')
         # self.root.destroy()
         # self.root.after(0, self.root.destroy)
 
@@ -321,14 +323,22 @@ class AppController(tk.Tk):
         result = saveImaxeDialog.show()
         if result['do']:
             if result['type'] == 'heatmap':
-                interactive_chart_plot(
-                    x_index=self.infoData[0][1].columns.get_loc(info['xRow']),
-                    y_index=self.infoData[0][1].columns.get_loc(info['yRow']),
-                    zName=info['zRow'],
+                aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
+                       self.infoData[0][1].columns.get_loc(info['yRow']),
+                       info['zRow'], info['zMin'], info['zMax'], info['zType'], info['delOut'])
+                saida = interactive_chart_plot(
+                    index=aux,
                     plotName=info['name'],
                     data=self.infoData[0][1],
-                    save=result
+                    save=result,
+                    infoData=info['PIDsTIDs'],
+                    colors=info['colors']
                 )
+                if saida == None:
+                    self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-gardar-imaxe'],
+                                     TEXT[self.config['INITIAL']['IDIOMA']
+                                          ]['erro-gardar-imaxe-text'],
+                                     type='warning')
     '''
     *******************************************************************************
     ********* Funcións xerais para mostrar que se está a xerar a gráfica **********
@@ -354,7 +364,7 @@ class AppController(tk.Tk):
             if type == 'info':
                 msgb.showinfo(title, message, master=self.root)
             elif type == 'warning':
-                msgb.showwarning('Warning', message, master=self.root)
+                msgb.showwarning(title, message, master=self.root)
             elif type == 'error':
                 msgb.showerror('Error', message, master=self.root)
         except:

@@ -6,11 +6,14 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
+import matplotlib
 
 # Save Image
 import platform
 import os
 from PIL import Image
+
+matplotlib.use('Agg')
 
 
 def parse_file(file):
@@ -98,6 +101,15 @@ def qualitative_heatmap(xs, ys, zs, zType) -> go.Heatmap:
         tickvals=[i for i in range(len(legend_entries))],
         ticktext=legend_entries
     )
+
+    '''if zType == bool:
+        color_bar = dict(
+            titleside="top",
+            tickmode="array",
+            tickvals=[0, 1],
+            ticktext=["False", "True"],
+            ticks="outside"
+        )'''
 
     if not colors:
         colors = None
