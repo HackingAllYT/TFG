@@ -14,18 +14,20 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 GAL = 'gal'
 CAS = 'es'
 ENG = 'en'
 
 BLUE = ('blue', 'blue-bg')
+LIGHT_BLUE = ('light-blue', 'light-blue-bg')
 GREEN = ('green', 'green-bg')
 ORANGE = ('orange', 'orange-bg')
 
@@ -42,6 +44,8 @@ class configurationModal(tk.Toplevel):
         self.idioma = config['INITIAL']['IDIOMA']
         self.color = config['INITIAL']['COLOR']
         self.colorBg = config['INITIAL']['COLOR-BG']
+
+        self.auxRoute = 'cores/' + config['INITIAL']['idioma'] + '/'
 
         self.canvas = Canvas(
             self,
@@ -66,7 +70,8 @@ class configurationModal(tk.Toplevel):
             251.0,
             28.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Configuración xeral:"],
+            text=TEXT[config['INITIAL']['IDIOMA']
+                      ]["Configuración xeral:"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
         )
@@ -263,59 +268,65 @@ class configurationModal(tk.Toplevel):
             height=55.0
         )
 
-        self.button_image_9 = PhotoImage(
+        self.button_image_6 = PhotoImage(
             file=relative_to_assets("gardar_button.png"))
-        self.button_9 = Button(
+        self.button_6 = Button(
             self,
-            image=self.button_image_9,
+            image=self.button_image_6,
             borderwidth=0,
             highlightthickness=0,
             command=self.aplicar,
             relief="flat"
         )
-        self.button_9.place(
+        self.button_6.place(
             x=160.0,
             y=828.0,
             width=180.0,
             height=55.0
         )
 
-        self.button_image_6 = PhotoImage(
-            file=relative_to_assets("cores/blue_gui.png"))
-        self.button_6 = Button(
+        # Azul claro
+        name = self.auxRoute + 'azul_claro.png'
+        self.button_image_10 = PhotoImage(
+            file=relative_to_assets(name))
+        self.button_10 = Button(
             self,
-            image=self.button_image_6,
+            image=self.button_image_10,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.languageColorClicked(LIGHT_BLUE),
+            relief="flat"
+        )
+        self.button_10.place(
+            x=415.0,
+            y=633.0,
+            width=212.0,
+            height=163.0
+        )
+
+        # Azul
+        name = self.auxRoute + 'azul.png'
+        self.button_image_7 = PhotoImage(
+            file=relative_to_assets(name))
+        self.button_7 = Button(
+            self,
+            image=self.button_image_7,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: self.languageColorClicked(BLUE),
             relief="flat"
         )
-        self.button_6.place(
+        self.button_7.place(
             x=160.0,
             y=443.0,
             width=212.0,
             height=163.0
         )
 
-        self.button_image_7 = PhotoImage(
-            file=relative_to_assets("cores/orange_gui.png"))
-        self.button_7 = Button(
-            self,
-            image=self.button_image_7,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: self.languageColorClicked(ORANGE),
-            relief="flat"
-        )
-        self.button_7.place(
-            x=415.0,
-            y=443.0,
-            width=212.0,
-            height=163.0
-        )
-
+        # Verde
+        name = self.auxRoute + 'verde.png'
         self.button_image_8 = PhotoImage(
-            file=relative_to_assets("cores/green_gui.png"))
+            file=relative_to_assets(name))
         self.button_8 = Button(
             self,
             image=self.button_image_8,
@@ -325,6 +336,25 @@ class configurationModal(tk.Toplevel):
             relief="flat"
         )
         self.button_8.place(
+            x=415.0,
+            y=443.0,
+            width=212.0,
+            height=163.0
+        )
+
+        # Laranxa
+        name = self.auxRoute + 'laranxa.png'
+        self.button_image_9 = PhotoImage(
+            file=relative_to_assets(name))
+        self.button_9 = Button(
+            self,
+            image=self.button_image_9,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.languageColorClicked(ORANGE),
+            relief="flat"
+        )
+        self.button_9.place(
             x=160.0,
             y=633.0,
             width=212.0,
@@ -352,6 +382,12 @@ class configurationModal(tk.Toplevel):
         self.button_8.bind('<Enter>', self.button_8_enter)
         self.button_8.bind('<Leave>', self.button_8_leave)
 
+        self.button_9.bind('<Enter>', self.button_9_enter)
+        self.button_9.bind('<Leave>', self.button_9_leave)
+
+        self.button_10.bind('<Enter>', self.button_10_enter)
+        self.button_10.bind('<Leave>', self.button_10_leave)
+
         self.changes = False
 
     '''
@@ -364,7 +400,7 @@ class configurationModal(tk.Toplevel):
         self.deiconify()
         self.transient(self.controller)
         self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
-        #self.parent.eval(f'tk::PlaceWindow {str(self)} center')
+        # self.parent.eval(f'tk::PlaceWindow {str(self)} center')
         self.center()
         self.wait_window(self)
         return self.changes
@@ -408,7 +444,8 @@ class configurationModal(tk.Toplevel):
         config.set('INITIAL', 'IDIOMA', self.idioma)
         config.set('INITIAL', 'COLOR', self.color)
         config.set('INITIAL', 'COLOR-BG', self.colorBg)
-        config.set('INITIAL', 'RESOLU', RESOLU[self.screenResolution.get()])
+        config.set('INITIAL', 'RESOLU',
+                   RESOLU[self.screenResolution.get()])
 
         # save to a file
         with open('config.ini', 'w') as configfile:
@@ -443,25 +480,67 @@ class configurationModal(tk.Toplevel):
         ""
 
     def button_5_enter(self, e):
-        ""
+        '''name = self.auxRoute + 'folder_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_5["image"] = aux
+        self.button_5.image = aux'''
 
     def button_5_leave(self, e):
-        ""
+        self.button_5["image"] = self.button_image_5
 
     def button_6_enter(self, e):
-        ""
+        '''name = self.auxRoute + 'folder_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_6["image"] = aux
+        self.button_6.image = aux'''
 
     def button_6_leave(self, e):
-        ""
+        self.button_6["image"] = self.button_image_6
 
     def button_7_enter(self, e):
-        ""
+        name = self.auxRoute + 'azul_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_7["image"] = aux
+        self.button_7.image = aux
 
     def button_7_leave(self, e):
-        ""
+        self.button_7["image"] = self.button_image_7
 
     def button_8_enter(self, e):
-        ""
+        name = self.auxRoute + 'verde_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_8["image"] = aux
+        self.button_8.image = aux
 
     def button_8_leave(self, e):
-        ""
+        self.button_8["image"] = self.button_image_8
+
+    def button_9_enter(self, e):
+        name = self.auxRoute + 'laranxa_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_9["image"] = aux
+        self.button_9.image = aux
+
+    def button_9_leave(self, e):
+        self.button_9["image"] = self.button_image_9
+
+    def button_10_enter(self, e):
+        name = self.auxRoute + 'azul_claro_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_10["image"] = aux
+        self.button_10.image = aux
+
+    def button_10_leave(self, e):
+        self.button_10["image"] = self.button_image_10

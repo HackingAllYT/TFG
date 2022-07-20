@@ -28,6 +28,9 @@ from EditScatterPane import ScatterPane
 from EditRooflineModel import RooflineModelPane
 import modalGardarImaxe as sim
 
+import os
+import sys
+
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -415,6 +418,9 @@ class AppController(tk.Tk):
     def getConfig(self):
         return self.config
 
+    def editConfig(self):
+        ''
+
     '''
     *******************************************************************************
     *********** Función auxiliar para devolver un diccionario cos PIDs ************
@@ -447,6 +453,7 @@ class AppController(tk.Tk):
 
 
 if __name__ == '__main__':
-    while askExit:
-        app = AppController(className="NUMA data visualization")
-        app.mainloop()
+    app = AppController(className="NUMA data visualization")
+    app.mainloop()
+    if askExit:
+        os.execl(sys.executable, sys.executable, *sys.argv)
