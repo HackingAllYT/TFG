@@ -50,7 +50,8 @@ class HeatMapPane(tk.Frame):
             57.0,
             23.0,
             anchor="nw",
-            text="X:",
+            text=TEXT[self.config['INITIAL']['IDIOMA']
+                      ]["Nome da gráfica:"],  # "X:",
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -68,7 +69,7 @@ class HeatMapPane(tk.Frame):
             411.0,
             22.0,
             anchor="nw",
-            text="Y:",
+            text="X:",  # Antes era Y:
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -110,7 +111,8 @@ class HeatMapPane(tk.Frame):
             411.0,
             141.0,
             anchor="nw",
-            text=TEXT[self.config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
+            # TEXT[self.config['INITIAL']['IDIOMA']]["Nome da gráfica:"]
+            text='Y:',
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -239,7 +241,7 @@ class HeatMapPane(tk.Frame):
             font=("Inter", 15 * -1)
         )
 
-        self.canvas.create_text(
+        '''self.canvas.create_text(
             482.0,
             308.0,
             anchor="nw",
@@ -255,7 +257,7 @@ class HeatMapPane(tk.Frame):
             text="μ + 2σ",
             fill="#000000",
             font=("Inter", 15 * -1)
-        )
+        )'''
 
         self.canvas.create_text(
             54.0,
@@ -286,25 +288,24 @@ class HeatMapPane(tk.Frame):
             height=55.0
         )
 
-        self.entry_image_3 = PhotoImage(
-            file=relative_to_assets("entry_3.png"))
-        self.entry_bg_3 = self.canvas.create_image(
-            506.5,
-            182.5,
-            image=self.entry_image_3
-        )
         self.entry_3 = Entry(
             self,
             bd=0,
-            bg="#F1F5FF",
+            bg="#FFFFFF",
             highlightthickness=0
         )
         self.entry_3.place(
+            x=57.0,
+            y=57.0,
+            width=211.0,
+            height=27.0
+        )
+        ''' # Antes era
             x=411.0,
             y=168.0,
             width=211.0,
             height=27.0
-        )
+        '''
 
         self.deleteOutliers = IntVar()
 
@@ -343,11 +344,17 @@ class HeatMapPane(tk.Frame):
         # place the widget
         # columnas_cb.pack(fill=None, side=LEFT, padx=0, pady=110)
         self.xData_cb.place(
-            x=57.0,
+            x=411.0,
             y=57.0,
             width=170.0,
             height=20.0
         )
+        ''' # Antes era:
+            x=57.0,
+            y=57.0,
+            width=170.0,
+            height=20.0
+        '''
 
         self.yData = StringVar()
         self.yData_cb = ttk.Combobox(
@@ -362,10 +369,16 @@ class HeatMapPane(tk.Frame):
         # place the widget
         self.yData_cb.place(
             x=411.0,
-            y=57.0,
+            y=168.0,
             width=170.0,
             height=20.0
         )
+        ''' # Antes era
+            x=411.0,
+            y=57.0,
+            width=170.0,
+            height=20.0
+        '''
 
         self.zData = StringVar()
         self.zData_cb = ttk.Combobox(

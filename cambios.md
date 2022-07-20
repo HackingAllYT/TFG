@@ -2,7 +2,7 @@
 
 - [ ] Texto descolocado en la pantalla de inicio.
 - [x] Al buscar el fichero sería mejor que se empezase en la última carpeta desde la cual se ha abierto el último fichero o, por defecto, en el home del usuario.
-- [ ] Botón para acceder a las opciones desde el inicio.
+- [x] Botón para acceder a las opciones desde el inicio.
 - [x] Cerrar el diálogo modal de "Xerando gráfica" automáticamente una vez se genere la gráfica.
 - [ ] El cuadro de texto para el título de la gráfica no tiene la apariencia de cuadro de texto modificable.
 - [ ] El cuadro de texto para el título de la gráfica debería aparecer arriba a la izquierda, separado visualmente del resto de opciones.
@@ -13,7 +13,8 @@
 
 # Heatmap
 
-- [ ] Seleccionar el tipo de dato no cambia la gráfica a generar. Al seleccionar el tipo de dato del eje Z, se deberían convertir todos los datos al tipo seleccionado. Por ejemplo, si una columna se selecciona como booleana, se deberían convertir a valures 'true'/'false', pero si se selecciona como strings se tienen que convertir a los string "1" / "0" o lo que corresponda. ---> Bool ex: InPrefNode
+- [x] Seleccionar el tipo de dato no cambia la gráfica a generar. Al seleccionar el tipo de dato del eje Z, se deberían convertir todos los datos al tipo seleccionado. Por ejemplo, si una columna se selecciona como booleana, se deberían convertir a valures 'true'/'false', pero si se selecciona como strings se tienen que convertir a los string "1" / "0" o lo que corresponda. ---> Bool ex: InPrefNode
+- [ ] Refacer HeatMap de ints
 - [x] Activar la eliminación de outliers no cambia la gráfica a generar.
 - [x] Primeiro valor máximo e valor mínimo e se queres cambialo que o cambie o usuario
 
@@ -27,6 +28,11 @@
 - [x] Cambiar o z por cor en scatter
 - [x] Outliers igual que no heatmap
 - [x] Xuntar a opcion de Z (ahora con outro nome) e a de tipo de cor
+
+# Temporal
+- [ ] Na x fijo temporal
+- [ ] Na y glfops por ex, comprobando que se vexa ben
+- [ ] Permitir seleccion entre enteiros e punto flotante
 
 
 # Roofline

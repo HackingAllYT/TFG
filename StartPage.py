@@ -22,6 +22,8 @@ class StartPage(tk.Frame):
 
         self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
             '/' + self.config['INITIAL']['idioma'] + '/'
+        self.auxRouteConfigButton = self.config["INITIAL"]['RESOLU'] + \
+            '/' + self.config['INITIAL']['COLOR'] + '/'
 
         if self.config["INITIAL"]['RESOLU'] == RESOLU['1']:
             self.__init_HD__(controller)
@@ -36,6 +38,9 @@ class StartPage(tk.Frame):
 
         self.button_3.bind('<Enter>', self.button_3_enter)
         self.button_3.bind('<Leave>', self.button_3_leave)
+
+        self.button_4.bind('<Enter>', self.button_4_enter)
+        self.button_4.bind('<Leave>', self.button_4_leave)
 
     def __init_HD__(self, controller):
         self.canvas = Canvas(
@@ -138,6 +143,24 @@ class StartPage(tk.Frame):
             y=600.0,
             width=180.0,
             height=55.0
+        )
+
+        route = self.auxRouteConfigButton + 'settings.png'
+        self.button_image_4 = PhotoImage(
+            file=relative_to_assets(route))
+        self.button_4 = Button(
+            self,
+            image=self.button_image_4,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.controller.openConfigurationModal,
+            relief="flat"
+        )
+        self.button_4.place(
+            x=3.0,
+            y=3.0,
+            width=29.0,
+            height=29.0
         )
 
         self.image_image_1 = PhotoImage(
@@ -538,3 +561,15 @@ class StartPage(tk.Frame):
 
     def button_3_leave(self, e):
         self.button_3["image"] = self.button_image_3
+
+    def button_4_enter(self, e):
+        if self.button_4["state"] == tk.NORMAL:
+            name = self.auxRouteConfigButton + 'settings_over.png'
+            aux = PhotoImage(
+                file=relative_to_assets(name)
+            )
+            self.button_4["image"] = aux
+            self.button_4.image = aux
+
+    def button_4_leave(self, e):
+        self.button_4["image"] = self.button_image_4

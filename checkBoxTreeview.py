@@ -2,6 +2,7 @@ import tkinter.ttk as ttk
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
+from turtle import width
 import numpy as np
 from text import TREETYPE_TIDs_PIDs, TREETYPE_CPUs
 
@@ -46,13 +47,16 @@ class CheckboxTreeview(ttk.Treeview):
             vsb = ttk.Scrollbar(self, orient="vertical", command=self.yview)
             vsb.pack(side='right', fill='y')
 
+            hsb = ttk.Scrollbar(self, orient='horizontal', command=self.xview)
+            hsb.pack(side='bottom', fill='x')
+
             self.itemsPidTidSelected = {}
             self.itemsCpuSelected = []
             self.treeType = treeType
             self.editClass = editClass
             self.bind('<ButtonRelease-1>', self.selectItem)
 
-            self.configure(yscrollcommand=vsb.set)
+            self.configure(xscrollcommand=hsb.set, yscrollcommand=vsb.set)
 
     def insert(self, parent, index, iid=None, **kw):
         """ same method as for standard treeview but add the tag 'unchecked'
@@ -145,6 +149,8 @@ class CheckboxTreeview(ttk.Treeview):
                 aux = pid
                 tids = info[pid]
                 for tid in tids:
+                    tid = tid.split('&&&')
+                    tid = tid[0] + ' ' + tid[1]
                     self.insert(pid, "end", str(pid)+'-'+str(tid), text=tid)
                 aux = "Todos"
         elif treeType == TREETYPE_CPUs:
@@ -221,9 +227,9 @@ class CheckboxTreeview(ttk.Treeview):
 
     def insertItemSelected(self, info: list[str]):
         if info[0] in self.itemsPidTidSelected:
-            self.itemsPidTidSelected[info[0]].append(info[1])
+            self.itemsPidTidSelected[info[0]].append(info[1].split(' ')[0])
         else:
-            self.itemsPidTidSelected[info[0]] = [info[1]]
+            self.itemsPidTidSelected[info[0]] = [info[1].split(' ')[0]]
 
     '''
     *******************************************************************************

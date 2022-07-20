@@ -439,7 +439,7 @@ class AppController(tk.Tk):
             else:
                 aux = []
                 for it in item.itertuples():
-                    aux.append(it.TID)
+                    aux.append(str(it.TID) + '&&&' + it.CMDLINE)
                 aux = list(set(aux))
                 infoAux[rows.PID] = aux
 

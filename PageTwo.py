@@ -125,7 +125,7 @@ class PageTwo(tk.Frame):
             image=self.button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_4 clicked"),
+            command=self.selectNewFile,
             relief="flat"
         )
         self.button_4.place(
@@ -266,6 +266,9 @@ class PageTwo(tk.Frame):
             height=699.0
         )
         self.notebook.select(self.aux)
+
+    def selectNewFile(self):
+        self.controller.select_path_2()
 
     '''
     *******************************************************************************
