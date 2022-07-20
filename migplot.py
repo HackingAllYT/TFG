@@ -16,8 +16,8 @@ from PIL import Image
 matplotlib.use('Agg')
 
 
-def parse_file(file):
-    return pd.read_csv(file, sep=';')
+def parse_file(file, separator):
+    return pd.read_csv(file, sep=separator)
 
 
 def remove_outliers(data, quantile_min=0.25, quantile_max=0.75):

@@ -159,13 +159,15 @@ class AppController(tk.Tk):
             message=filename
         )
         if type(filename) == str:
-            data = parse_file(file=filename)
+            data = parse_file(
+                file=filename, separator=self.config['READ-FILE']['SEPARATOR'])
             self.pidsTids = self.loadPids(data=data)
             self.infoData.append([filename, data])
             initial_chart(data=data)
         else:
             for x in filename:
-                data = parse_file(file=x)
+                data = parse_file(
+                    file=x, separator=self.config['READ-FILE']['SEPARATOR'])
                 self.pidsTids = self.loadPids(data=data)
                 self.infoData.append([x, data])
                 initial_chart(data=data)
