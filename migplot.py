@@ -386,15 +386,22 @@ def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, info
 
     zmin = np.min(z_values)
     zmax = np.max(z_values)
-    '''if y_name == 'CPU':
+    if y_name == 'CPU':
         for i in range(int(zmin), int(zmax)):
-            auxData = auxData.append(
-                {x_name: 0, y_name: i, zName: 0}, ignore_index=True)'''
-    # print(auxData)
+            aux = pd.DataFrame({x_name: [0], y_name: i, zName: [0]})
+            auxData = pd.concat([auxData, aux])
+
     auxData = auxData.sort_values(by=[y_name, x_name])
-    #auxData = auxData[auxData.Timestamp > 0.5]
+
     fig = px.line(auxData, x=x_name, y=y_name, color=zName)
     fig.update_yaxes(range=[int(zmin), int(zmax)], autorange=False)
+
+    z_values = data[x_name].astype(float)
+    z_values = z_values[np.isfinite(z_values)]
+    zmax = np.max(z_values)
+
+    fig.update_xaxes(range=[100, int(zmax)], autorange=False)
+
     # px.colors.qualitative
     '''fig.add_trace(go.Scatter(
         x=df["Date"], y=df["Close"], name="Close", mode="lines"))
@@ -414,6 +421,7 @@ def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, info
     )
 
     if not save:
+        # fig.for_each_trace(lambda trace: trace.update(visible="legendonly") if trace.name == '0' else ())
         fig.show()
 
 
