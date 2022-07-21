@@ -103,6 +103,23 @@ class selectFigureModal(tk.Toplevel):
             height=248.0
         )
 
+        self.button_image_5 = PhotoImage(
+            file=relative_to_assets("button_scatter_temporal.png"))
+        self.button_5 = Button(
+            self,
+            image=self.button_image_5,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.addRooflineTemporal,
+            relief="flat"
+        )
+        self.button_5.place(
+            x=368.0,
+            y=394.0,
+            width=312.0,
+            height=248.0
+        )
+
         self.canvas.create_text(
             220.0,
             28.0,
@@ -164,6 +181,10 @@ class selectFigureModal(tk.Toplevel):
 
     def addRoofline(self, event=None):
         self.selection = "roofline"
+        self.destroy()
+
+    def addRooflineTemporal(self, event=None):
+        self.selection = "roofline-temporal"
         self.destroy()
 
     '''

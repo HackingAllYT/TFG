@@ -347,6 +347,44 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
     return True
 
 
+def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, infoData: dict, colors: str):
+    x_index, y_index, zName, zMin, zMax, delOut = index
+
+    columns = list(data.columns)
+
+    x_name = columns[x_index]
+    y_name = columns[y_index]
+
+    fig = go.Figure()
+
+    data = data[data.TID.isin(getListOfPids(infoData))]
+    if delOut:
+        data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
+    data = data.sort_values(by=y_name)
+
+    if colors == 'default':
+        colors = None
+
+    # Aqui é donde temos que facer o que nos manda oscar
+    data = data.sort_values(by=x_name)
+    try:
+        fig = px.line(data, x=x_name, y=y_name, color=zName,
+                      markers=False, color_continuous_scale=colors)
+    except:
+        fig = px.line(data, x=x_name, y=y_name, color=zName,
+                      markers=False, color_discrete_sequence=colors)
+
+    fig.update_layout(
+        yaxis_type='category',
+        xaxis=dict(title=x_name),
+        yaxis=dict(title=y_name),
+        title=plotName
+    )
+
+    if not save:
+        fig.show()
+
+
 def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool, infoData: dict, colors: str):
     x_index, y_index, zName, zMin, zMax, delOut = index
 

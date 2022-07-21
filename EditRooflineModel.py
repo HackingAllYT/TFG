@@ -94,24 +94,17 @@ class RooflineModelPane(tk.Frame):
             height=55.0
         )
 
-        self.entry_image_1 = PhotoImage(
-            file=relative_to_assets("entry_3.png"))
-        self.entry_bg_1 = self.canvas.create_image(
-            165.5,
-            69.5,
-            image=self.entry_image_1
-        )
         self.entry_1 = Entry(
             self,
             bd=0,
-            bg="#F1F5FF",
+            bg="#FFFFFF",
             highlightthickness=0
         )
         self.entry_1.place(
             x=60.0,
             y=55.0,
-            width=211.0,
-            height=27.0
+            width=202.0,
+            height=29.0
         )
 
         self.canvas.create_rectangle(

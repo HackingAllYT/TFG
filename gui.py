@@ -25,6 +25,7 @@ import modalConfiguration as cm
 import modalSelectFigure as msf
 from EditHeatMap import HeatMapPane
 from EditScatterPane import ScatterPane
+from EditScatterPaneTemporal import ScatterPaneTemporal
 from EditRooflineModel import RooflineModelPane
 import modalGardarImaxe as sim
 
@@ -74,6 +75,7 @@ class AppController(tk.Tk):
         self.numRoofMod = 0
         self.numRoofCol = 0
         self.numRoofM3D = 0
+        self.numScattTem = 0
 
         self.frames = {}
 
@@ -259,6 +261,11 @@ class AppController(tk.Tk):
                 RooflineModelPane, 'Roofline - ' + str(self.numRoofMod))
             self.show_frame(PageTwo)
             self.numRoofMod += 1
+        elif result == 'roofline-temporal':
+            self.frames[PageTwo].addFrame(
+                ScatterPaneTemporal, 'Roofline Temporal - ' + str(self.numScattTem))
+            self.show_frame(PageTwo)
+            self.numScattTem += 1
 
     def mostrarHomedendeImaxe(self):
         self.show_frame(StartPage)
@@ -392,9 +399,15 @@ class AppController(tk.Tk):
     '''
 
     def getDataFile(self):
+        '''
+        Devolve unha variable ca información lida do arquivo
+        '''
         return self.infoData[0][1]
 
     def getColumnsFile(self):
+        '''
+        Devolve unha lista cas columnas que contén o dataFrame
+        '''
         return self.infoData[0][1].columns
 
     def getPidsTids(self):

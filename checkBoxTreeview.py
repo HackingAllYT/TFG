@@ -31,7 +31,8 @@ class CheckboxTreeview(ttk.Treeview):
 
     def __init__(self, master=None, treeType: str = None, editClass=None, **kw):
         if treeType != None:
-            ttk.Treeview.__init__(self, master, **kw)
+            ttk.Treeview.__init__(self, master, columns=(
+                'Todos'), selectmode="extended", ** kw)
             # checkboxes are implemented with pictures
             self.im_checked = tk.PhotoImage(
                 file=relative_to_assets('checked_18x18.png'))
@@ -55,6 +56,7 @@ class CheckboxTreeview(ttk.Treeview):
             self.treeType = treeType
             self.editClass = editClass
             self.bind('<ButtonRelease-1>', self.selectItem)
+            self.column("Todos", minwidth=300, width=300, stretch=tk.NO)
 
             self.configure(xscrollcommand=hsb.set, yscrollcommand=vsb.set)
 
@@ -239,6 +241,10 @@ class CheckboxTreeview(ttk.Treeview):
     '''
 
     def __selectItemCpu__(self):
+        '''
+        Función privada que lle serve á clase para actualizar o valor da lista que 
+        contén a información das CPUs seleccionadas 
+        '''
         curItem = self.focus()
         item = self.item(curItem)
         if item["tags"][0] == 'checked':
@@ -264,7 +270,15 @@ class CheckboxTreeview(ttk.Treeview):
     '''
 
     def getSelectedItemsPIDsTIDs(self):
+        '''
+        Devolve un diccionario dos items seleccionados formado por:
+        @clave: PID dos procesos
+        @valor: array cos TIDs asociados ao proceso
+        '''
         return self.itemsPidTidSelected
 
     def getSelectedItemsCPUs(self):
+        '''
+        Devolve unha lista formada polas CPUs seleccionadas
+        '''
         return self.itemsCpuSelected

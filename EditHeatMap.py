@@ -453,7 +453,7 @@ class HeatMapPane(tk.Frame):
         self.t.place(
             x=0.0,
             y=0.0,
-            width=235.0,
+            width=535.0,  # 235
             height=440.0
         )
 
@@ -472,7 +472,9 @@ class HeatMapPane(tk.Frame):
         self.yData_cb.current(1)
         self.zData_cb['values'] = list(columns)
         self.zData_cb.current(5)
-        self.z_tipoDatos_cb['values'] = TIPODATOS[self.config['INITIAL']['IDIOMA']]
+        aux = TIPODATOS[self.config['INITIAL']['IDIOMA']].copy()
+        aux.pop(0)
+        self.z_tipoDatos_cb['values'] = aux
         self.z_tipoDatos_cb.current(0)
         info = self.controller.getPidsTids()
         self.t.insertElements(info, TREETYPE_TIDs_PIDs)
@@ -506,7 +508,7 @@ class HeatMapPane(tk.Frame):
         info['colors'] = self.colors.get()
         info['zMin'] = self.minOutlier_entry.get()
         info['zMax'] = self.maxOutlier_entry.get()
-        info['zType'] = self.z_tipoDatos_cb['values'].index(
+        info['zType'] = TIPODATOS[self.config['INITIAL']['IDIOMA']].index(
             self.z_tipoDatos.get())
         info['delOut'] = bool(self.deleteOutliers.get())
 
