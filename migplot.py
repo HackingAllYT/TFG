@@ -1,4 +1,3 @@
-import sys
 import time
 import numpy as np
 
@@ -236,7 +235,7 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
 
     dataType = [int, float, bool, str]
 
-    data = data[data.TID.isin(getListOfPids(infoData))]
+    data = data[data.TID.isin(getListOfTids(infoData))]
     if delOut:
         data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
 
@@ -347,32 +346,65 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
     return True
 
 
-def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, infoData: dict, colors: str):
-    x_index, y_index, zName, zMin, zMax, delOut = index
+def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, infoData: dict):
+    y_index, zName, zMin, zMax, delOut, varGraphs = index
 
     columns = list(data.columns)
+    x_index = columns.index('Timestamp')
 
     x_name = columns[x_index]
     y_name = columns[y_index]
 
     fig = go.Figure()
 
-    data = data[data.TID.isin(getListOfPids(infoData))]
+    data = data[data.TID.isin(getListOfTids(infoData))]
     if delOut:
         data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
     data = data.sort_values(by=y_name)
 
-    if colors == 'default':
-        colors = None
-
     # Aqui é donde temos que facer o que nos manda oscar
-    data = data.sort_values(by=x_name)
-    try:
-        fig = px.line(data, x=x_name, y=y_name, color=zName,
-                      markers=False, color_continuous_scale=colors)
-    except:
-        fig = px.line(data, x=x_name, y=y_name, color=zName,
-                      markers=False, color_discrete_sequence=colors)
+    aux = []
+    for pid in infoData:
+        pid = int(pid)
+        aux.append(pid)
+
+    # print(auxData, type(auxData.PID))
+    # figAux = px.line(auxData, x=x_name, y=y_name, color=zName, markers=False, color_discrete_sequence=colors)
+    if varGraphs:
+        zName = 'PID'
+        y_name = 'TID'
+    else:
+        ''
+
+    print(x_name, y_name)
+    # data.sort_values(by=y_name)
+    auxData = data[data.PID.isin(aux)]
+    auxData = auxData[[x_name, y_name, zName]]
+
+    z_values = data[y_name].astype(float)
+    z_values = z_values[np.isfinite(z_values)]
+
+    zmin = np.min(z_values)
+    zmax = np.max(z_values)
+    '''if y_name == 'CPU':
+        for i in range(int(zmin), int(zmax)):
+            auxData = auxData.append(
+                {x_name: 0, y_name: i, zName: 0}, ignore_index=True)'''
+    # print(auxData)
+    auxData = auxData.sort_values(by=[y_name, x_name])
+    #auxData = auxData[auxData.Timestamp > 0.5]
+    fig = px.line(auxData, x=x_name, y=y_name, color=zName)
+    fig.update_yaxes(range=[int(zmin), int(zmax)], autorange=False)
+    # px.colors.qualitative
+    '''fig.add_trace(go.Scatter(
+        x=df["Date"], y=df["Close"], name="Close", mode="lines"))
+    fig.add_trace(go.Scatter(
+        x=df["Date"], y=df["Open"], name="Open", mode="lines"))
+    fig.update_layout(
+        title="ICICI BANK stock prices", xaxis_title="Date", yaxis_title="Close"
+    )
+    fig.show()'''
+    # fig.add_trace(figAux)
 
     fig.update_layout(
         yaxis_type='category',
@@ -400,7 +432,7 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
     # Pids = list(map(int, Pids))
     # data = data[data.PID.isin(Pids)]
 
-    data = data[data.TID.isin(getListOfPids(infoData))]
+    data = data[data.TID.isin(getListOfTids(infoData))]
     if delOut:
         data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
     data = data.sort_values(by=y_name)
@@ -429,80 +461,19 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
 
     if not save:
         fig.show()
-
-
-def interactive_app_scatter():
-    from dash import Dash, dcc, html, Input, Output
-    app = Dash(__name__)
-
-    app.layout = html.Div([
-        html.H4('Interactive scatter plot with Iris dataset'),
-        dcc.Graph(id="scatter-plot"),
-        html.P("Filter by petal width:"),
-        dcc.RangeSlider(
-            id='range-slider',
-            min=0, max=2.5, step=0.1,
-            marks={0: '0', 2.5: '2.5'},
-            value=[0.5, 2]
-        ),
-    ])
-
-    @app.callback(
-        Output("scatter-plot", "figure"),
-        Input("range-slider", "value"))
-    def update_bar_chart(slider_range):
-        df = px.data.iris()  # replace with your own data source
-        low, high = slider_range
-        mask = (df['petal_width'] > low) & (df['petal_width'] < high)
-        fig = px.scatter(
-            df[mask], x="sepal_width", y="sepal_length",
-            color="species", size='petal_length',
-            hover_data=['petal_width'])
-        return fig
-
-    app.run_server(debug=True)
-
-
-def interactive_app_scatter_data(data):
-    from dash import Dash, dcc, html, Input, Output
-    app = Dash(__name__)
-
-    app.layout = html.Div([
-        html.H4('Interactive scatter plot with Iris dataset'),
-        dcc.Graph(id="scatter-plot"),
-        html.P("Filter by petal width:"),
-        dcc.RangeSlider(
-            id='range-slider',
-            min=1000, max=100000000, step=100,
-            marks={1000: '1000', 100000000: '100000000'},
-            value=[1000, 100000000]
-        ),
-    ])
-
-    @app.callback(
-        Output("scatter-plot", "figure"),
-        Input("range-slider", "value"))
-    def update_bar_chart(slider_range):
-        df = data  # replace with your own data source
-        low, high = slider_range
-        mask = (df['Timestamp'] > low) & (df['Timestamp'] < high)
-        fig = px.scatter(
-            df[mask], x="Timestamp", y="TID",
-            color="CPU%", size='TID',
-            hover_data=['Timestamp'])
-        return fig
-
-    app.run_server(debug=True)
-
-
-def is_port_in_use(port: int) -> bool:
-    import socket
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('localhost', port)) == 0
+    else:
+        save_image(fig, save)
 
 
 def getColorsContinuos():
     aux = px.colors.sequential.__all__
+    aux.append('default')
+    aux.sort()
+    return aux
+
+
+def getColorsLines():
+    aux = px.colors.qualitative.__all__
     aux.append('default')
     aux.sort()
     return aux
@@ -515,7 +486,10 @@ def getColors():
     return aux
 
 
-def getListOfPids(infoData: dict):
+def getListOfTids(infoData: dict):
+    '''
+    Función que devolve unha lista de todos os TIDs que se atopan dentro do dicionario de entrada
+    '''
     aux = []
     for listAux in infoData:
         aux.extend(infoData[listAux])
@@ -536,7 +510,7 @@ def calcularOutliers(data: pd.DataFrame, zName: str, values: dict):
         return (np.NaN, np.NaN)
     # print(data.dtypes[zName], type(data.dtypes[zName]))
 
-    data = data[data.TID.isin(getListOfPids(values))]
+    data = data[data.TID.isin(getListOfTids(values))]
     z_values = data[zName].astype(float)
     z_values = z_values[np.isfinite(z_values)]
 
@@ -578,6 +552,7 @@ def save_image(fig: go.Figure, info: dict):
 
     name = info['name'] + "." + info['format']
     name = name.replace(' ', '').replace(':', '_')
+    name = info['dir'] + '/' + name
     fig.write_image(
         file=name,
         format=info['format'],

@@ -30,6 +30,7 @@ info['Seleccione PIDs e TIDs a empregar:'] = 'Select PIDs and TIDs to use:'
 info['Tipo de gráfica:'] = 'Type of grahp:'
 info['Unir puntos plot:'] = 'Join dots plot:'
 info['Cor dos puntos:'] = 'Color of the dots:'
+info['Múltiples gráficas:'] = 'Multiple graphs:'
 
 info['Seleccione os CPUs a empregar:'] = 'Select the CPUs to use:'
 info['Eixe X logarítmico:'] = 'Logarithmic X-axis:'
@@ -73,6 +74,9 @@ info['Configuración'] = 'Configuration'
 
 info['title'] = 'Application for displaying NUMA server data'
 
+info['Seleccione datos'] = 'Select data'
+info['erro-sin-seleccion'] = 'To generate a graph you have to pre-select data'
+
 TEXT['en'] = info
 
 info = {}
@@ -109,6 +113,7 @@ info['Eixe Y logarítmico:'] = 'Eixe Y logarítmico:'
 info['Engadir liñas:'] = 'Engadir liñas:'
 info['Nome:'] = 'Nome:'
 info['Cor:'] = 'Cor:'
+info['Múltiples gráficas:'] = 'Múltiples gráficas:'
 
 info['Seleccione tipo de gráfica:'] = 'Seleccione tipo de gráfica:'
 
@@ -145,6 +150,9 @@ info['Configuración'] = 'Configuración'
 
 info['title'] = 'Aplicación para a visualización de datos de servidores NUMA'
 
+info['Seleccione datos'] = 'Seleccione datos'
+info['erro-sin-seleccion'] = 'Para xerar unha gráfica tes que seleccionar previamente datos'
+
 TEXT['gal'] = info
 
 
@@ -175,6 +183,7 @@ info['Seleccione PIDs e TIDs a empregar:'] = 'Seleccione PIDs y TIDs a utilizar:
 info['Tipo de gráfica:'] = 'Tipo de gráfica:'
 info['Unir puntos plot:'] = 'Unir puntos plot:'
 info['Cor dos puntos:'] = 'Color de los puntos:'
+info['Múltiples gráficas:'] = 'Múltiples gráficas:'
 
 info['Seleccione os CPUs a empregar:'] = 'Seleccione los CPUs a utilizar:'
 info['Eixe X logarítmico:'] = 'Eje X logarítmico:'
@@ -217,6 +226,9 @@ info['erro-gardar-imaxe-text'] = 'La imagen a procesar contiene algún parámetr
 info['Configuración'] = 'Configuración'
 
 info['title'] = 'Aplicación para la visualización de datos de servidores NUMA'
+
+info['Seleccione datos'] = 'Seleccione datos'
+info['erro-sin-seleccion'] = 'Para generar un gráfico tiene que seleccionar previamente los datos'
 
 TEXT['es'] = info
 

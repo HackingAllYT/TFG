@@ -453,7 +453,7 @@ class HeatMapPane(tk.Frame):
         self.t.place(
             x=0.0,
             y=0.0,
-            width=535.0,  # 235
+            width=335.0,  # 235
             height=440.0
         )
 

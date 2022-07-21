@@ -69,7 +69,7 @@ class ScatterPaneTemporal(tk.Frame):
             411.0,
             22.0,
             anchor="nw",
-            text="X:",  # Antes era Y:
+            text="Y:",
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -78,7 +78,7 @@ class ScatterPaneTemporal(tk.Frame):
             737.0,
             19.0,
             987.0,
-            207.0,
+            94.0,
             fill="#F1F5FF",
             outline="")
 
@@ -91,33 +91,6 @@ class ScatterPaneTemporal(tk.Frame):
             font=("Inter", 15 * -1)
         )
 
-        self.canvas.create_rectangle(
-            387.0,
-            132.0,
-            637.0,
-            207.0,
-            fill="#F1F5FF",
-            outline="")
-
-        self.canvas.create_text(
-            411.0,
-            141.0,
-            anchor="nw",
-            text='Y:',
-            # TEXT[self.config['INITIAL']['IDIOMA']]["Nome da gráfica:"],
-            fill="#000000",
-            font=("Inter", 15 * -1)
-        )
-
-        self.canvas.create_text(
-            758.0,
-            141.0,
-            anchor="nw",
-            text=TEXT[self.config['INITIAL']['IDIOMA']]["Cores:"],
-            fill="#000000",
-            font=("Inter", 15 * -1)
-        )
-
         aux = self.auxRoute + 'xerar.png'
         self.button_image_1 = PhotoImage(
             file=relative_to_assets(aux))
@@ -126,7 +99,7 @@ class ScatterPaneTemporal(tk.Frame):
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: controller.xerarNovoScatter(
+            command=lambda: controller.xerarNovoScatterTemporal(
                 self.getDataCollected()),
             relief="flat"
         )
@@ -147,7 +120,7 @@ class ScatterPaneTemporal(tk.Frame):
 
         self.canvas.create_text(
             387.0,
-            282.0,
+            165.0,
             anchor="nw",
             text="Outliers:",
             fill="#000000",
@@ -160,7 +133,7 @@ class ScatterPaneTemporal(tk.Frame):
             file=relative_to_assets("entry_2.png"))
         self.entry_bg_1 = self.canvas.create_image(
             504.0,
-            290.5,
+            173.5,
             image=self.entry_image_1
         )
         self.entry_1 = Entry(
@@ -172,7 +145,7 @@ class ScatterPaneTemporal(tk.Frame):
         )
         self.entry_1.place(
             x=468.0 + 5.0,
-            y=273.0 + 1.0,
+            y=156.0 + 1.0,
             width=72.0 - 7.0,
             height=33.0
         )
@@ -183,7 +156,7 @@ class ScatterPaneTemporal(tk.Frame):
             file=relative_to_assets("entry_2.png"))
         self.entry_bg_2 = self.canvas.create_image(
             601.0,
-            290.5,
+            173.5,
             image=self.entry_image_2
         )
         self.entry_2 = Entry(
@@ -195,40 +168,31 @@ class ScatterPaneTemporal(tk.Frame):
         )
         self.entry_2.place(
             x=565.0 + 5.0,
-            y=273.0 + 1.0,
+            y=156.0 + 1.0,
             width=72.0 - 7.0,
             height=33.0
         )
 
         self.canvas.create_rectangle(
             547.0,
-            290.0,
+            173.0,
             558.0,
-            292.0,
+            175.0,
             fill="#000000",
             outline="")
 
         self.canvas.create_text(
             387.0,
-            249.0,
+            132.0,
             anchor="nw",
             text=TEXT[self.config['INITIAL']['IDIOMA']]["Eliminar Outliers:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
 
-        self.canvas.create_text(
-            758.0,
-            249.0,
-            anchor="nw",
-            text=TEXT[self.config['INITIAL']['IDIOMA']]["Unir puntos plot:"],
-            fill="#000000",
-            font=("Inter", 15 * -1)
-        )
-
         '''self.canvas.create_text(
             482.0,
-            309.0,
+            192.0,
             anchor="nw",
             text="μ - 2σ",
             fill="#000000",
@@ -237,7 +201,7 @@ class ScatterPaneTemporal(tk.Frame):
 
         self.canvas.create_text(
             577.0,
-            310.0,
+            193.0,
             anchor="nw",
             text="μ + 2σ",
             fill="#000000",
@@ -270,6 +234,15 @@ class ScatterPaneTemporal(tk.Frame):
             y=527.0,
             width=180.0,
             height=55.0
+        )
+
+        self.canvas.create_text(
+            758.0,
+            133.0,
+            anchor="nw",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Múltiples gráficas:"],
+            fill="#000000",
+            font=("Inter", 15 * -1)
         )
 
         self.entry_3 = Entry(
@@ -310,18 +283,18 @@ class ScatterPaneTemporal(tk.Frame):
 
         self.checkButton.place(
             x=585.0,
-            y=249.0,
+            y=132.0,
             width=20.0,
             height=20.0
         )
 
-        self.unirPuntos = IntVar()
+        self.variasGraficas = IntVar()
 
-        self.unirPuntos_CB = Checkbutton(
+        self.variasGrap_cb = Checkbutton(
             self,
             text='',
-            command=self.unirPuntos_changed,
-            variable=self.unirPuntos,
+            command=self.deleteOutliers_changed,
+            variable=self.variasGraficas,
             onvalue=1,
             offvalue=0,
             background='#FFFFFF',
@@ -332,36 +305,12 @@ class ScatterPaneTemporal(tk.Frame):
             borderwidth=0
         )
 
-        self.unirPuntos_CB.place(
-            x=912.0,
-            y=249.0,
+        self.variasGrap_cb.place(
+            x=936.0,
+            y=132.0,
             width=20.0,
             height=20.0
         )
-
-        self.xData = StringVar()
-        self.xData_cb = ttk.Combobox(
-            self,
-            textvariable=self.xData,
-            width=28
-        )
-
-        # prevent typing a value
-        self.xData_cb['state'] = 'readonly'
-
-        # place the widget
-        self.xData_cb.place(
-            x=411.0,
-            y=57.0,
-            width=170.0,
-            height=20.0
-        )
-        ''' # Antes era:
-            x=57.0,
-            y=57.0,
-            width=170.0,
-            height=20.0
-        '''
 
         self.yData = StringVar()
         self.yData_cb = ttk.Combobox(
@@ -376,16 +325,10 @@ class ScatterPaneTemporal(tk.Frame):
         # place the widget
         self.yData_cb.place(
             x=411.0,
-            y=168.0,
-            width=170.0,
-            height=20.0
-        )
-        ''' # Antes era
-            x=411.0,
             y=57.0,
             width=170.0,
             height=20.0
-        '''
+        )
 
         self.zData = StringVar()
         self.zData_cb = ttk.Combobox(
@@ -406,7 +349,7 @@ class ScatterPaneTemporal(tk.Frame):
         )
         self.zData_cb.bind('<<ComboboxSelected>>', self.zDataCallback)
 
-        self.colors = StringVar()
+        '''self.colors = StringVar()
         self.colors_cb = ttk.Combobox(
             self,
             textvariable=self.colors,
@@ -422,7 +365,7 @@ class ScatterPaneTemporal(tk.Frame):
             y=265.0 - 90.0,
             width=170.0,
             height=20.0
-        )
+        )'''
 
         self.treeFrame = Frame(
             self,
@@ -455,17 +398,17 @@ class ScatterPaneTemporal(tk.Frame):
 
     def loadDataItems(self):
         columns = self.controller.getColumnsFile()
-        self.xData_cb['values'] = list(columns)
-        self.xData_cb.current(0)
         self.yData_cb['values'] = list(columns)
-        self.yData_cb.current(1)
+        cpu = self.yData_cb['values'].index('CPU')
+        self.yData_cb.current(cpu)
         self.zData_cb['values'] = list(columns)
-        self.zData_cb.current(5)
+        tid = self.zData_cb['values'].index('TID')
+        self.zData_cb.current(tid)
         info = self.controller.getPidsTids()
         self.t.insertElements(info, TREETYPE_TIDs_PIDs)
 
-        self.colors_cb['values'] = self.controller.getColors()
-        self.colors_cb.current(self.controller.getColors().index('default'))
+        #self.colors_cb['values'] = self.controller.getColorsLines()
+        # self.colors_cb.current(self.controller.getColorsLines().index('default'))
 
         self.entry_1.config(
             state=tk.DISABLED, disabledbackground="#F1F5FF")
@@ -484,26 +427,12 @@ class ScatterPaneTemporal(tk.Frame):
             self.entry_1.config(state=tk.DISABLED)
             self.entry_2.config(state=tk.DISABLED)
 
-    def unirPuntos_changed(self):
-        if self.unirPuntos.get():
-            # self.colors_cb['values'] = self.controller.getColorsContinuos()
-            # self.colors_cb.current(self.controller.getColorsContinuos().index('default'))
-            self.colors_cb.config(state='disabled')
-            self.colors_cb.current(
-                self.controller.getColors().index('default'))
-        else:
-            # self.colors_cb['values'] = self.controller.getColors()
-            # self.colors_cb.current(self.controller.getColors().index('default'))
-            self.colors_cb.config(state='readonly')
-
     def getDataCollected(self):
         info = {}
         info['name'] = self.entry_3.get()
-        info['xRow'] = self.xData.get()
         info['yRow'] = self.yData.get()
         info['zRow'] = self.zData.get()
-        info['unir'] = bool(self.unirPuntos.get())
-        info['colors'] = self.colors.get()
+        info['varGraphs'] = bool(self.variasGraficas.get())
         info['zMin'] = self.minOutlier_entry.get()
         info['zMax'] = self.maxOutlier_entry.get()
         info['delOut'] = bool(self.deleteOutliers.get())

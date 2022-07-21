@@ -17,8 +17,10 @@ from migplot import (
     initial_chart,
     interactive_chart_plot,
     interactive_scatter,
+    interactive_time_scatter,
     getColors,
     getColorsContinuos,
+    getColorsLines,
     calcularOutliers
 )
 import modalConfiguration as cm
@@ -229,6 +231,18 @@ class AppController(tk.Tk):
         # self.root.destroy()
         # self.root.after(0, self.root.destroy)
 
+    def xerarNovoScatterTemporalThread(self, info):
+        aux = (self.infoData[0][1].columns.get_loc(info['yRow']),
+               info['zRow'], info['zMin'], info['zMax'], info['delOut'], info['varGraphs'])
+
+        interactive_time_scatter(
+            index=aux,
+            plotName=info['name'],
+            data=self.infoData[0][1],
+            save=None,
+            infoData=info['PIDsTIDs']
+        )
+
     '''
     *******************************************************************************
     ************************ Funcións propias do Frame One ************************
@@ -292,37 +306,68 @@ class AppController(tk.Tk):
     '''
 
     def xerarNovoHeatmap(self, info):
-        # creating a thread
-        Thread_loadFile = Thread(
-            target=lambda: self.xerarNovaHeatMapThread(info))
+        if not info['PIDsTIDs']:
+            self.showMessage(
+                TEXT[self.config['INITIAL']['IDIOMA']]['Seleccione datos'],
+                TEXT[self.config['INITIAL']['IDIOMA']]['erro-sin-seleccion'], 'warning')
+        else:
+            # creating a thread
+            Thread_loadFile = Thread(
+                target=lambda: self.xerarNovaHeatMapThread(info))
 
-        # change T to daemon
-        Thread_loadFile.daemon = True
-        Thread_loadFile.start()
+            # change T to daemon
+            Thread_loadFile.daemon = True
+            Thread_loadFile.start()
 
-        self.showNewGraphic()
+            self.showNewGraphic()
 
     def xerarNovoScatter(self, info):
-        # creating a thread
-        Thread_loadFile = Thread(
-            target=lambda: self.xerarNovoScatterThread(info))
+        if not info['PIDsTIDs']:
+            self.showMessage(
+                TEXT[self.config['INITIAL']['IDIOMA']]['Seleccione datos'],
+                TEXT[self.config['INITIAL']['IDIOMA']]['erro-sin-seleccion'], 'warning')
+        else:
+            # creating a thread
+            Thread_loadFile = Thread(
+                target=lambda: self.xerarNovoScatterThread(info))
 
-        # change T to daemon
-        Thread_loadFile.daemon = True
-        Thread_loadFile.start()
+            # change T to daemon
+            Thread_loadFile.daemon = True
+            Thread_loadFile.start()
 
-        self.showNewGraphic()
+            self.showNewGraphic()
 
     def xerarNovoRooflineModel(self, info):
-        # creating a thread
-        Thread_loadFile = Thread(
-            target=lambda: self.xerarNovoRooflineThread(info))
+        if not info['PIDsTIDs']:
+            self.showMessage(
+                TEXT[self.config['INITIAL']['IDIOMA']]['Seleccione datos'],
+                TEXT[self.config['INITIAL']['IDIOMA']]['erro-sin-seleccion'], 'warning')
+        else:
+            # creating a thread
+            Thread_loadFile = Thread(
+                target=lambda: self.xerarNovoRooflineThread(info))
 
-        # change T to daemon
-        Thread_loadFile.daemon = True
-        Thread_loadFile.start()
+            # change T to daemon
+            Thread_loadFile.daemon = True
+            Thread_loadFile.start()
 
-        self.showNewGraphic()
+            self.showNewGraphic()
+
+    def xerarNovoScatterTemporal(self, info):
+        if not info['PIDsTIDs']:
+            self.showMessage(
+                TEXT[self.config['INITIAL']['IDIOMA']]['Seleccione datos'],
+                TEXT[self.config['INITIAL']['IDIOMA']]['erro-sin-seleccion'], 'warning')
+        else:
+            # creating a thread
+            Thread_loadFile = Thread(
+                target=lambda: self.xerarNovoScatterTemporalThread(info))
+
+            # change T to daemon
+            Thread_loadFile.daemon = True
+            Thread_loadFile.start()
+
+            self.showNewGraphic()
 
     '''
     *******************************************************************************
@@ -344,7 +389,12 @@ class AppController(tk.Tk):
         saveImaxeDialog = sim.gardarImaxeModal(self, info)
         result = saveImaxeDialog.show()
         if result['do']:
-            if result['type'] == 'heatmap':
+            if not info['PIDsTIDs']:
+                self.showMessage(
+                    TEXT[self.config['INITIAL']
+                         ['IDIOMA']]['Seleccione datos'],
+                    TEXT[self.config['INITIAL']['IDIOMA']]['erro-sin-seleccion'], 'warning')
+            elif result['type'] == 'heatmap':
                 aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
                        self.infoData[0][1].columns.get_loc(info['yRow']),
                        info['zRow'], info['zMin'], info['zMax'], info['zType'], info['delOut'])
@@ -423,6 +473,9 @@ class AppController(tk.Tk):
 
     def getColorsContinuos(self):
         return getColorsContinuos()
+
+    def getColorsLines(self):
+        return getColorsLines()
 
     def getCalcularOutliers(self, zName, info):
         return calcularOutliers(self.infoData[0][1], zName, info)

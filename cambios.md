@@ -9,6 +9,7 @@
 - [x] En el menú superior, solamente la opción de "nova gráfica" reacciona al hover y tiene un tamaño diferente al resto de opciones.
 - [x] Cuando se genera una gráfica, ¿se calculan los valores Z para todas las columnas, o solamente para la que se va a representar? En la consola aparece un mensaje que da a entender lo último. ----> Estás no correcto, só na especificada cambiar o print
 - [ ] Deberíamos corregir la fórmula de detección de outliers. Sugiero utilizar rangos intercuartílicos como en los boxplot (<https://en.wikipedia.org/wiki/Box_plot#Elements>).
+- [x] Gardar imaxe sempre na mesma ruta
 
 
 # Heatmap
