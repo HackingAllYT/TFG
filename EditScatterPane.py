@@ -262,7 +262,8 @@ class ScatterPane(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=controller.gardarNovoScatter(
+                self.getDataCollected()),
             relief="flat"
         )
         self.button_2.place(

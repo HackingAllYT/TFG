@@ -136,7 +136,7 @@ class AppController(tk.Tk):
             filetypes=filetypes)
 
         if filename:
-            print(filename, type(filename))
+            # print(filename, type(filename))
             self.frames[StartPage].setEntryName(filename)
             # creating a thread
             Thread_loadFile = Thread(target=self.loadFileThread)
@@ -188,7 +188,7 @@ class AppController(tk.Tk):
         Thread_loadFile.daemon = True
         Thread_loadFile.start()
 
-    def xerarNovaHeatMapThread(self, info):
+    def xerarNovaHeatMapThread(self, info, save: dict = None):
         aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
                self.infoData[0][1].columns.get_loc(info['yRow']),
                info['zRow'], info['zMin'], info['zMax'], info['zType'], info['delOut'])
@@ -197,51 +197,76 @@ class AppController(tk.Tk):
             index=aux,
             plotName=info['name'],
             data=self.infoData[0][1],
-            save=None,
+            save=save,
             infoData=info['PIDsTIDs'],
             colors=info['colors']
         )
-        if result == None:
+        if result == None and save == None:
             self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica'],
                              TEXT[self.config['INITIAL']
                                   ['IDIOMA']]['erro-grafica-text'],
                              type='warning')
+        elif result == None and save:
+            self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-gardar-imaxe'],
+                             TEXT[self.config['INITIAL']['IDIOMA']
+                                  ]['erro-gardar-imaxe-text'],
+                             type='warning')
         # self.root.destroy()
         # self.root.after(0, self.root.destroy)
 
-    def xerarNovoScatterThread(self, info):
+    def xerarNovoScatterThread(self, info, save: dict = None):
         aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
                self.infoData[0][1].columns.get_loc(info['yRow']),
                info['zRow'], info['zMin'], info['zMax'], info['delOut'])
 
-        interactive_scatter(
+        result = interactive_scatter(
             index=aux,
             plotName=info['name'],
             data=self.infoData[0][1],
-            save=None,
+            save=save,
             lines=info['unir'],
             infoData=info['PIDsTIDs'],
             colors=info['colors']
         )
+        if result == None and save == None:
+            self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica'],
+                             TEXT[self.config['INITIAL']
+                                  ['IDIOMA']]['erro-grafica-text'],
+                             type='warning')
+        elif result == None and save:
+            self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-gardar-imaxe'],
+                             TEXT[self.config['INITIAL']['IDIOMA']
+                                  ]['erro-gardar-imaxe-text'],
+                             type='warning')
         # self.root.destroy()
         # self.root.after(0, self.root.destroy)
 
-    def xerarNovoRooflineThread(self, info):
+    def xerarNovoRooflineThread(self, info, save: dict = None):
         ''
         # self.root.destroy()
         # self.root.after(0, self.root.destroy)
 
-    def xerarNovoScatterTemporalThread(self, info):
+    def xerarNovoScatterTemporalThread(self, info, save: dict = None):
         aux = (self.infoData[0][1].columns.get_loc(info['yRow']),
                info['zRow'], info['zMin'], info['zMax'], info['delOut'], info['varGraphs'])
 
-        interactive_time_scatter(
+        result = interactive_time_scatter(
             index=aux,
             plotName=info['name'],
             data=self.infoData[0][1],
-            save=None,
+            save=save,
             infoData=info['PIDsTIDs']
         )
+        if result == None and save == None:
+            self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-grafica'],
+                             TEXT[self.config['INITIAL']
+                                  ['IDIOMA']]['erro-grafica-text'],
+                             type='warning')
+        elif result == None and save:
+            self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-gardar-imaxe'],
+                             TEXT[self.config['INITIAL']['IDIOMA']
+                                  ]['erro-gardar-imaxe-text'],
+                             type='warning')
 
     '''
     *******************************************************************************
@@ -275,7 +300,7 @@ class AppController(tk.Tk):
                 RooflineModelPane, 'Roofline - ' + str(self.numRoofMod))
             self.show_frame(PageTwo)
             self.numRoofMod += 1
-        elif result == 'roofline-temporal':
+        elif result == 'scatter-temporal':
             self.frames[PageTwo].addFrame(
                 ScatterPaneTemporal, 'Roofline Temporal - ' + str(self.numScattTem))
             self.show_frame(PageTwo)
@@ -384,6 +409,9 @@ class AppController(tk.Tk):
     def gardarNovoRooflineModel(self, info):
         self.openSaveAsDialog(info=info, graphType='roofline')
 
+    def gardarNovoScatterTemporal(self, info):
+        self.openSaveAsDialog(info=info, graphType='scatter-temporal')
+
     def openSaveAsDialog(self, info, graphType):
         info['graphType'] = graphType
         saveImaxeDialog = sim.gardarImaxeModal(self, info)
@@ -395,22 +423,31 @@ class AppController(tk.Tk):
                          ['IDIOMA']]['Seleccione datos'],
                     TEXT[self.config['INITIAL']['IDIOMA']]['erro-sin-seleccion'], 'warning')
             elif result['type'] == 'heatmap':
-                aux = (self.infoData[0][1].columns.get_loc(info['xRow']),
-                       self.infoData[0][1].columns.get_loc(info['yRow']),
-                       info['zRow'], info['zMin'], info['zMax'], info['zType'], info['delOut'])
-                saida = interactive_chart_plot(
-                    index=aux,
-                    plotName=info['name'],
-                    data=self.infoData[0][1],
-                    save=result,
-                    infoData=info['PIDsTIDs'],
-                    colors=info['colors']
-                )
-                if saida == None:
-                    self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['erro-gardar-imaxe'],
-                                     TEXT[self.config['INITIAL']['IDIOMA']
-                                          ]['erro-gardar-imaxe-text'],
-                                     type='warning')
+                # creating a thread
+                Thread_loadFile = Thread(
+                    target=lambda: self.xerarNovaHeatMapThread(info, result))
+
+                # change T to daemon
+                Thread_loadFile.daemon = True
+                Thread_loadFile.start()
+            elif result['type'] == 'scatter':
+                # creating a thread
+                Thread_loadFile = Thread(
+                    target=lambda: self.xerarNovoScatterThread(info, result))
+
+                # change T to daemon
+                Thread_loadFile.daemon = True
+                Thread_loadFile.start()
+            elif result['type'] == 'roofline':
+                ''
+            elif result['type'] == 'scatter-temporal':
+                # creating a thread
+                Thread_loadFile = Thread(
+                    target=lambda: self.xerarNovoScatterTemporalThread(info, result))
+
+                # change T to daemon
+                Thread_loadFile.daemon = True
+                Thread_loadFile.start()
     '''
     *******************************************************************************
     ********* Funcións xerais para mostrar que se está a xerar a gráfica **********

@@ -184,7 +184,7 @@ class selectFigureModal(tk.Toplevel):
         self.destroy()
 
     def addRooflineTemporal(self, event=None):
-        self.selection = "roofline-temporal"
+        self.selection = "scatter-temporal"
         self.destroy()
 
     '''

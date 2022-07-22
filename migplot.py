@@ -393,14 +393,19 @@ def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, info
 
     auxData = auxData.sort_values(by=[y_name, x_name])
 
-    fig = px.line(auxData, x=x_name, y=y_name, color=zName)
-    fig.update_yaxes(range=[int(zmin), int(zmax)], autorange=False)
+    try:
 
-    z_values = data[x_name].astype(float)
-    z_values = z_values[np.isfinite(z_values)]
-    zmax = np.max(z_values)
+        fig = px.line(auxData, x=x_name, y=y_name, color=zName)
+        fig.update_yaxes(range=[int(zmin), int(zmax)], autorange=False)
 
-    fig.update_xaxes(range=[100, int(zmax)], autorange=False)
+        z_values = data[x_name].astype(float)
+        z_values = z_values[np.isfinite(z_values)]
+        zmax = np.max(z_values)
+
+        fig.update_xaxes(range=[100, int(zmax)], autorange=False)
+
+    except:
+        return None
 
     # px.colors.qualitative
     '''fig.add_trace(go.Scatter(
@@ -423,6 +428,10 @@ def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, info
     if not save:
         # fig.for_each_trace(lambda trace: trace.update(visible="legendonly") if trace.name == '0' else ())
         fig.show()
+    else:
+        save_image(fig=fig, info=save)
+
+    return True
 
 
 def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bool, infoData: dict, colors: str):
@@ -448,17 +457,20 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
     if colors == 'default':
         colors = None
 
-    if lines:
-        data = data.sort_values(by=x_name)
-        try:
-            fig = px.line(data, x=x_name, y=y_name, color=zName,
-                          markers=False, color_continuous_scale=colors)
-        except:
-            fig = px.line(data, x=x_name, y=y_name, color=zName,
-                          markers=False, color_discrete_sequence=colors)
-    else:
-        fig = px.scatter(data, x=x_name, y=y_name, color=zName,
-                         color_continuous_scale=colors)
+    try:
+        if lines:
+            data = data.sort_values(by=x_name)
+            try:
+                fig = px.line(data, x=x_name, y=y_name, color=zName,
+                              markers=False, color_continuous_scale=colors)
+            except:
+                fig = px.line(data, x=x_name, y=y_name, color=zName,
+                              markers=False, color_discrete_sequence=colors)
+        else:
+            fig = px.scatter(data, x=x_name, y=y_name, color=zName,
+                             color_continuous_scale=colors)
+    except:
+        return None
 
     fig.update_layout(
         yaxis_type='category',
@@ -471,6 +483,8 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
         fig.show()
     else:
         save_image(fig, save)
+
+    return True
 
 
 def getColorsContinuos():
