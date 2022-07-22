@@ -212,7 +212,8 @@ class ScatterPane(tk.Frame):
             387.0,
             249.0,
             anchor="nw",
-            text=TEXT[self.config['INITIAL']['IDIOMA']]["Eliminar Outliers:"],
+            text=TEXT[self.config['INITIAL']
+                      ['IDIOMA']]["Eliminar Outliers:"],
             fill="#000000",
             font=("Inter", 15 * -1)
         )
@@ -262,7 +263,7 @@ class ScatterPane(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=controller.gardarNovoScatter(
+            command=lambda: controller.gardarNovoScatter(
                 self.getDataCollected()),
             relief="flat"
         )

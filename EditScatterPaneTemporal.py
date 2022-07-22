@@ -226,7 +226,7 @@ class ScatterPaneTemporal(tk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=controller.gardarNovoScatterTemporal(
+            command=lambda: controller.gardarNovoScatterTemporal(
                 self.getDataCollected()),
             relief="flat"
         )

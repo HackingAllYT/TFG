@@ -341,7 +341,7 @@ class StartPage(tk.Frame):
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=controller.select_path_2,
             relief="flat"
         )
         self.button_1.place(

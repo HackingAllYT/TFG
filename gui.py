@@ -302,7 +302,7 @@ class AppController(tk.Tk):
             self.numRoofMod += 1
         elif result == 'scatter-temporal':
             self.frames[PageTwo].addFrame(
-                ScatterPaneTemporal, 'Roofline Temporal - ' + str(self.numScattTem))
+                ScatterPaneTemporal, 'Scatter Temporal - ' + str(self.numScattTem))
             self.show_frame(PageTwo)
             self.numScattTem += 1
 
@@ -439,7 +439,13 @@ class AppController(tk.Tk):
                 Thread_loadFile.daemon = True
                 Thread_loadFile.start()
             elif result['type'] == 'roofline':
-                ''
+                # creating a thread
+                Thread_loadFile = Thread(
+                    target=lambda: self.xerarNovoRooflineThread(info, result))
+
+                # change T to daemon
+                Thread_loadFile.daemon = True
+                Thread_loadFile.start()
             elif result['type'] == 'scatter-temporal':
                 # creating a thread
                 Thread_loadFile = Thread(
@@ -448,6 +454,7 @@ class AppController(tk.Tk):
                 # change T to daemon
                 Thread_loadFile.daemon = True
                 Thread_loadFile.start()
+
     '''
     *******************************************************************************
     ********* Funcións xerais para mostrar que se está a xerar a gráfica **********

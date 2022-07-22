@@ -376,7 +376,7 @@ def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, info
     else:
         ''
 
-    print(x_name, y_name)
+    # print(x_name, y_name)
     # data.sort_values(by=y_name)
     auxData = data[data.PID.isin(aux)]
     auxData = auxData[[x_name, y_name, zName]]
