@@ -486,7 +486,7 @@ class AppController(tk.Tk):
 
         self.root = tk.Tk()
         self.root.withdraw()
-        self.root.after(4000, self.root.destroy)
+        self.root.after(8000, self.root.destroy)
         try:
             if type == 'info':
                 msgb.showinfo(title, message, master=self.root)

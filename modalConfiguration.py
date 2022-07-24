@@ -41,11 +41,13 @@ class configurationModal(tk.Toplevel):
         self.geometry("700x900")
         self.resizable(False, False)
 
-        self.idioma = config['INITIAL']['IDIOMA']
-        self.color = config['INITIAL']['COLOR']
-        self.colorBg = config['INITIAL']['COLOR-BG']
+        self.config = self.controller.getConfig()
 
-        self.auxRoute = 'cores/' + config['INITIAL']['idioma'] + '/'
+        self.idioma = self.config['INITIAL']['IDIOMA']
+        self.color = self.config['INITIAL']['COLOR']
+        self.colorBg = self.config['INITIAL']['COLOR-BG']
+
+        self.auxRoute = 'cores/' + self.config['INITIAL']['idioma'] + '/'
 
         self.canvas = Canvas(
             self,
@@ -63,14 +65,14 @@ class configurationModal(tk.Toplevel):
             0.0,
             700.0,
             80.0,
-            fill=TEXT[config['INITIAL']['COLOR-BG']],
+            fill=TEXT[self.config['INITIAL']['COLOR-BG']],
             outline="")
 
         self.canvas.create_text(
             251.0,
             28.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']
+            text=TEXT[self.config['INITIAL']['IDIOMA']
                       ]["Configuración xeral:"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
@@ -80,7 +82,7 @@ class configurationModal(tk.Toplevel):
             64.0,
             177.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Idioma:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Idioma:"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
         )
@@ -89,7 +91,7 @@ class configurationModal(tk.Toplevel):
             64.0,
             312.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Resolución:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Resolución:"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
         )
@@ -98,7 +100,7 @@ class configurationModal(tk.Toplevel):
             64.0,
             447.0,
             anchor="nw",
-            text=TEXT[config['INITIAL']['IDIOMA']]["Cores:"],
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Cores:"],
             fill="#000000",
             font=("Inter Bold", 20 * -1)
         )
@@ -251,8 +253,10 @@ class configurationModal(tk.Toplevel):
             )
             aux += 100
 
+        name = self.auxRoute + \
+            self.config['INITIAL']['COLOR'] + '/' + 'aplicar.png'
         self.button_image_5 = PhotoImage(
-            file=relative_to_assets("aplicar.png"))
+            file=relative_to_assets(name))
         self.button_5 = Button(
             self,
             image=self.button_image_5,
@@ -268,14 +272,16 @@ class configurationModal(tk.Toplevel):
             height=55.0
         )
 
+        name = self.auxRoute + \
+            self.config['INITIAL']['COLOR'] + '/' + 'gardar.png'
         self.button_image_6 = PhotoImage(
-            file=relative_to_assets("gardar_button.png"))
+            file=relative_to_assets(name))
         self.button_6 = Button(
             self,
             image=self.button_image_6,
             borderwidth=0,
             highlightthickness=0,
-            command=self.aplicar,
+            command=self.gardar,
             relief="flat"
         )
         self.button_6.place(
@@ -483,6 +489,13 @@ class configurationModal(tk.Toplevel):
             self.idioma = value
         self.changes = True
 
+    def gardar(self):
+        self.aplicar()
+        self.controller.showMessage(
+            TEXT[self.config['INITIAL']['IDIOMA']]['info-reload'],
+            TEXT[self.config['INITIAL']['IDIOMA']]['info-reload-text']
+        )
+
     def aplicar(self, event=None):
         config.set('INITIAL', 'IDIOMA', self.idioma)
         config.set('INITIAL', 'COLOR', self.color)
@@ -540,28 +553,6 @@ class configurationModal(tk.Toplevel):
         if self.idioma != ENG:
             self.button_4["image"] = self.button_image_4
 
-    def button_5_enter(self, e):
-        '''name = self.auxRoute + 'folder_over.png'
-        aux = PhotoImage(
-            file=relative_to_assets(name)
-        )
-        self.button_5["image"] = aux
-        self.button_5.image = aux'''
-
-    def button_5_leave(self, e):
-        self.button_5["image"] = self.button_image_5
-
-    def button_6_enter(self, e):
-        '''name = self.auxRoute + 'folder_over.png'
-        aux = PhotoImage(
-            file=relative_to_assets(name)
-        )
-        self.button_6["image"] = aux
-        self.button_6.image = aux'''
-
-    def button_6_leave(self, e):
-        self.button_6["image"] = self.button_image_6
-
     def button_7_enter(self, e):
         name = self.auxRoute + 'azul_over.png'
         aux = PhotoImage(
@@ -609,3 +600,27 @@ class configurationModal(tk.Toplevel):
     def button_10_leave(self, e):
         if self.color != LIGHT_BLUE[0]:
             self.button_10["image"] = self.button_image_10
+
+    def button_5_enter(self, e):
+        name = self.auxRoute + \
+            self.config['INITIAL']['COLOR'] + '/' + 'aplicar_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_5["image"] = aux
+        self.button_5.image = aux
+
+    def button_5_leave(self, e):
+        self.button_5["image"] = self.button_image_5
+
+    def button_6_enter(self, e):
+        name = self.auxRoute + \
+            self.config['INITIAL']['COLOR'] + '/' + 'gardar_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_6["image"] = aux
+        self.button_6.image = aux
+
+    def button_6_leave(self, e):
+        self.button_6["image"] = self.button_image_6

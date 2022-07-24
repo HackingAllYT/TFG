@@ -81,6 +81,9 @@ info['Erro procesando o arquivo'] = 'Error procesing the file'
 info['erro-processing-col'] = 'Check that all elements in the columns have the same data type. The column that gives the error is: '
 info['erro-processing'] = 'Check that all elements in the columns have the same data type.'
 
+info['info-reload'] = 'Changes saved!'
+info['info-reload-text'] = 'Changes saved! To see the changes you have to restart the application!'
+
 TEXT['en'] = info
 
 info = {}
@@ -161,6 +164,8 @@ info['Erro procesando o arquivo'] = 'Erro processando o arquivo'
 info['erro-processing-col'] = 'Revise que todos os elementos das columnas teñan o mesmo tipo de dato. A columna que dou o erro é: '
 info['erro-processing'] = 'Revise que todos os elementos das columnas teñan o mesmo tipo de dato.'
 
+info['info-reload'] = 'Cambios gardados!'
+info['info-reload-text'] = 'Cambios gardados! Para ver os cambios tes que reiniciar a aplicación ou pulsar o botón de aplicar!'
 
 TEXT['gal'] = info
 
@@ -243,6 +248,8 @@ info['Erro procesando o arquivo'] = 'Error procesando el archivo'
 info['erro-processing-col'] = 'Revise que todos los elementos de las columnas tengan el mismo tipo de dato. La columna que dio el error es: '
 info['erro-processing'] = 'Revise que todos los elementos de las columnas tengan el mismo tipo de dato.'
 
+info['info-reload'] = '¡Cambios guardados!'
+info['info-reload-text'] = '¡Cambios guardados! ¡Para ver los cambios tienes que reiniciar la aplicación o pulsar el botón de aplicar!'
 
 TEXT['es'] = info
 
@@ -260,8 +267,8 @@ TEXT['orange'] = '#FFA351'
 TEXT['orange-bg'] = '#FFEACE'
 TEXT['blue'] = '#3A7FF6'
 TEXT['blue-bg'] = '#7CAEFF'
-TEXT['light-blue'] = '#'
-TEXT['light-blue-bg'] = '#'
+TEXT['light-blue'] = '#42A5F5'
+TEXT['light-blue-bg'] = '#EEFAFF'
 
 RESOLU = {}
 RESOLU['HD'] = '1024x720'
