@@ -22,12 +22,15 @@ class gardarImaxeModal(tk.Toplevel):
         super().__init__(parent)
 
         self.parent = parent
-        self.graphType = info['graphType']
-        self.title("Gardar imaxe como")
-        self.geometry("557x650")
-        self.resizable(False, False)
 
         self.config = self.parent.getConfig()
+
+        self.auxRoute = 'cores/gal/'
+
+        self.graphType = info['graphType']
+        self.title(TEXT[self.config['INITIAL']['IDIOMA']]['Gardar imaxe como'])
+        self.geometry("557x650")
+        self.resizable(False, False)
 
         self.idioma = self.config['INITIAL']['IDIOMA']
         self.color = self.config['INITIAL']['COLOR']
@@ -61,8 +64,10 @@ class gardarImaxeModal(tk.Toplevel):
             font=("Inter Bold", 20 * -1)
         )
 
+        name = self.auxRoute + \
+            self.config['INITIAL']['COLOR'] + '/' + 'okey.png'
         self.button_image_2 = PhotoImage(
-            file=relative_to_assets("ok_button.png"))
+            file=relative_to_assets(name))
         self.button_2 = Button(
             self,
             image=self.button_image_2,
@@ -78,8 +83,9 @@ class gardarImaxeModal(tk.Toplevel):
             height=55.0
         )
 
+        name = self.auxRoute + 'cancelar.png'
         self.button_image_3 = PhotoImage(
-            file=relative_to_assets("cancelar_button.png"))
+            file=relative_to_assets(name))
         self.button_3 = Button(
             self,
             image=self.button_image_3,
@@ -385,13 +391,24 @@ class gardarImaxeModal(tk.Toplevel):
     '''
 
     def button_2_enter(self, e):
-        ""
+        name = self.auxRoute + \
+            self.config['INITIAL']['COLOR'] + '/' + 'okey_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_2["image"] = aux
+        self.button_2.image = aux
 
     def button_2_leave(self, e):
-        ""
+        self.button_2["image"] = self.button_image_2
 
     def button_3_enter(self, e):
-        ""
+        name = self.auxRoute + 'cancelar_over.png'
+        aux = PhotoImage(
+            file=relative_to_assets(name)
+        )
+        self.button_3["image"] = aux
+        self.button_3.image = aux
 
     def button_3_leave(self, e):
-        ""
+        self.button_3["image"] = self.button_image_3

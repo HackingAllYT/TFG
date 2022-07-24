@@ -22,10 +22,12 @@ class selectFigureModal(tk.Toplevel):
         super().__init__(parent)
 
         self.parent = parent
-        self.title("Selección de figura a xerar")
+        self.config = self.parent.getConfig()
+
+        self.title(TEXT[self.config['INITIAL']['IDIOMA']]
+                   ["Selección de figura a xerar"])
         self.geometry("700x900")
         self.resizable(False, False)
-        self.config = self.parent.getConfig()
 
         self.frame = Frame(self, width=700, height=900)
 

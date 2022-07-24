@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from tkinter import Canvas, Button, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
+from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
 from pathlib import Path
 from text import TEXT, TREETYPE_TIDs_PIDs
 from checkBoxTreeview import CheckboxTreeview
@@ -127,7 +127,7 @@ class ScatterPaneTemporal(tk.Frame):
             font=("Inter", 15 * -1)
         )
 
-        self.minOutlier_entry = IntVar()
+        self.minOutlier_entry = DoubleVar()
 
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
@@ -150,7 +150,7 @@ class ScatterPaneTemporal(tk.Frame):
             height=33.0
         )
 
-        self.maxOutlier_entry = IntVar()
+        self.maxOutlier_entry = DoubleVar()
 
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))

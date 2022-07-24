@@ -84,6 +84,9 @@ info['erro-processing'] = 'Check that all elements in the columns have the same 
 info['info-reload'] = 'Changes saved!'
 info['info-reload-text'] = 'Changes saved! To see the changes you have to restart the application!'
 
+info['Gardar imaxe como'] = 'Save image as'
+info['Selección de figura a xerar'] = 'Selection of figure to generate'
+
 TEXT['en'] = info
 
 info = {}
@@ -166,6 +169,9 @@ info['erro-processing'] = 'Revise que todos os elementos das columnas teñan o m
 
 info['info-reload'] = 'Cambios gardados!'
 info['info-reload-text'] = 'Cambios gardados! Para ver os cambios tes que reiniciar a aplicación ou pulsar o botón de aplicar!'
+
+info['Gardar imaxe como'] = 'Gardar imaxe como'
+info['Selección de figura a xerar'] = 'Selección de figura a xerar'
 
 TEXT['gal'] = info
 
@@ -250,6 +256,9 @@ info['erro-processing'] = 'Revise que todos los elementos de las columnas tengan
 
 info['info-reload'] = '¡Cambios guardados!'
 info['info-reload-text'] = '¡Cambios guardados! ¡Para ver los cambios tienes que reiniciar la aplicación o pulsar el botón de aplicar!'
+
+info['Gardar imaxe como'] = 'Guardar imagen como'
+info['Selección de figura a xerar'] = 'Selección de figura a generar'
 
 TEXT['es'] = info
 
