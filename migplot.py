@@ -16,7 +16,40 @@ matplotlib.use('Agg')
 
 
 def parse_file(file, separator):
-    return pd.read_csv(file, sep=separator)
+    usualDtypes = {
+        'Timestamp': 'int64',
+        'TID': 'int64',
+        'PID': 'int64',
+        'CMDLINE': 'object',
+        'State': 'object',
+        'CPU': 'int64',
+        'Node': 'int64',
+        'PrefNode': 'int64',
+        'InPrefNode': 'int64',
+        'Perf': 'object',
+        'CPU%': 'int64',
+        'RelPerf': 'float64',
+        'Ops': 'int64',
+        'OpIntensity': 'float64',
+        'AvLat': 'int64',
+    }
+    distinto = False
+    column = None
+    try:
+        file = pd.read_csv(file, sep=separator, dtype=usualDtypes)
+    except ValueError:
+        distinto = True
+        file = pd.read_csv(file, sep=separator)
+        for i in file.columns:
+            if i in usualDtypes:
+                if usualDtypes[i] != file.dtypes[file.columns.get_loc(i)]:
+                    distinto = True
+                    column = i
+                    # print("disitnto, columna:", i, "index:", file.columns.get_loc(i))
+    if column == None:
+        return file if not distinto else None
+    else:
+        return file if not distinto else column
 
 
 def remove_outliers(data, quantile_min=0.25, quantile_max=0.75):

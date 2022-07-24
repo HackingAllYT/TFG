@@ -144,7 +144,6 @@ class AppController(tk.Tk):
             # change T to daemon
             Thread_loadFile.daemon = True
             Thread_loadFile.start()
-            self.frames[StartPage].setButtonsEnabled()
 
     def showPaxResumoArquivo(self):
         self.show_frame(PageOne)
@@ -155,6 +154,25 @@ class AppController(tk.Tk):
     *******************************************************************************
     '''
 
+    def auxLoadFile(self, name):
+        data = parse_file(
+            file=name, separator=self.config['READ-FILE']['SEPARATOR'])
+        if type(data) != str and type(data) != type(None):
+            self.frames[PageOne].setNamePicture(filename)
+            self.pidsTids = self.loadPids(data=data)
+            self.infoData.append([name, data])
+            self.frames[StartPage].setButtonsEnabled()
+            initial_chart(data=data)
+        else:
+            if data == None:
+                self.showMessage(
+                    TEXT[self.config['INITIAL']['IDIOMA']
+                         ]['Erro procesando o arquivo'],
+                    TEXT[self.config['INITIAL']['IDIOMA']]['erro-processing'], 'warning')
+            elif type(data) == str:
+                self.showMessage(TEXT[self.config['INITIAL']['IDIOMA']]['Erro procesando o arquivo'],
+                                 TEXT[self.config['INITIAL']['IDIOMA']]['erro-processing-col'] + data, 'warning')
+
     def loadFileThread(self):
         self.infoData = []
         showinfo(
@@ -163,18 +181,11 @@ class AppController(tk.Tk):
             message=filename
         )
         if type(filename) == str:
-            data = parse_file(
-                file=filename, separator=self.config['READ-FILE']['SEPARATOR'])
-            self.pidsTids = self.loadPids(data=data)
-            self.infoData.append([filename, data])
-            initial_chart(data=data)
+            self.auxLoadFile(filename)
         else:
             for x in filename:
-                data = parse_file(
-                    file=x, separator=self.config['READ-FILE']['SEPARATOR'])
-                self.pidsTids = self.loadPids(data=data)
-                self.infoData.append([x, data])
-                initial_chart(data=data)
+                self.auxLoadFile(x)
+
         self.update()
         self.update_idletasks()
 

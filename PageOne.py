@@ -90,15 +90,6 @@ class PageOne(tk.Frame):
             height=53.0
         )
 
-        self.canvas.create_text(
-            259.0,
-            80.0,
-            anchor="nw",
-            text=TEXT[self.config['INITIAL']['IDIOMA']]["Nome do gráfico:"],
-            fill="#000000",
-            font=("Inter Bold", 15 * -1)
-        )
-
         aux = self.auxRoute + 'home_over.png'
         self.button_image_3 = PhotoImage(
             file=relative_to_assets(aux))
@@ -131,6 +122,17 @@ class PageOne(tk.Frame):
     ****************** Función para actualizar o resumo da foto *******************
     *******************************************************************************
     '''
+
+    def setNamePicture(self, name: str):
+        self.canvas.create_text(
+            259.0,
+            80.0,
+            anchor="nw",
+            text=TEXT[self.config['INITIAL']['IDIOMA']]["Nome do gráfico:"] +
+            '"' + name + '"' + '. Timestamp: x; TID: y; CPU: z',
+            fill="#000000",
+            font=("Inter Bold", 15 * -1)
+        )
 
     '''
     *******************************************************************************

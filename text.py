@@ -77,6 +77,10 @@ info['title'] = 'Application for displaying NUMA server data'
 info['Seleccione datos'] = 'Select data'
 info['erro-sin-seleccion'] = 'To generate a graph you have to pre-select data'
 
+info['Erro procesando o arquivo'] = 'Error procesing the file'
+info['erro-processing-col'] = 'Check that all elements in the columns have the same data type. The column that gives the error is: '
+info['erro-processing'] = 'Check that all elements in the columns have the same data type.'
+
 TEXT['en'] = info
 
 info = {}
@@ -152,6 +156,11 @@ info['title'] = 'Aplicación para a visualización de datos de servidores NUMA'
 
 info['Seleccione datos'] = 'Seleccione datos'
 info['erro-sin-seleccion'] = 'Para xerar unha gráfica tes que seleccionar previamente datos'
+
+info['Erro procesando o arquivo'] = 'Erro processando o arquivo'
+info['erro-processing-col'] = 'Revise que todos os elementos das columnas teñan o mesmo tipo de dato. A columna que dou o erro é: '
+info['erro-processing'] = 'Revise que todos os elementos das columnas teñan o mesmo tipo de dato.'
+
 
 TEXT['gal'] = info
 
@@ -229,6 +238,11 @@ info['title'] = 'Aplicación para la visualización de datos de servidores NUMA'
 
 info['Seleccione datos'] = 'Seleccione datos'
 info['erro-sin-seleccion'] = 'Para generar un gráfico tiene que seleccionar previamente los datos'
+
+info['Erro procesando o arquivo'] = 'Error procesando el archivo'
+info['erro-processing-col'] = 'Revise que todos los elementos de las columnas tengan el mismo tipo de dato. La columna que dio el error es: '
+info['erro-processing'] = 'Revise que todos los elementos de las columnas tengan el mismo tipo de dato.'
+
 
 TEXT['es'] = info
 
