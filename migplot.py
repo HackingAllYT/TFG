@@ -1,4 +1,6 @@
 import time
+from matplotlib import markers
+from matplotlib.pyplot import title
 import numpy as np
 
 # Visualization
@@ -379,8 +381,11 @@ def interactive_chart_plot(index: tuple, plotName: str, data, save: dict, infoDa
     return True
 
 
-def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, infoData: dict):
+def interactive_time_scatter(index: tuple, plotName: str, data: pd.DataFrame, save: dict, infoData: dict):
     y_index, zName, zMin, zMax, delOut, varGraphs = index
+    pd.options.mode.chained_assignment = None
+
+    isMarkers = False
 
     columns = list(data.columns)
     x_index = columns.index('Timestamp')
@@ -388,81 +393,219 @@ def interactive_time_scatter(index: tuple, plotName: str, data, save: dict, info
     x_name = columns[x_index]
     y_name = columns[y_index]
 
+    print(f"Preparing plots for: {y_name}")
+
     fig = go.Figure()
 
-    data = data[data.TID.isin(getListOfTids(infoData))]
+    aux = getListOfTids(infoData)
+
+    data = data[data.TID.isin(aux)]
+    if zName != 'TID':
+        data.drop(data.columns.difference(
+            [x_name, y_name, zName, 'PID', 'TID']), axis=1, inplace=True)
+    else:
+        data.drop(data.columns.difference(
+            [x_name, y_name, zName, 'PID']), axis=1, inplace=True)
+
     if delOut:
         data = data[(data[zName] >= zMin) & (data[zName] <= zMax)]
-    data = data.sort_values(by=y_name)
 
-    # Aqui é donde temos que facer o que nos manda oscar
-    aux = []
-    for pid in infoData:
-        pid = int(pid)
-        aux.append(pid)
+    media = ['CPU%', 'AvLat']
 
-    # print(auxData, type(auxData.PID))
-    # figAux = px.line(auxData, x=x_name, y=y_name, color=zName, markers=False, color_discrete_sequence=colors)
-    if varGraphs:
-        zName = 'PID'
-        y_name = 'TID'
+    if y_name == 'Ops' and zName == 'PID':
+
+        if len(infoData) == 1:
+
+            tempos = list(set(data.Timestamp))
+            tempos.sort()
+
+            newValue = []
+
+            # iteramos en orde temporal
+            for tim in tempos:
+                tempAux = 0
+                # iteramos dentro dos TIDs de cada proceso
+                for i in aux:
+                    row = data.loc[(data['TID'] == i) & (
+                        data['Timestamp'] == tim)]
+                    if row[y_name].values:
+                        tempAux += row[y_name].values[0]
+                newValue.append(tempAux)
+
+            data = pd.DataFrame(list(zip(tempos, newValue)),
+                                columns=[x_name, y_name])
+
+            fig = px.line(data, x=x_name, y=y_name, markers=isMarkers)
+
+        else:
+            pids = list(data['PID'].unique())
+
+            allValues = {}
+
+            for pid in pids:
+                tempo = data.loc[(data['PID'] == pid)]
+                tempos = list(set(tempo.Timestamp))
+                tempos.sort()
+
+                newValue = []
+
+                aux = infoData[str(pid)].copy()
+                aux = list(map(int, aux))
+
+                for tim in tempos:
+                    tempAux = 0
+                    # iteramos dentro dos TIDs de cada proceso
+                    for i in aux:
+                        row = data.loc[(data['TID'] == i) & (
+                            data['Timestamp'] == tim)]
+                        if row[y_name].values:
+                            tempAux += row[y_name].values[0]
+                    newValue.append(tempAux)
+
+                if varGraphs:
+                    auxPids = [pid] * len(tempos)
+                    plotData = pd.DataFrame(list(zip(tempos, newValue, auxPids)),
+                                            columns=[x_name, y_name, 'PID'])
+
+                    fig = px.line(plotData, x=x_name, y=y_name,
+                                  color=zName, markers=isMarkers)
+
+                    fig.update_layout(
+                        title=plotName
+                    )
+
+                    if not save:
+                        fig.show()
+                    else:
+                        save_image(fig, save)
+                else:
+                    allValues[pid] = {
+                        'Timestamp': tempos,
+                        'Values': newValue
+                    }
+
+            if not varGraphs:
+                tempos = []
+                newValue = []
+                pids = []
+                for item in allValues:
+                    tempos.extend(allValues[item]['Timestamp'])
+                    newValue.extend(allValues[item]['Values'])
+                    aux = [item] * len(allValues[item]['Values'])
+                    pids.extend(aux)
+
+                data = pd.DataFrame(list(zip(tempos, newValue, pids)),
+                                    columns=[x_name, y_name, 'PID'])
+
+                fig = px.line(data, x=x_name, y=y_name,
+                              color=zName, markers=isMarkers)
+            else:
+                return True
+
+    elif y_name in media and zName == 'PID':
+        if len(infoData) == 1:
+            tempos = list(set(data.Timestamp))
+            tempos.sort()
+
+            newValue = []
+
+            # iteramos en orde temporal
+            for tim in tempos:
+                tempAux = 0
+                count = 0.0
+                # iteramos dentro dos TIDs de cada proceso
+                for i in aux:
+                    row = data.loc[(data['TID'] == i) & (
+                        data['Timestamp'] == tim)]
+                    if row[y_name].values:
+                        tempAux += row[y_name].values[0]
+                    count += 1.0
+
+                newValue.append(tempAux / count)
+
+            data = pd.DataFrame(list(zip(tempos, newValue)),
+                                columns=[x_name, y_name])
+
+            fig = px.line(data, x=x_name, y=y_name, markers=isMarkers)
+
+        else:
+            pids = list(data['PID'].unique())
+
+            allValues = {}
+
+            for pid in pids:
+                tempo = data.loc[(data['PID'] == pid)]
+                tempos = list(set(tempo.Timestamp))
+                tempos.sort()
+
+                newValue = []
+
+                aux = infoData[str(pid)].copy()
+                aux = list(map(int, aux))
+
+                for tim in tempos:
+                    tempAux = 0
+                    count = 0.0
+                    # iteramos dentro dos TIDs de cada proceso
+                    for i in aux:
+                        row = data.loc[(data['TID'] == i) & (
+                            data['Timestamp'] == tim)]
+                        if row[y_name].values:
+                            tempAux += row[y_name].values[0]
+                        count = 0.0
+                    newValue.append(tempAux / count)
+
+                if varGraphs:
+                    auxPids = [pid] * len(tempos)
+                    plotData = pd.DataFrame(list(zip(tempos, newValue, auxPids)),
+                                            columns=[x_name, y_name, 'PID'])
+
+                    fig = px.line(plotData, x=x_name, y=y_name,
+                                  color=zName, markers=isMarkers)
+
+                    fig.update_layout(
+                        title=plotName
+                    )
+
+                    if not save:
+                        fig.show()
+                    else:
+                        save_image(fig, save)
+                else:
+                    allValues[pid] = {
+                        'Timestamp': tempos,
+                        'Values': newValue
+                    }
+
+            if not varGraphs:
+                tempos = []
+                newValue = []
+                pids = []
+                for item in allValues:
+                    tempos.extend(allValues[item]['Timestamp'])
+                    newValue.extend(allValues[item]['Values'])
+                    aux = [item] * len(allValues[item]['Values'])
+                    pids.extend(aux)
+
+                data = pd.DataFrame(list(zip(tempos, newValue, pids)),
+                                    columns=[x_name, y_name, 'PID'])
+
+                fig = px.line(data, x=x_name, y=y_name,
+                              color=zName, markers=isMarkers)
+            else:
+                return True
+
     else:
-        ''
-
-    # print(x_name, y_name)
-    # data.sort_values(by=y_name)
-    auxData = data[data.PID.isin(aux)]
-    auxData = auxData[[x_name, y_name, zName]]
-
-    z_values = data[y_name].astype(float)
-    z_values = z_values[np.isfinite(z_values)]
-
-    zmin = np.min(z_values)
-    zmax = np.max(z_values)
-    if y_name == 'CPU':
-        for i in range(int(zmin), int(zmax)):
-            aux = pd.DataFrame({x_name: [0], y_name: i, zName: [0]})
-            auxData = pd.concat([auxData, aux])
-
-    auxData = auxData.sort_values(by=[y_name, x_name])
-
-    try:
-
-        fig = px.line(auxData, x=x_name, y=y_name, color=zName)
-        fig.update_yaxes(range=[int(zmin), int(zmax)], autorange=False)
-
-        z_values = data[x_name].astype(float)
-        z_values = z_values[np.isfinite(z_values)]
-        zmax = np.max(z_values)
-
-        fig.update_xaxes(range=[100, int(zmax)], autorange=False)
-
-    except:
-        return None
-
-    # px.colors.qualitative
-    '''fig.add_trace(go.Scatter(
-        x=df["Date"], y=df["Close"], name="Close", mode="lines"))
-    fig.add_trace(go.Scatter(
-        x=df["Date"], y=df["Open"], name="Open", mode="lines"))
-    fig.update_layout(
-        title="ICICI BANK stock prices", xaxis_title="Date", yaxis_title="Close"
-    )
-    fig.show()'''
-    # fig.add_trace(figAux)
+        fig = px.line(data, x=x_name, y=y_name, color=zName, markers=isMarkers)
 
     fig.update_layout(
-        yaxis_type='category',
-        xaxis=dict(title=x_name),
-        yaxis=dict(title=y_name),
         title=plotName
     )
 
     if not save:
-        # fig.for_each_trace(lambda trace: trace.update(visible="legendonly") if trace.name == '0' else ())
         fig.show()
     else:
-        save_image(fig=fig, info=save)
+        save_image(fig, save)
 
     return True
 
@@ -506,9 +649,6 @@ def interactive_scatter(index: tuple, plotName: str, data, save: dict, lines: bo
         return None
 
     fig.update_layout(
-        yaxis_type='category',
-        xaxis=dict(title=x_name),
-        yaxis=dict(title=y_name),
         title=plotName
     )
 
@@ -547,7 +687,7 @@ def getListOfTids(infoData: dict):
     '''
     aux = []
     for listAux in infoData:
-        aux.extend(infoData[listAux])
+        aux.extend(infoData[listAux].copy())
     return list(map(int, aux))
 
 

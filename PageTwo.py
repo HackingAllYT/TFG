@@ -1,11 +1,10 @@
-import imp
 import tkinter as tk
 
 from tkinter import ttk, Button, Canvas, PhotoImage
 from pathlib import Path
 
 from StartPage import StartPage
-from text import TEXT
+from text import TEXT, RESOLU
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -36,6 +35,10 @@ class PageTwo(tk.Frame):
         self.im_unchecked = tk.PhotoImage(
             file=relative_to_assets('unchecked_18x18.png'))
 
+        if self.config["INITIAL"]['RESOLU'] == RESOLU['1']:
+            self.__init_HD__(controller, args, kwargs)
+
+    def __init_HD__(self, controller, *args, **kwargs):
         self.notebook = ttk.Notebook(self, *args, **kwargs)
         self.notebook.place(
             x=0.0,

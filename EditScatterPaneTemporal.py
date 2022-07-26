@@ -1,8 +1,8 @@
 import tkinter as tk
 
-from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
+from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
 from pathlib import Path
-from text import TEXT, TREETYPE_TIDs_PIDs
+from text import TEXT, TREETYPE_TIDs_PIDs, RESOLU
 from checkBoxTreeview import CheckboxTreeview
 
 OUTPUT_PATH = Path(__file__).parent
@@ -26,6 +26,10 @@ class ScatterPaneTemporal(tk.Frame):
         self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
             '/' + self.config['INITIAL']['idioma'] + '/'
 
+        if self.config["INITIAL"]['RESOLU'] == RESOLU['1']:
+            self.__init_HD__(controller)
+
+    def __init_HD__(self, controller):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",
@@ -402,7 +406,10 @@ class ScatterPaneTemporal(tk.Frame):
         self.yData_cb['values'] = list(columns)
         cpu = self.yData_cb['values'].index('CPU')
         self.yData_cb.current(cpu)
-        self.zData_cb['values'] = list(columns)
+        if 'PID' in list(columns) and 'TID' in list(columns):
+            self.zData_cb['values'] = ['PID', 'TID']
+        else:
+            self.zData_cb['values'] = list(columns)
         tid = self.zData_cb['values'].index('TID')
         self.zData_cb.current(tid)
         info = self.controller.getPidsTids()
@@ -416,7 +423,7 @@ class ScatterPaneTemporal(tk.Frame):
         self.entry_2.config(
             state=tk.DISABLED, disabledbackground="#F1F5FF")
         self.entry_3.delete(0, tk.END)
-        self.entry_3.insert(0, 'Scatter: ' + self.zData.get())
+        self.entry_3.insert(0, 'Scatter Temporal: ' + self.zData.get())
 
         self.zDataCallback(None)
 
@@ -441,7 +448,7 @@ class ScatterPaneTemporal(tk.Frame):
         if self.entry_3.get():
             self.classParent.changeName(self.entry_3.get())
         else:
-            info['name'] = 'Scatter: ' + self.zData.get()
+            info['name'] = 'Scatter Temporal: ' + self.zData.get()
 
         # get Info selected items
         # self.t.on_tree_select(None)

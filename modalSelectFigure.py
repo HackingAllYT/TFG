@@ -88,7 +88,7 @@ class selectFigureModal(tk.Toplevel):
         self.button_3.bind('<Enter>', self.button_3_enter)
         self.button_3.bind('<Leave>', self.button_3_leave)
 
-        self.button_image_4 = PhotoImage(
+        '''self.button_image_4 = PhotoImage(
             file=relative_to_assets("roofline_model.png"))
         self.button_4 = Button(
             self,
@@ -103,7 +103,7 @@ class selectFigureModal(tk.Toplevel):
             y=394.0,
             width=312.0,
             height=248.0
-        )
+        )'''
 
         self.button_image_5 = PhotoImage(
             file=relative_to_assets("button_scatter_temporal.png"))
@@ -116,11 +116,17 @@ class selectFigureModal(tk.Toplevel):
             relief="flat"
         )
         self.button_5.place(
-            x=368.0,
+            x=20.0,
             y=394.0,
             width=312.0,
             height=248.0
         )
+        ''' # Se engadimos o roofline        
+            x=368.0,
+            y=394.0,
+            width=312.0,
+            height=248.0
+        '''
 
         self.canvas.create_text(
             220.0,

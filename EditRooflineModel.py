@@ -2,7 +2,7 @@ import tkinter as tk
 
 from tkinter import Canvas, Button, PhotoImage, Entry, Frame, IntVar, Checkbutton
 from pathlib import Path
-from text import TEXT, TREETYPE_TIDs_PIDs, TREETYPE_CPUs
+from text import TEXT, TREETYPE_TIDs_PIDs, TREETYPE_CPUs, RESOLU
 from checkBoxTreeview import CheckboxTreeview
 from addTraceRoofline import TraceRooflineContainer, TraceRoofline, ScrollableFrame
 from scrollbarFrame import ScrolledFrame
@@ -27,6 +27,10 @@ class RooflineModelPane(tk.Frame):
         self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
             '/' + self.config['INITIAL']['idioma'] + '/'
 
+        if self.config["INITIAL"]['RESOLU'] == RESOLU['1']:
+            self.__init_HD__(controller)
+
+    def __init_HD__(self, controller):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",

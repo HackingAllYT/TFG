@@ -1,8 +1,8 @@
 import tkinter as tk
 
-from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame, BOTH
+from tkinter import Canvas, Button, DoubleVar, PhotoImage, Entry, StringVar, IntVar, ttk, Checkbutton, Frame
 from pathlib import Path
-from text import TEXT, TREETYPE_TIDs_PIDs
+from text import TEXT, TREETYPE_TIDs_PIDs, RESOLU
 from checkBoxTreeview import CheckboxTreeview
 
 OUTPUT_PATH = Path(__file__).parent
@@ -26,6 +26,10 @@ class ScatterPane(tk.Frame):
         self.auxRoute = self.config["INITIAL"]['RESOLU'] + '/' + self.config['INITIAL']['COLOR'] + \
             '/' + self.config['INITIAL']['idioma'] + '/'
 
+        if self.config["INITIAL"]['RESOLU'] == RESOLU['1']:
+            self.__init_HD__(controller)
+
+    def __init_HD__(self, controller):
         self.canvas = Canvas(
             self,
             bg="#FFFFFF",
