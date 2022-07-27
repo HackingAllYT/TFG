@@ -2,17 +2,18 @@
 import tkinter as tk
 
 from pathlib import Path
+
 import configparser
 
 import pandas as pd
-from text import TEXT, RESOLU
-from StartPage import StartPage
-from PageOne import PageOne
-from PageTwo import PageTwo
+from src.config.text import TEXT, RESOLU
+from src.Pages.StartPage import StartPage
+from src.Pages.PageOne import PageOne
+from src.Pages.PageTwo import PageTwo
 from threading import *
 import tkinter.filedialog as fd
 from tkinter.messagebox import showinfo, askyesno, askyesnocancel
-from migplot import (
+from src.Plot.migplot import (
     parse_file,
     initial_chart,
     interactive_chart_plot,
@@ -23,13 +24,13 @@ from migplot import (
     getColorsLines,
     calcularOutliers
 )
-import modalConfiguration as cm
-import modalSelectFigure as msf
-from EditHeatMap import HeatMapPane
-from EditScatterPane import ScatterPane
-from EditScatterPaneTemporal import ScatterPaneTemporal
-from EditRooflineModel import RooflineModelPane
-import modalGardarImaxe as sim
+import src.Modals.modalConfiguration as cm
+import src.Modals.modalSelectFigure as msf
+import src.Modals.modalGardarImaxe as sim
+from src.EditPane.EditHeatMap import HeatMapPane
+from src.EditPane.EditScatterPane import ScatterPane
+from src.EditPane.EditScatterPaneTemporal import ScatterPaneTemporal
+from src.EditPane.EditRooflineModel import RooflineModelPane
 
 import os
 import sys
@@ -41,10 +42,6 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 askExit = True
 
 
-def relative_to_assets(path: str) -> Path:
-    return ASSETS_PATH / Path(path)
-
-
 LARGE_FONT = ("Verdana", 12)
 
 
@@ -54,13 +51,13 @@ class AppController(tk.Tk):
 
         tk.Tk.__init__(self, *args, **kwargs)
         self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        self.config.read('src/config/config.ini')
 
         self.geometry(RESOLU[self.config['INITIAL']['RESOLU']])
         self.resizable(False, False)
         self.center()
         self.iconphoto(False, tk.PhotoImage(
-            file=relative_to_assets('icon/icon.png')))
+            file=self.relative_to_assets('icon/icon.png')))
         self.title(TEXT[self.config['INITIAL']['IDIOMA']]['title'])
         self.container = tk.Frame(self)
 
@@ -114,6 +111,8 @@ class AppController(tk.Tk):
         self.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         self.deiconify()
 
+    def relative_to_assets(self, path: str) -> Path:
+        return ASSETS_PATH / Path(path)
     '''
     *******************************************************************************
     ********************** Funcións propias do Frame Inicial **********************

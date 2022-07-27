@@ -61,13 +61,13 @@
 
 
 # Memoria:
-- [ ] La primera frase del resumen hay que reescribirla mejor.
+- [x] La primera frase del resumen hay que reescribirla mejor.
 
-- [ ] Hablar de información del rendimiento, no solo de información. Y comentar que esa información se obtiene en su mayor parte de los contadores hardware.
+- [x] Hablar de información del rendimiento, no solo de información. Y comentar que esa información se obtiene en su mayor parte de los contadores hardware.
 
-- [ ] En el segundo párrafo cambiar programa por proxecto.
+- [x] En el segundo párrafo cambiar programa por proxecto.
 
-- [ ] La última frase del segundo párrafo hay que reescribrila bien.
+- [x] La última frase del segundo párrafo hay que reescribrila bien.
 
 - [ ] En el capítulo 1,
 
@@ -83,11 +83,11 @@
 
 - [ ] Quitaría el apartado 4.2.
 
-- [ ] En el apartado 4.4 yo pondría al final, en particular el desarrollo del proyecto y las pruebas se han realizado en un computador .......
+- [x] En el apartado 4.4 yo pondría al final, en particular el desarrollo del proyecto y las pruebas se han realizado en un computador .......
 
 - [x] En el punto 5.1 yo no hablaría de profesorado sino del grupo de investigación.
 
-- [ ] La figura 5.1 no se ve nada bien. Propongo hacerla más grande.
+- [x] La figura 5.1 no se ve nada bien. Propongo hacerla más grande.
 
 - [x] Títulos de las secciones del capítulo 5 que propongo: "Recopilación de recomendacións", "Máquetas interactivas", "Aplicación de melloras", "Repetición iterativa". Faltarían las dos últimas: "Codificación" y "Probas".
 
