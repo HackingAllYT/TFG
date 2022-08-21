@@ -344,6 +344,7 @@ class ScatterPaneTemporal(tk.Frame):
             width=170.0,
             height=20.0
         )
+        # Cambiar aqui o dos callbacks
         self.zData_cb.bind('<<ComboboxSelected>>', self.zDataCallback)
 
         '''self.colors = StringVar()
@@ -742,6 +743,7 @@ class ScatterPaneTemporal(tk.Frame):
             width=190.0,
             height=30.0
         )
+        # Cambiar aqui o dos callbacks
         self.zData_cb.bind('<<ComboboxSelected>>', self.zDataCallback)
 
         self.colors_cb = ttk.Combobox(
